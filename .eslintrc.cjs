@@ -1,9 +1,11 @@
+const { plugin } = require("flowbite-react/tailwind");
+
 module.exports = {
 	env: {
 		browser: true,
 		es2021: true,
 	},
-	extends: ['airbnb', 'prettier', 'plugin:node/recommended'],
+	extends: ['airbnb'],
 	plugins: ['prettier'],
 	overrides: [
 		{
@@ -28,5 +30,6 @@ module.exports = {
 		'no-process-exit': 'off',
 		'object-shorthand': 'off',
 		'class-methods-use-this': 'off',
+		'no-tabs': 'off',
 	},
 };

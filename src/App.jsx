@@ -1,6 +1,13 @@
+import { Route, Routes } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+
 function App() {
 	return (
-		<h1 className='text-2xl text-red-300'>Hello World</h1>
+		<Routes>
+			<Route path='/' element={<LoginPage />} />
+			<Route path='/register' element={<RegisterPage />} />
+		</Routes>
 	);
 }
 

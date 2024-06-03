@@ -7,3 +7,9 @@
     font-family: 'Inter', sans-serif;
   }
 }
+
+.auth-page {
+  background-image: url('./assets/bg-earth.png');
+  background-size: cover;
+  background-position: center;
+}
