@@ -1,7 +1,7 @@
 import React from 'react';
 import RegisterInput from '../components/Input/RegisterInput';
-import logoNoIcon from '../assets/logoNoIcon.png';
-import tagline from '../assets/tagline.png';
+import logoNoIcon from '../assets/icons/logoNoIcon.png';
+import tagline from '../assets/images/tagline.png';
 import { Link } from 'react-router-dom';
 
 export default function RegisterPage() {
@@ -19,7 +19,7 @@ export default function RegisterPage() {
 					<div className='absolute text-lg font-medium bottom-14 md:bottom-52 lg:bottom-14 text-chineseWhite'>
 						Have an Account?{' '}
 						<Link
-							to='/'
+							to='/login'
 							className='font-bold cursor-pointer hover:underline text-fernGreen'
 						>
 							Login

@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginInput from '../components/Input/LoginInput';
-import logoNoIcon from '../assets/logoNoIcon.png';
-import tagline from '../assets/tagline.png';
+import logoNoIcon from '../assets/icons/logoNoIcon.png';
+import tagline from '../assets/images/tagline.png';
 import { Link } from 'react-router-dom';
 
 export default function LoginPage() {
@@ -25,7 +25,6 @@ export default function LoginPage() {
 							Register
 						</Link>
 					</div>
-					
 				</div>
 			</div>
 		</div>
