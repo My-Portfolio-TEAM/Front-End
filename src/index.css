@@ -5,11 +5,20 @@
 @layer components {
   body {
     font-family: 'Inter', sans-serif;
+    background-color: #0F0F13;
   }
 }
 
 .auth-page {
-  background-image: url('./assets/bg-earth.png');
+  background-image: url('./assets/images/bg-earth.png');
   background-size: cover;
   background-position: center;
+}
+
+.active {
+  color: #33C95D;
+}
+
+.bg-size {
+  object-fit: cover;
 }
