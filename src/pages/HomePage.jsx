@@ -88,7 +88,7 @@ export default function HomePage() {
 	return (
 		<div className=' bg-chineseBlack'>
 			<div className='sticky top-0 z-50'>
-				<Navbar openModal={onCloseModal} isOpenModal={openModal} />
+				<Navbar openModal={onCloseModal} isOpenModalStudy={openModal} />
 			</div>
 			<div className='py-0 mb-20 sm:px-5 lg:container sm:py-5 lg:px-10 2xl:px-20'>
 				<div className='flex flex-col sm:flex-row'>

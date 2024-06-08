@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logoBrand from '../../assets/icons/logoBrand.png';
 import { FiHome } from 'react-icons/fi';
 import { TfiPencilAlt } from 'react-icons/tfi';
@@ -7,7 +7,7 @@ import { MdOutlineKeyboardArrowDown, MdOutlinePostAdd } from 'react-icons/md';
 import avatarProfile from '../../assets/images/profile-pic (4).png';
 import PropTypes from 'prop-types';
 
-export default function Index({ openModal, isOpenModal }) {
+export default function Index({ openModal, isOpenModalStudy }) {
 	const location = useLocation();
 
 	return (
@@ -20,7 +20,7 @@ export default function Index({ openModal, isOpenModal }) {
 					<nav className='flex items-center gap-10 px-6 text-textSecondary'>
 						<Link
 							className={`flex items-start gap-2 text-base font-semibold transition-all duration-200 ease-out hover:opacity-80 ${
-								isOpenModal || location.pathname !== '/' ? '' : 'active'
+								isOpenModalStudy || location.pathname !== '/' ? '' : 'active'
 							}`}
 							to='/'
 						>
@@ -29,10 +29,10 @@ export default function Index({ openModal, isOpenModal }) {
 						</Link>
 						<Link
 							className={`flex gap-3 text-base font-semibold transition-all duration-200 ease-out hover:opacity-80 ${
-								isOpenModal ? 'active' : ''
+								isOpenModalStudy ? 'active' : ''
 							}`}
 							onClick={() => {
-								sessionStorage.setItem('openModal', 'true')
+								sessionStorage.setItem('openModal', 'true');
 								openModal(true);
 							}}
 							to='/'
@@ -66,33 +66,33 @@ export default function Index({ openModal, isOpenModal }) {
 			</header>
 			<footer className='fixed bottom-0 z-50 w-full py-1 border-t border-[#424242] bg-navbar flex sm:hidden'>
 				<div className='container flex items-center justify-around py-3 text-textSecondary'>
-					<NavLink
-						activeclassname='active'
-						className='transition-all duration-200 ease-out hover:opacity-80'
+					<Link
+						className={`transition-all duration-200 ease-out hover:opacity-80 ${
+							isOpenModalStudy || location.pathname !== '/' ? '' : 'active'
+						}`}
 						to='/'
 					>
 						<FiHome title='Home' className='text-2xl' />
-					</NavLink>
+					</Link>
 					<button
 						color=''
 						className={`flex gap-3 text-base font-semibold transition-all duration-200 ease-out hover:opacity-80 ${
-							isOpenModal ? 'active' : ''
+							isOpenModalStudy ? 'active' : ''
 						}`}
 						onClick={() => {
-							sessionStorage.setItem('openModal', 'true')
+							sessionStorage.setItem('openModal', 'true');
 							openModal(true);
 						}}
 						to='/'
 					>
 						<TfiPencilAlt title='Write Progress' className='text-2xl lg:text-xl' />
 					</button>
-					<NavLink
-						activeclassname='active'
-						className='transition-all duration-200 ease-out hover:opacity-80'
+					<Link
+						className={`transition-all duration-200 ease-out hover:opacity-80 `}
 						to='/post-portfolio'
 					>
 						<MdOutlinePostAdd title='Post Portfolio' className='text-3xl' />
-					</NavLink>
+					</Link>
 					<div className='flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80'>
 						<img
 							src={avatarProfile}
@@ -108,5 +108,5 @@ export default function Index({ openModal, isOpenModal }) {
 
 Index.propTypes = {
 	openModal: PropTypes.func,
-	isOpenModal: PropTypes.bool,
+	isOpenModalStudy: PropTypes.bool,
 };
