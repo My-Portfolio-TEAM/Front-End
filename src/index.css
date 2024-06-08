@@ -6,6 +6,7 @@
   body {
     font-family: 'Inter', sans-serif;
     background-color: #0F0F13;
+    scroll-behavior: smooth;
   }
 }
 
@@ -19,6 +20,7 @@
   color: #33C95D;
 }
 
-.bg-size {
-  object-fit: cover;
+[contentEditable=true]:empty:before {
+  content: attr(data-placeholder);
+  color: #A9A9A9;
 }

@@ -4,7 +4,7 @@ import { FiSearch } from 'react-icons/fi';
 
 export default function SearchInput({ search, onSearchChange}) {
 	return (
-		<div className='sticky top-0 flex items-center w-auto mt-3 shadow-2xl sm:relative sm:mt-0'>
+		<div className='sticky top-0 flex items-center w-auto mt-3 shadow-md shadow-eerieBlack sm:shadow-none sm:relative sm:mt-0'>
 			<input
 				className='w-full py-3 border-none ps-10 sm:ps-12 text-textPrimary focus:ring-0  placeholder:text-[#A7A7A3] bg-searchInput rounded-none sm:rounded-xl'
 				type='text'
