@@ -12,7 +12,7 @@ export default function HeadProfile({name, image, background, location, role, he
 				alt='bg card'
 				className='object-cover w-full h-40 sm:h-56 sm:rounded-t-xl'
 			/>
-			<div className='flex items-start justify-between px-3 pb-5 sm:px-10 bg-eerieBlack sm:rounded-b-xl'>
+			<div className='flex items-start justify-between px-3 pb-5 lg:px-10 bg-eerieBlack sm:rounded-b-xl'>
 				<div className='flex flex-col gap-3 sm:flex-row'>
 					<img
 						src={image}

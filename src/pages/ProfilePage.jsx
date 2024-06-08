@@ -117,7 +117,7 @@ export default function ProfilePage() {
 					))}
 				<AboutProfile />
 				<SkillsProfile />
-				<div className='flex flex-col px-3 mt-10 mb-40 sm:px-10'>
+				<div className='flex flex-col px-3 mt-10 mb-40 sm:px-5 lg:px-10'>
 					<div className='flex gap-10'>
 						<button
 							type='button'
@@ -153,7 +153,7 @@ export default function ProfilePage() {
 					</div>
 					<div className='my-5'>
 						{activeSession === 'Posts' ? (
-							<div className='grid w-full gap-5 lg:grid-cols-2'>
+							<div className='grid w-full gap-5 sm:grid-cols-2'>
 								{posts.map((post) => (
 									<Post key={post.id} id={post.id} page='/profile' />
 								))}

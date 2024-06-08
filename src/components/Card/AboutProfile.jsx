@@ -5,7 +5,7 @@ import { BsLinkedin, BsGithub  } from "react-icons/bs";
 
 export default function AboutProfile() {
 	return (
-		<section className='px-3 py-5 mt-3 sm:mt-5 sm:px-10 bg-eerieBlack sm:rounded-xl'>
+		<section className='px-3 py-5 mt-3 sm:px-5 sm:mt-5 lg:px-10 bg-eerieBlack sm:rounded-xl'>
 			<div className='flex items-center justify-between'>
 				<h1 className='text-2xl font-medium'>About</h1>
 				<Link
