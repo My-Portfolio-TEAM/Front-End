@@ -1,27 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import iconLoveFilled from '../../assets/icons/iconLove-filled.png';
 import iconComment from '../../assets/icons/messages.png';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { useExpand } from '../../hooks/useExpand';
 
-export default function Post() {
-	const [isExpanded, setIsExpanded] = useState(false);
-	const [isTruncated, setIsTruncated] = useState(false);
-	const textRef = useRef(null);
+export default function Post({ id, page }) {
+	const {isExpanded, isTruncated, textRef, toggleExpanded} = useExpand();
+	const navigate = useNavigate();
 
-	const toggleExpanded = () => {
-		setIsExpanded(!isExpanded);
+	const handleToggleExpanded = () => {
+		if (page === '/') {
+			toggleExpanded(!isExpanded);
+		} else if (page === '/profile') {
+			navigate(`/post-detail/${id}`);
+		}
 	};
 
-	useEffect(() => {
-		const element = textRef.current;
-		if (element) {
-			const lineHeight = parseFloat(window.getComputedStyle(element).lineHeight);
-			const maxHeight = lineHeight * 2;
-			setIsTruncated(element.scrollHeight > maxHeight);
-		}
-	}, [textRef, isExpanded]);
-
 	return (
-		<article className='py-2 rounded-none sm:p-4 lg:w-full bg-eerieBlack sm:rounded-xl'>
+		<article className='w-auto py-3 rounded-md sm:p-4 bg-eerieBlack sm:rounded-xl'>
 			<div className='flex items-center gap-3 px-2 sm:px-0'>
 				<img
 					src='https://images.unsplash.com/photo-1547037579-f0fc020ac3be?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -39,7 +36,7 @@ export default function Post() {
 			<div className='my-3'>
 				<img
 					src='https://images.unsplash.com/photo-1545665277-5937489579f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-					className='w-full h-auto rounded-none sm:rounded-lg bg-size'
+					className='rounded-none cursor-pointer lg:w-full lg:h-full sm:rounded-lg bg-size'
 					alt=''
 				/>
 				<div className='flex gap-2 px-2 my-3 sm:px-0'>
@@ -49,15 +46,31 @@ export default function Post() {
 				</div>
 				<p
 					ref={textRef}
-					className={`text-sm text-chineseWhite px-2 sm:px-0 ${isExpanded ? '' : 'line-clamp-2'}`}
+					className={`text-sm text-[#eaeaea] leading-5 px-2 sm:px-0 ${
+						isExpanded ? '' : 'line-clamp-2'
+					}`}
 				>
-					Saya sangat senang karena saya akhirnya mendapatkan client freelance pertama
-					saya dan semoga dengan skill saya yang sekarang saya bisa lebih banyak
-					mendapatkan client
+					Saya merasa sangat bersemangat dan penuh harapan sekarang ini. Setelah banyak
+					belajar dan berlatih, saya akhirnya mendapatkan client freelance pertama saya.
+					Ini adalah langkah besar bagi saya, sebuah validasi atas semua kerja keras yang
+					telah saya lakukan. <br/> <br/> Saya merasa sangat berterima kasih atas kesempatan ini dan
+					berjanji untuk memberikan yang terbaik. Saya percaya bahwa dengan skill yang
+					saya miliki sekarang, saya dapat memberikan nilai yang besar bagi client saya.
+					Saya telah menghabiskan banyak waktu untuk mempelajari dan memperdalam berbagai
+					teknologi dan teknik pemrograman, dan sekarang saya siap untuk menerapkannya
+					dalam proyek nyata. Namun, ini hanyalah awal. <br/> <br/> Saya berharap bahwa dengan
+					pengalaman ini, saya akan dapat menarik lebih banyak client di masa depan. Saya
+					berencana untuk terus belajar dan berkembang, sehingga saya dapat terus
+					meningkatkan layanan yang saya tawarkan. Saya sangat bersemangat tentang apa
+					yang akan datang dan saya tidak sabar untuk melihat di mana perjalanan ini akan
+					membawa saya.
 				</p>
 				{isTruncated && (
-					<button onClick={toggleExpanded} className='text-[#A9A9A9] px-2 sm:px-0 font-normal'>
-						{isExpanded ? 'See less' : 'See more'}
+					<button
+						onClick={handleToggleExpanded}
+						className='text-[#A9A9A9] text-sm px-2 sm:px-0 font-normal'
+					>
+						{isExpanded ? 'See less' : '...See more'}
 					</button>
 				)}
 			</div>
@@ -81,3 +94,8 @@ export default function Post() {
 		</article>
 	);
 }
+
+Post.propTypes = {
+	id: PropTypes.number.isRequired,
+	page: PropTypes.string.isRequired,
+};
