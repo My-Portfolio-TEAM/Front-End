@@ -5,9 +5,26 @@
 @layer components {
   body {
     font-family: 'Inter', sans-serif;
-    background-color: #0F0F13;
+    background-color: #0f0f13;
     scroll-behavior: smooth;
   }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #23252a;
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(52, 52, 52);
 }
 
 .auth-page {
@@ -17,10 +34,10 @@
 }
 
 .active {
-  color: #33C95D;
+  color: #33c95d;
 }
 
-[contentEditable=true]:empty:before {
+[contentEditable='true']:empty:before {
   content: attr(data-placeholder);
-  color: #A9A9A9;
+  color: #a9a9a9;
 }

@@ -1,30 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react';
-import 'animate.css';
-import { IoClose, IoAlertCircleSharp } from 'react-icons/io5';
-import { FileInput, Button } from 'flowbite-react';
+import { Button, FileInput } from 'flowbite-react';
+import { IoAlertCircleSharp, IoClose } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 
-export default function WriteProgressInput({
-  closeModal: closeParentModal,
-  id,
-  image,
-  name,
-  role
-}) {
+export default function PortfolioInput({ closeModal: closeParentModal, id, image, name, role }) {
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [file, setFile] = useState('');
+  const [titleNotification, setTitleNotification] = useState('');
   const [contentNotification, setContentNotification] = useState('');
   const [fileNotification, setFileNotification] = useState('');
   const [modalStatus, setModalStatus] = useState('open');
-  const [file, setFile] = useState(null);
-  const inputRef = useRef(null);
+
+  const titleRef = useRef(null);
 
   const closeModal = () => {
     setModalStatus('closing');
   };
 
+  const onTitleChangeHandler = (e) => {
+    const newTitle = e.target.innerText;
+    setTitle(newTitle);
+    if (newTitle.trim() !== '') {
+      setTitleNotification('');
+    } else {
+      setTitleNotification('Title must not be empty or space');
+    }
+  };
+
   const onContentChangeHandler = (e) => {
-    setContent(e.target.innerText);
-    if (e.target.innerText.trim() !== '') {
+    const newContent = e.target.innerText;
+    setContent(newContent);
+
+    if (newContent.trim() !== '') {
       setContentNotification('');
     } else {
       setContentNotification('Content must not be empty or space');
@@ -32,18 +40,20 @@ export default function WriteProgressInput({
   };
 
   const onFileChangeHandler = (e) => {
-    setFile(e.target.files[0]);
-    if (!e.target.files[0]) {
-      setFileNotification('Please upload an image');
-    } else {
+    const newFile = e.target.files[0];
+    setFile(newFile);
+    if (newFile) {
       setFileNotification('');
+    } else {
+      setFileNotification('Please upload an image');
     }
   };
 
   const onShareClickHandler = () => {
     const fileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-    if (content.trim() === '') {
+    if (title.trim() === '' && content.trim() === '') {
+      setTitleNotification('Title must not be empty or space');
       setContentNotification('Content must not be empty or space');
     } else if (!file) {
       setFileNotification('Please upload an image');
@@ -64,8 +74,8 @@ export default function WriteProgressInput({
   }, [modalStatus, closeModal, closeParentModal]);
 
   useEffect(() => {
-    if (modalStatus === 'open' && inputRef.current) {
-      inputRef.current.focus();
+    if (modalStatus === 'open' && titleRef.current) {
+      titleRef.current.focus();
     }
   }, [modalStatus]);
 
@@ -97,20 +107,36 @@ export default function WriteProgressInput({
             <IoClose className="text-xl text-textSecondary" />
           </button>
         </div>
-        <div className="mt-5 mb-3">
-          <div
-            ref={inputRef}
-            className="p-5 overflow-auto focus:border-[#2d2d2d] focus:border rounded-lg outline-none h-52 bg-searchInput"
-            contentEditable
-            onInput={onContentChangeHandler}
-            data-placeholder="Write your progress here..."
-          />
-          {contentNotification && (
-            <div className="flex gap-1 mt-1">
-              <IoAlertCircleSharp className="text-sm text-red-500" />
-              <p className="text-xs font-medium text-red-400 ">{contentNotification}</p>
-            </div>
-          )}
+        <div className="flex flex-col gap-2 my-5">
+          <div>
+            <div
+              ref={titleRef}
+              className="h-12 p-3 px-5 overflow-auto border-none rounded-lg outline-none bg-searchInput"
+              contentEditable
+              onInput={onTitleChangeHandler}
+              data-placeholder="title..."
+            />
+            {titleNotification && (
+              <div className="flex gap-1 mt-1">
+                <IoAlertCircleSharp className="text-sm text-red-500" />
+                <p className="text-xs font-medium text-red-400 ">{titleNotification}</p>
+              </div>
+            )}
+          </div>
+          <div>
+            <div
+              className="p-5 overflow-auto border-none rounded-lg outline-none h-52 bg-searchInput"
+              contentEditable
+              onInput={onContentChangeHandler}
+              data-placeholder="description..."
+            />
+            {contentNotification && (
+              <div className="flex gap-1 mt-1">
+                <IoAlertCircleSharp className="text-sm text-red-500" />
+                <p className="text-xs font-medium text-red-400 ">{contentNotification}</p>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-col gap-2 mb-8">
           <div>
@@ -122,7 +148,7 @@ export default function WriteProgressInput({
             />
             <p className="mt-2 text-xs font-medium text-[#A9A9A9]">PNG, JPG, or JPEG</p>
             {fileNotification && (
-              <div className="flex gap-1 mt-1">
+              <div className="flex w-full gap-1 mt-1">
                 <IoAlertCircleSharp className="text-sm text-red-500" />
                 <p className="text-xs font-medium text-red-400 ">{fileNotification}</p>
               </div>
@@ -136,14 +162,14 @@ export default function WriteProgressInput({
           onClick={onShareClickHandler}
           className="font-semibold bg-fernGreen active:outline-none active:ring-none hover:bg-opacity-80"
         >
-          Share
+          Post
         </Button>
       </div>
     </section>
   );
 }
 
-WriteProgressInput.propTypes = {
+PortfolioInput.propTypes = {
   closeModal: PropTypes.func,
   id: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,

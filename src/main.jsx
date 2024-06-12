@@ -3,18 +3,18 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 import {
-	createBrowserRouter,
-	createRoutesFromChildren,
-	Route,
-	RouterProvider,
+  createBrowserRouter,
+  createRoutesFromChildren,
+  Route,
+  RouterProvider
 } from 'react-router-dom';
 
 const routerConfig = createBrowserRouter(
-	createRoutesFromChildren(<Route path='*' element={<App />} />),
+  createRoutesFromChildren(<Route path="*" element={<App />} />)
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<RouterProvider router={routerConfig} />
-	</React.StrictMode>,
+  <React.StrictMode>
+    <RouterProvider router={routerConfig} />
+  </React.StrictMode>
 );
