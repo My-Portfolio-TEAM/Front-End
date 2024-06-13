@@ -8,13 +8,15 @@ import avatarProfile from '../../assets/images/profile-pic (4).png';
 import PropTypes from 'prop-types';
 import { IoIosLogOut } from 'react-icons/io';
 import { useSelector } from 'react-redux';
+import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import Loading from '../Loading';
 export default function Index({
   openModalStudy,
   openModalPortfolio,
   isOpenModalStudyInput,
   isOpenModalPortfolioInput,
-  logout
+  logout,
+  myProfile,
 }) {
   const location = useLocation();
   const {status} = useSelector((state) => state.auth);
@@ -67,7 +69,7 @@ export default function Index({
             </Link>
             <button onClick={() => logout()} className="flex items-center gap-2 cursor-pointer">
               <img
-                src={avatarProfile}
+                src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile}
                 alt="avatar"
                 className="object-cover w-10 h-10 transition-all duration-200 ease-out rounded-full lg:w-7 lg:h-7 hover:opacity-80"
               />
@@ -127,4 +129,5 @@ Index.propTypes = {
   isOpenModalStudyInput: PropTypes.bool,
   isOpenModalPortfolioInput: PropTypes.bool,
   logout: PropTypes.func,
+  myProfile: PropTypes.instanceOf(Object),
 };

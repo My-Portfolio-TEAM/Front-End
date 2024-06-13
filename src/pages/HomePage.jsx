@@ -15,6 +15,7 @@ import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
+import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 
 export default function HomePage() {
   const [, setSelectedPost] = useState('All Posts');
@@ -23,6 +24,7 @@ export default function HomePage() {
 
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.auth);
+  const { myProfile, postCount, portfolioCount, loading } = useSelector((state) => state.myProfile);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,42 +75,6 @@ export default function HomePage() {
       role: 'Fullstack Developer',
       description:
         'Saya merasa sangat bersemangat dan penuh harapan sekarang ini. Setelah banyak belajar dan berlatih, saya akhirnya mendapatkan client freelance pertama saya.Ini adalah langkah besar bagi saya, sebuah validasi atas semua kerja keras yangtelah saya lakukan. Saya merasa sangat berterima kasih atas kesempatan ini danberjanji untuk memberikan yang terbaik. <br /><br/> Saya percaya bahwa dengan skill yangsaya miliki sekarang, saya dapat memberikan nilai yang besar bagi client saya.Saya telah menghabiskan banyak waktu untuk mempelajari dan memperdalam berbagai teknologi dan teknik pemrograman, dan sekarang saya siap untuk menerapkannya dalam proyek nyata. Namun, ini hanyalah awal. <br /> <br /> Saya berharap bahwa denganpengalaman ini, saya akan dapat menarik lebih banyak client di masa depan. Sayaberencana untuk terus belajar dan berkembang, sehingga saya dapat terusmeningkatkan layanan yang saya tawarkan. Saya sangat bersemangat tentang apayang akan datang dan saya tidak sabar untuk melihat di mana perjalanan ini akan membawa saya.'
-    }
-  ];
-
-  const portfolios = [
-    {
-      id: 1,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1476357471311-43c0db9fb2b4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-1',
-      description:
-        'This is my first portfolio This is my first portfolio This is my first portfolio This is my first portfolio This is my first portfolio This is my first portfolio'
-    },
-    {
-      id: 2,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1455849318743-b2233052fcff?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-2',
-      description: 'This is my second portfolio'
-    },
-    {
-      id: 3,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-3',
-      description: 'This is my third portfolio'
-    },
-    {
-      id: 4,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1501959181532-7d2a3c064642?q=80&w=1793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-4',
-      description: 'This is my fourth portfolio'
     }
   ];
 
@@ -163,6 +129,10 @@ export default function HomePage() {
     }
   });
 
+  useEffect(() => {
+    dispatch(myProfileAsync());
+  }, [])
+
   if (status === 'failed') {
     return <div>Error: {error}</div>;
   }
@@ -178,16 +148,15 @@ export default function HomePage() {
             openModalPortfolio={onClosePortfolioModal}
             isOpenModalPortfolioInput={openPortfolioModal}
             logout={handleLogout}
+            myProfile={myProfile}
           />
         </div>
         <div className="py-0 mb-20 sm:px-5 lg:container sm:py-5 lg:px-10 2xl:px-20">
           <div className="flex flex-col sm:flex-row">
             <div className="h-full sm:w-72 xl:w-70 sm:sticky top-28">
-              {profiles?.map((profile) => (
-                <Profile key={profile.id} {...profile} post={dummyPost} portfolio={portfolios}>
-                  My Profile
-                </Profile>
-              ))}
+              <Profile myProfile={myProfile} postCount={postCount} portfolioCount={portfolioCount} loading={loading}>
+                My Profile
+              </Profile>
             </div>
             <div className="flex flex-col gap-2 mx-0 sm:flex-1 sm:gap-2 sm:mx-4 lg:mx-5 2xl:mx-10">
               <Search />
@@ -208,13 +177,11 @@ export default function HomePage() {
           </div>
         </div>
         {openStudyModal &&
-          profiles?.map((profile) => (
-            <WriteProgressInputModal key={profile.id} closeModal={onCloseStudyModal} {...profile} />
-          ))}
+          <WriteProgressInputModal closeModal={onCloseStudyModal} myProfile={myProfile} />
+        }
         {openPortfolioModal &&
-          profiles?.map((profile) => (
-            <PortfolioInputModal key={profile.id} closeModal={onClosePortfolioModal} {...profile} />
-          ))}
+            <PortfolioInputModal myProfile={myProfile} closeModal={onClosePortfolioModal} />
+          }
         {isModalPostDetailOpen &&
           dummyPost.map((post) => <PostDetailModal key={post.id} {...postDetail} />)}
       </div>

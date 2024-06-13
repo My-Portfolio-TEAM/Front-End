@@ -11,6 +11,7 @@ import PortfolioDetailPage from './pages/PortfolioDetailPage';
 import EditHeadProfileModal from './components/Modal/EditHeadProfileModal';
 import { isPreloadAsync } from './states/isPreload/isPreloadThunk';
 import Loading from './components/Loading';
+import { myProfileAsync } from './states/myProfile/myProfileThunk';
 
 function App() {
   const dispatch = useDispatch();
