@@ -23,10 +23,15 @@ export const registerAsync = createAsyncThunk(
         password_confirmation
       });
       toast.success(response.data.message);
-      return response.data;
+      return { success: true, message: response.data.message};
     } catch (error) {
-      toast.error(error.response.data.message);
-      return rejectWithValue({ error: error.response.data.message });
+      if (error.message === 'Network Error') {
+        toast.error('Network Error: Please check your connection');
+        return rejectWithValue({ error: 'No internet connection' });
+      }
+      const errorMessage = error.response?.data?.message ?? 'The email has already been taken.';
+      toast.error(errorMessage);
+      return rejectWithValue({ success: false, error: errorMessage });
     }
   }
 );

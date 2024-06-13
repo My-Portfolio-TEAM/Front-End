@@ -17,7 +17,11 @@ const authUserAsync = createAsyncThunk(
       toast.success('Login successful');
       return response.data;
     } catch (error) {
-      const errorMessage = error.response?.data?.message ?? 'email or password is incorrect';
+      if (error.message === 'Network Error') {
+        toast.error('Network Error: Please check your connection');
+        return rejectWithValue({ error: 'No internet connection' });
+      }
+      const errorMessage = error.response?.data?.message ?? 'Email and password is incorrect';
       toast.error(errorMessage);
       return rejectWithValue({ error: errorMessage });
     }

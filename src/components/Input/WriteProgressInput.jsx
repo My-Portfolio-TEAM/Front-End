@@ -5,11 +5,7 @@ import { FileInput, Button } from 'flowbite-react';
 import PropTypes from 'prop-types';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 
-
-export default function WriteProgressInput({
-  closeModal: closeParentModal,
-  myProfile,
-}) {
+export default function WriteProgressInput({ closeModal: closeParentModal, myProfile }) {
   const [content, setContent] = useState('');
   const [contentNotification, setContentNotification] = useState('');
   const [fileNotification, setFileNotification] = useState('');
@@ -74,15 +70,26 @@ export default function WriteProgressInput({
         modalStatus === 'open'
           ? 'animate__fadeInDown animate__faster'
           : 'animate__fadeOutUp animate__faster'
-      }`}
-    >
+      }`}>
       <div className="p-5">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
-            <img src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile} alt="img post" className="object-cover w-10 h-10 rounded-full" />
+            <img
+              src={
+                myProfile === null || myProfile.photo_profile === null
+                  ? placeholderPhotoProfile
+                  : myProfile.photo_profile.photo_profile
+              }
+              alt="img post"
+              className="object-cover w-10 h-10 rounded-full"
+            />
             <div>
-              <p className="text-base font-medium text-textPrimary">{myProfile === null ? '' : myProfile.name}</p>
-              <p className="text-[10px] font-medium text-textSecondary">{myProfile === null || myProfile.biodata == null ? '' : myProfile.biodata.role}</p>
+              <p className="text-base font-medium text-textPrimary">
+                {myProfile === null ? '' : myProfile.name}
+              </p>
+              <p className="text-[10px] font-medium text-textSecondary">
+                {myProfile === null || myProfile.biodata == null ? '' : myProfile.biodata.role}
+              </p>
             </div>
           </div>
           <button
@@ -91,8 +98,7 @@ export default function WriteProgressInput({
             onClick={closeModal}
             onKeyDown={() => {}}
             tabIndex={0}
-            aria-label="Close"
-          >
+            aria-label="Close">
             <IoClose className="text-xl text-textSecondary" />
           </button>
         </div>
@@ -133,8 +139,8 @@ export default function WriteProgressInput({
           fullSized
           color=""
           onClick={onShareClickHandler}
-          className="font-semibold bg-fernGreen active:outline-none active:ring-none hover:bg-opacity-80"
-        >
+          className={`font-semibold bg-fernGreen active:outline-none active:ring-none hover:bg-opacity-80 ${!content || !file ? 'bg-opacity-100 hover:bg-opacity-100' : ''}`}
+          disabled={!content || !file}>
           Share
         </Button>
       </div>

@@ -3,13 +3,14 @@ import LoginInput from '../components/Input/LoginInput';
 import logoNoIcon from '../assets/icons/logoNoIcon.png';
 import tagline from '../assets/images/tagline.png';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authUserAsync } from '../states/authUser/authUserThunk';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.auth);
 
   const handleLogin = (e, { email, password }) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} />
+      <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} pauseOnFocusLoss={false} />
       <div className="w-screen h-screen auth-page">
         <div className="justify-between lg:flex">
           <div className="absolute flex-1 h-screen p-5 sm:p-10 lg:static lg:block">
@@ -28,14 +29,16 @@ export default function LoginPage() {
             </div>
           </div>
           <div className="flex flex-1 flex-col h-screen w-full lg:border-s lg:border-s-fernGreen bg-[#0F0F13] bg-opacity-85 rounded-none lg:rounded-s-[2rem] items-center justify-center">
-            <LoginInput login={handleLogin} />
-            <div className="absolute text-lg font-medium bottom-14 lg:bottom-14 text-chineseWhite">
-              New User?{' '}
-              <Link
-                to="/register"
-                className="font-bold cursor-pointer hover:underline text-fernGreen">
-                Register
-              </Link>
+            <div className="relative w-full sm:w-auto">
+              <LoginInput login={handleLogin} isLoading={status === 'loading'}/>
+              <div className="absolute p-5 text-sm font-medium sm:p-0 -bottom-10 text-chineseWhite">
+                New User?{' '}
+                <Link
+                  to="/register"
+                  className="font-bold cursor-pointer hover:underline text-fernGreen">
+                  Register
+                </Link>
+              </div>
             </div>
           </div>
         </div>

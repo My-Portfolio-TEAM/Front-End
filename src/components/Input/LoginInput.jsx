@@ -5,8 +5,9 @@ import { HiMail } from 'react-icons/hi';
 import { IoMdLock } from 'react-icons/io';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { Button } from 'flowbite-react';
+import { ImSpinner2 } from 'react-icons/im';
 
-export default function LoginInput({ login }) {
+export default function LoginInput({ login, isLoading }) {
   const [email, onEmailChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
   const [showPassword, setShowPassword] = useState(false);
@@ -69,9 +70,11 @@ export default function LoginInput({ login }) {
           color=""
           type="submit"
           size="sm"
-          className={`mt-5 bg-fernGreen text-textPrimary hover:opacity-90 ${!email || !password ? 'opacity-70 hover:opacity-70' : ''}`}
-          disabled={!email || !password}>
-          <span className="text-lg font-semibold">Login</span>
+          className={`mt-5 bg-fernGreen text-textPrimary hover:opacity-90 ${!email || !password || isLoading ? 'opacity-70 hover:opacity-70' : ''}`}
+          disabled={!email || !password || isLoading}>
+          <span className="gap-2 text-lg font-semibold ">
+            {isLoading ? <ImSpinner2 className="w-6 h-6 text-white animate-spin" /> : 'Login'}
+          </span>
         </Button>
       </form>
     </div>
@@ -79,5 +82,6 @@ export default function LoginInput({ login }) {
 }
 
 LoginInput.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool
 };

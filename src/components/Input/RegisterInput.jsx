@@ -6,8 +6,9 @@ import useInput from '../../hooks/useInput';
 import { Button } from 'flowbite-react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { FaUserAlt } from 'react-icons/fa';
+import { ImSpinner2 } from 'react-icons/im';
 
-export default function RegisterInput({ register }) {
+export default function RegisterInput({ register, isLoading }) {
   const [name, onNameChange] = useInput('');
   const [email, onEmailChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
@@ -129,9 +130,11 @@ export default function RegisterInput({ register }) {
           color=""
           type="submit"
           size="sm"
-          className={`mt-5 bg-fernGreen text-textPrimary hover:opacity-90 ${!name || !email || !password || !password_confirmation ? 'opacity-70 hover:opacity-70' : ''}`}
-          disabled={!name || !email || !password || !password_confirmation}>
-          <span className="text-lg font-semibold">Register</span>
+          className={`mt-5 bg-fernGreen text-textPrimary hover:opacity-90 ${!name || !email || !password || !password_confirmation || isLoading ? 'opacity-70 hover:opacity-70' : ''}`}
+          disabled={!name || !email || !password || !password_confirmation || isLoading}>
+          <span className="text-lg font-semibold">
+            {isLoading ? <ImSpinner2 className="w-6 h-6 text-white animate-spin" /> : 'Register'}
+          </span>
         </Button>
       </form>
     </div>
@@ -139,5 +142,6 @@ export default function RegisterInput({ register }) {
 }
 
 RegisterInput.propTypes = {
-  register: PropTypes.func.isRequired
+  register: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };
