@@ -29,12 +29,12 @@ function App() {
     <Routes>
       {!token ? (
         <>
-          <Route path="/" element={<LoginPage />} />
+          <Route index element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </>
       ) : (
-        <Route path="/" element={<HomePage />} />
+        <Route index element={<HomePage />} />
       )}
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -22,6 +22,7 @@ export const registerAsync = createAsyncThunk(
         password,
         password_confirmation
       });
+      toast.success(response.data.message);
       return response.data;
     } catch (error) {
       toast.error(error.response.data.message);

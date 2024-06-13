@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { IoIosLogOut } from 'react-icons/io';
 import { useSelector } from 'react-redux';
 import Loading from '../Loading';
-
 export default function Index({
   openModalStudy,
   openModalPortfolio,
