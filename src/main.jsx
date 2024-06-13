@@ -8,6 +8,8 @@ import {
   Route,
   RouterProvider
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './states/store.js';
 
 const routerConfig = createBrowserRouter(
   createRoutesFromChildren(<Route path="*" element={<App />} />)
@@ -15,6 +17,8 @@ const routerConfig = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={routerConfig} />
+    <Provider store={store}>
+      <RouterProvider router={routerConfig} />
+    </Provider>
   </React.StrictMode>
 );

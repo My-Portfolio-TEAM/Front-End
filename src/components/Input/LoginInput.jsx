@@ -18,7 +18,7 @@ export default function LoginInput({ login }) {
   return (
     <div className="flex flex-col gap-10 w-full p-5 sm:p-0 sm:w-[28rem]">
       <h1 className="text-3xl font-bold sm:text-4xl text-chineseWhite">Please Login !</h1>
-      <form className="flex flex-col gap-6">
+      <form onSubmit={(e) => login(e, { email, password })} className="flex flex-col gap-6">
         <div>
           <div className="mb-2">
             <label htmlFor="email" className="text-lg text-chineseWhite">
@@ -34,7 +34,6 @@ export default function LoginInput({ login }) {
               value={email}
               onChange={onEmailChange}
               placeholder="johndoe@example.com"
-              required
             />
           </div>
         </div>
@@ -53,13 +52,11 @@ export default function LoginInput({ login }) {
               value={password}
               onChange={onPasswordChange}
               placeholder="••••••"
-              required
             />
             <Button
               color=""
               onClick={toggleShowPassword}
-              className="absolute top-[2px] right-0 rounded-none ring-0 focus:ring-0"
-            >
+              className="absolute top-[2px] right-0 rounded-none ring-0 focus:ring-0">
               {showPassword ? (
                 <BsEye className="text-2xl text-eerieBlack" />
               ) : (
@@ -72,9 +69,8 @@ export default function LoginInput({ login }) {
           color=""
           type="submit"
           size="sm"
-          onClick={() => login({ email, password })}
-          className="mt-5 bg-fernGreen text-textPrimary hover:opacity-90"
-        >
+          className={`mt-5 bg-fernGreen text-textPrimary hover:opacity-90 ${!email || !password ? 'opacity-70 hover:opacity-70' : ''}`}
+          disabled={!email || !password}>
           <span className="text-lg font-semibold">Login</span>
         </Button>
       </form>

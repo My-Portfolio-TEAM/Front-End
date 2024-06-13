@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
@@ -7,20 +9,33 @@ import ProfilePage from './pages/ProfilePage';
 import SuggestedDeveloperPage from './pages/SuggestedDeveloperPage';
 import PortfolioDetailPage from './pages/PortfolioDetailPage';
 import EditHeadProfileModal from './components/Modal/EditHeadProfileModal';
+import { isPreloadAsync } from './states/isPreload/isPreloadThunk';
+import Loading from './components/Loading';
 
 function App() {
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const { isPreload } = useSelector((state) => state.isPreload);
+
+  useEffect(() => {
+    dispatch(isPreloadAsync());
+  }, [dispatch]);
+
+  if (isPreload) {
+    return null;
+  }
+
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/" element={<HomePage />} />
-      <Route path="/post-portfolio" element={<HomePage />} />
-      <Route path="/profile/:name" element={<ProfilePage />} />
-      <Route path="/suggested-developer/all" element={<SuggestedDeveloperPage />} />
-      <Route path="/api/posts/:id" element={<HomePage />} />
-      <Route path="/profile/api/post/:id" element={<ProfilePage />} />
-      <Route path="/portfolio-detail/:id" element={<PortfolioDetailPage />} />
-      <Route path="/modal" element={<EditHeadProfileModal />} />
+      {!token ? (
+        <>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </>
+      ) : (
+        <Route path="/" element={<HomePage />} />
+      )}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

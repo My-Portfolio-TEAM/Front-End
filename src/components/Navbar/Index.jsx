@@ -7,14 +7,22 @@ import { MdOutlinePostAdd } from 'react-icons/md';
 import avatarProfile from '../../assets/images/profile-pic (4).png';
 import PropTypes from 'prop-types';
 import { IoIosLogOut } from 'react-icons/io';
+import { useSelector } from 'react-redux';
+import Loading from '../Loading';
 
 export default function Index({
   openModalStudy,
   openModalPortfolio,
   isOpenModalStudyInput,
-  isOpenModalPortfolioInput
+  isOpenModalPortfolioInput,
+  logout
 }) {
   const location = useLocation();
+  const {status} = useSelector((state) => state.auth);
+
+  if (status === 'loading') {
+    return <Loading />
+  }
 
   return (
     <>
@@ -58,7 +66,7 @@ export default function Index({
               <MdOutlinePostAdd title="Post Portfolio" className="text-4xl lg:text-2xl" />
               <p className="hidden mt-[2px] lg:block">Post Portfolio</p>
             </Link>
-            <Link to="/" className="flex items-center gap-2 cursor-pointer">
+            <button onClick={() => logout()} className="flex items-center gap-2 cursor-pointer">
               <img
                 src={avatarProfile}
                 alt="avatar"
@@ -66,7 +74,7 @@ export default function Index({
               />
               <p className="text-xl lg:text-base">Me</p>
               <IoIosLogOut className="text-xl" />
-            </Link>
+            </button>
           </nav>
         </div>
       </header>
@@ -103,9 +111,11 @@ export default function Index({
             to="/">
             <MdOutlinePostAdd title="Post Portfolio" className="text-3xl" />
           </Link>
-          <div className="flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80">
+          <button
+            onClick={logout}
+            className="flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80">
             <img src={avatarProfile} alt="avatar" className="object-cover rounded-full w-7 h-7" />
-          </div>
+          </button>
         </div>
       </footer>
     </>
@@ -116,5 +126,6 @@ Index.propTypes = {
   openModalStudy: PropTypes.func,
   openModalPortfolio: PropTypes.func,
   isOpenModalStudyInput: PropTypes.bool,
-  isOpenModalPortfolioInput: PropTypes.bool
+  isOpenModalPortfolioInput: PropTypes.bool,
+  logout: PropTypes.func,
 };

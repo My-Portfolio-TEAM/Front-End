@@ -12,11 +12,17 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PostDetailModal from '../components/Modal/PostDetailModal';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../states/authUser/authUserThunk';
+import Loading from '../components/Loading';
 
 export default function HomePage() {
   const [, setSelectedPost] = useState('All Posts');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);
+
+  const dispatch = useDispatch();
+  const { status, error } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -116,6 +122,10 @@ export default function HomePage() {
     }
   ];
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   const onCloseStudyModal = () => {
     setOpenStudyModal(!openStudyModal);
   };
@@ -153,53 +163,61 @@ export default function HomePage() {
     }
   });
 
+  if (status === 'failed') {
+    return <div>Error: {error}</div>;
+  }
+
   return (
-    <div className="bg-chineseBlack">
-      <div className="sticky top-0 z-50">
-        <Navbar
-          openModalStudy={onCloseStudyModal}
-          isOpenModalStudyInput={openStudyModal}
-          openModalPortfolio={onClosePortfolioModal}
-          isOpenModalPortfolioInput={openPortfolioModal}
-        />
-      </div>
-      <div className="py-0 mb-20 sm:px-5 lg:container sm:py-5 lg:px-10 2xl:px-20">
-        <div className="flex flex-col sm:flex-row">
-          <div className="h-full sm:w-72 xl:w-70 sm:sticky top-28">
-            {profiles?.map((profile) => (
-              <Profile key={profile.id} {...profile} post={dummyPost} portfolio={portfolios}>
-                My Profile
-              </Profile>
-            ))}
-          </div>
-          <div className="flex flex-col gap-2 mx-0 sm:flex-1 sm:gap-2 sm:mx-4 lg:mx-5 2xl:mx-10">
-            <Search />
-            <SeePost postType={setSelectedPost} />
-            {dummyPost.map((post) => (
-              <Post
-                key={post.id}
-                page={'/'}
-                {...post}
-                handleClick={() => handlePostClick(post.id)}
-              />
-            ))}
-          </div>
-          <div className="flex-col hidden gap-5 xl:flex">
-            <SuggestedDeveloper />
-            <MostLikedPost />
+    <>
+      {status === 'loading' && <Loading />}
+      <div className="bg-chineseBlack">
+        <div className="sticky top-0 z-10">
+          <Navbar
+            openModalStudy={onCloseStudyModal}
+            isOpenModalStudyInput={openStudyModal}
+            openModalPortfolio={onClosePortfolioModal}
+            isOpenModalPortfolioInput={openPortfolioModal}
+            logout={handleLogout}
+          />
+        </div>
+        <div className="py-0 mb-20 sm:px-5 lg:container sm:py-5 lg:px-10 2xl:px-20">
+          <div className="flex flex-col sm:flex-row">
+            <div className="h-full sm:w-72 xl:w-70 sm:sticky top-28">
+              {profiles?.map((profile) => (
+                <Profile key={profile.id} {...profile} post={dummyPost} portfolio={portfolios}>
+                  My Profile
+                </Profile>
+              ))}
+            </div>
+            <div className="flex flex-col gap-2 mx-0 sm:flex-1 sm:gap-2 sm:mx-4 lg:mx-5 2xl:mx-10">
+              <Search />
+              <SeePost postType={setSelectedPost} />
+              {dummyPost.map((post) => (
+                <Post
+                  key={post.id}
+                  page={'/'}
+                  {...post}
+                  handleClick={() => handlePostClick(post.id)}
+                />
+              ))}
+            </div>
+            <div className="flex-col hidden gap-5 xl:flex">
+              <SuggestedDeveloper />
+              <MostLikedPost />
+            </div>
           </div>
         </div>
+        {openStudyModal &&
+          profiles?.map((profile) => (
+            <WriteProgressInputModal key={profile.id} closeModal={onCloseStudyModal} {...profile} />
+          ))}
+        {openPortfolioModal &&
+          profiles?.map((profile) => (
+            <PortfolioInputModal key={profile.id} closeModal={onClosePortfolioModal} {...profile} />
+          ))}
+        {isModalPostDetailOpen &&
+          dummyPost.map((post) => <PostDetailModal key={post.id} {...postDetail} />)}
       </div>
-      {openStudyModal &&
-        profiles?.map((profile) => (
-          <WriteProgressInputModal key={profile.id} closeModal={onCloseStudyModal} {...profile} />
-        ))}
-      {openPortfolioModal &&
-        profiles?.map((profile) => (
-          <PortfolioInputModal key={profile.id} closeModal={onClosePortfolioModal} {...profile} />
-        ))}
-      {isModalPostDetailOpen &&
-        dummyPost.map((post) => <PostDetailModal key={post.id} {...postDetail} />)}
-    </div>
+    </>
   );
 }
