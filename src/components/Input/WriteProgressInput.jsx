@@ -3,13 +3,12 @@ import 'animate.css';
 import { IoClose, IoAlertCircleSharp } from 'react-icons/io5';
 import { FileInput, Button } from 'flowbite-react';
 import PropTypes from 'prop-types';
+import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
+
 
 export default function WriteProgressInput({
   closeModal: closeParentModal,
-  id,
-  image,
-  name,
-  role
+  myProfile,
 }) {
   const [content, setContent] = useState('');
   const [contentNotification, setContentNotification] = useState('');
@@ -80,10 +79,10 @@ export default function WriteProgressInput({
       <div className="p-5">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
-            <img src={image} alt="img post" className="object-cover w-10 h-10 rounded-full" />
+            <img src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile} alt="img post" className="object-cover w-10 h-10 rounded-full" />
             <div>
-              <p className="text-base font-medium text-textPrimary">{name}</p>
-              <p className="text-[10px] font-medium text-textSecondary">{role}</p>
+              <p className="text-base font-medium text-textPrimary">{myProfile === null ? '' : myProfile.name}</p>
+              <p className="text-[10px] font-medium text-textSecondary">{myProfile === null || myProfile.biodata == null ? '' : myProfile.biodata.role}</p>
             </div>
           </div>
           <button
@@ -145,8 +144,5 @@ export default function WriteProgressInput({
 
 WriteProgressInput.propTypes = {
   closeModal: PropTypes.func,
-  id: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired
+  myProfile: PropTypes.instanceOf(Object)
 };
