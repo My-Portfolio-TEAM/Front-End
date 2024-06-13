@@ -35,7 +35,10 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
         </>
       ) : (
-        <Route index element={<HomePage />} />
+        <>
+          <Route index element={<HomePage />} />
+          <Route path="/profile/myProfile" element={<ProfilePage />} />
+        </>
       )}
       <Route path="*" element={<NotFound />} />
     </Routes>

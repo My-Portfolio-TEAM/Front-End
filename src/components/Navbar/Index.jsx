@@ -4,7 +4,6 @@ import logoBrand from '../../assets/icons/logoBrand.png';
 import { FiHome } from 'react-icons/fi';
 import { TfiPencilAlt } from 'react-icons/tfi';
 import { MdOutlinePostAdd } from 'react-icons/md';
-import avatarProfile from '../../assets/images/profile-pic (4).png';
 import PropTypes from 'prop-types';
 import { IoIosLogOut } from 'react-icons/io';
 import { useSelector } from 'react-redux';
@@ -115,7 +114,7 @@ export default function Index({
           <button
             onClick={logout}
             className="flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80">
-            <img src={avatarProfile} alt="avatar" className="object-cover rounded-full w-7 h-7" />
+            <img src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile} alt="avatar" className="object-cover rounded-full w-7 h-7" />
           </button>
         </div>
       </footer>
