@@ -1,36 +1,10 @@
 import React, { useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import EditSkillsProfileModal from '../Modal/EditSkillsProfileModal';
+import PropTypes from 'prop-types';
 
-export default function SkillsProfile() {
+export default function SkillsProfile({ myProfile, skills }) {
   const [showModal, setShowModal] = useState(false);
-
-  const skills = [
-    {
-      id: 1,
-      category: 'Programming'
-    },
-    {
-      id: 2,
-      category: 'web design'
-    },
-    {
-      id: 3,
-      category: 'figma'
-    },
-    {
-      id: 4,
-      category: 'reactjs'
-    },
-    {
-      id: 5,
-      category: 'wireframing'
-    },
-    {
-      id: 6,
-      category: 'prototyping'
-    }
-  ];
 
   return (
     <section className="px-3 py-5 my-3 sm:px-5 sm:my-5 lg:px-10 bg-eerieBlack sm:rounded-xl">
@@ -44,24 +18,33 @@ export default function SkillsProfile() {
         </button>
       </div>
       <div className="flex flex-wrap gap-2 py-5 cursor-default">
-        {skills?.map((skill) => (
-          <span
-            key={skill.id}
+       {
+        myProfile ===  null || myProfile.biodata === null || myProfile.biodata.skills.length < 1 ? 'You don\'t have any skills, please add your skills' :
+        myProfile.biodata.skills.map((skill, key) => {
+          return (
+            <span
+            key={key}
             className="sm:px-5 sm:py-2 px-3 py-1 text-sm font-medium lowercase rounded-full bg-[#424242] text-textSecondary"
           >
-            {skill.category}
+            {skill}
           </span>
-        ))}
+          )
+        })
+       }
       </div>
       {showModal &&
-        skills.map((skill) => (
-          <EditSkillsProfileModal
-            key={skill.id}
-            openModal={showModal}
-            setOpenModal={setShowModal}
-            skills={skill.category}
-          />
-        ))}
+        <EditSkillsProfileModal
+          openModal={showModal}
+          setOpenModal={setShowModal}
+          skills={skills}
+          myProfile={myProfile}
+        />
+      }
     </section>
   );
 }
+
+SkillsProfile.propTypes = {
+  myProfile: PropTypes.instanceOf(Object),
+  skills: PropTypes.instanceOf(Array),
+};

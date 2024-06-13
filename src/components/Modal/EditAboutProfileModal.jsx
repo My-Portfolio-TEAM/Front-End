@@ -1,8 +1,58 @@
-import React from 'react';
-import { Button, FileInput, Label, Modal, TextInput } from 'flowbite-react';
+import React, { useState } from 'react';
+import { Button, Label, Modal, Textarea, TextInput } from 'flowbite-react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { createMyBiodataAsync, updateMyBiodataAsync } from '../../states/myProfile/myProfileThunk';
 
-export default function EditAboutProfileModal({ openModal, setOpenModal }) {
+export default function EditAboutProfileModal({ myProfile, openModal, setOpenModal }) {
+  const dispatch = useDispatch();
+  const [name, setName] = useState(myProfile.name);
+
+  const [role, setRole] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.role === null ? '' : myProfile.biodata.role);
+
+  const [headline, setHeadline] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.headline === null ? '' : myProfile.biodata.headline);
+
+  const [location, setLocation] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.location === null ? '' : myProfile.biodata.location);
+
+  const [about, setAbout] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.about === null ? null : myProfile.biodata.about);
+
+  const [linkedIn, setLinkedIn] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.linkedIn === null ? null : myProfile.biodata.linkedIn);
+
+  const [website, setWebsite] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.website === null ? null : myProfile.biodata.website);
+
+  const [skills, setSkills] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.skills.length < 1 ? [] : myProfile.biodata.skills);
+  
+
+  const onSubmitBiodata = () => {
+    dispatch(createMyBiodataAsync({
+      name,
+      role,
+      headline,
+      location,
+      about,
+      linkedIn,
+      website,
+      skills,
+      email: myProfile.email,
+      setOpenModal
+    }));
+  }
+
+  const onEditBiodata = () => {
+    dispatch(updateMyBiodataAsync({
+      name,
+      role,
+      headline,
+      location,
+      about,
+      linkedIn,
+      website,
+      skills,
+      email: myProfile.email,
+      id: myProfile.biodata.id,
+      setOpenModal
+    }));
+  }
   return (
     <section>
       <Modal
@@ -18,45 +68,39 @@ export default function EditAboutProfileModal({ openModal, setOpenModal }) {
           <div className="p-6 space-y-6 bg-eerieBlack">
             <div>
               <div className="mb-2 blocks">
-                <Label className="text-textPrimary" htmlFor="photo" value="Your Photo" />
+                <Label className="text-textPrimary" htmlFor="about" value="Description" />
               </div>
-              <FileInput id="photo" onChange={(e) => handleFileChange(e)} />
-            </div>
-            <div>
-              <div className="mb-2 blocks">
-                <Label className="text-textPrimary" htmlFor="name" value="Description" />
-              </div>
-              <div
+              <Textarea
                 contentEditable
-                id="name"
+                id="about"
                 type="text"
-                //value={description}
-                className="overflow-auto rounded-lg h-36"
-                onChange={(e) => setName(e.target.value)}
+                value={about}
+                className="overflow-auto rounded-lg h-56"
+                onChange={(e) => setAbout(e.target.value)}
                 required
               />
             </div>
             <div>
               <div className="mb-2 blocks">
-                <Label className="text-textPrimary" htmlFor="role" value="URL LinkedIn" />
+                <Label className="text-textPrimary" htmlFor="linkkedin" value="URL LinkedIn" />
               </div>
               <TextInput
-                id="role"
-                type="text"
-                //value={role}
-                onChange={(e) => setRole(e.target.value)}
+                id="linkkedin"
+                type="url"
+                value={linkedIn}
+                onChange={(e) => setLinkedIn(e.target.value)}
                 required
               />
             </div>
             <div>
               <div className="mb-2 blocks">
-                <Label className="text-textPrimary" htmlFor="headline" value="URL Github" />
+                <Label className="text-textPrimary" htmlFor="github" value="URL Github" />
               </div>
               <TextInput
-                id="headline"
-                type="text"
-                //value={headline}
-                onChange={(e) => setHeadline(e.target.value)}
+                id="github"
+                type="url"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
                 required
               />
             </div>
@@ -67,7 +111,7 @@ export default function EditAboutProfileModal({ openModal, setOpenModal }) {
             color=""
             size="sm"
             className="w-20 rounded-full bg-ufoGreen bg-opacity-80 text-textPrimary hover:bg-opacity-70"
-            onClick={() => setOpenModal(false)}
+            onClick={myProfile.biodata === null ? onSubmitBiodata : onEditBiodata}
           >
             Save
           </Button>
@@ -79,5 +123,6 @@ export default function EditAboutProfileModal({ openModal, setOpenModal }) {
 
 EditAboutProfileModal.propTypes = {
   openModal: PropTypes.bool,
-  setOpenModal: PropTypes.func
+  setOpenModal: PropTypes.func,
+  myProfile: PropTypes.instanceOf(Object),
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Index';
 import HeadProfile from '../components/Card/HeadProfile';
 import AboutProfile from '../components/Card/AboutProfile';
@@ -7,21 +7,30 @@ import Post from '../components/Card/Post';
 import Portfolio from '../components/Card/Portfolio';
 import avatarProfile from '../assets/images/profile-pic (4).png';
 import bgCardProfile from '../assets/images/bgCardProfile.jpg';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PostDetailModal from '../components/Modal/PostDetailModal';
+import { myProfileAsync } from '../states/myProfile/myProfileThunk';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../states/authUser/authUserThunk';
+import { ToastContainer } from 'react-toastify';
+import { skillsAsync } from '../states/skills/skillsThunk';
 
 export default function ProfilePage() {
+  const { myProfile } = useSelector((state) => state.myProfile);
+  const { skills } = useSelector((state) => state.skills);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const navigate = useNavigate();
   const location = useLocation();
-
-  const { name } = useParams();
-  const decodeName = decodeURIComponent(name);
+  const dispatch = useDispatch();
 
   const isModalPostDetailOpen = location.pathname.startsWith('/profile/api/post');
 
   const handlePostClick = (postId) => {
     navigate(`/profile/api/post/${postId}`);
+  };
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate('/');
   };
 
   const portfolios = [
@@ -60,62 +69,6 @@ export default function ProfilePage() {
     }
   ];
 
-  const userProfiles = [
-    {
-      id: 1,
-      name: 'Rudiger Burkins',
-      role: 'Fullstack Developer',
-      image:
-        'https://images.unsplash.com/photo-1601233749202-95d04d5b3c00?q=80&w=2038&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      background:
-        'https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      headline: 'UI/UX Designer | Front-End Developer | Back-End Developer',
-      location: 'Jakarta, Indonesia'
-    },
-    {
-      id: 2,
-      name: 'Bennie Roh',
-      role: 'Project Manager',
-      image:
-        'https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      background:
-        'https://images.unsplash.com/photo-1567360425618-1594206637d2?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      headline: 'Project Manager | Scrum Master | Product Owner',
-      location: 'New York, Unites States'
-    },
-    {
-      id: 3,
-      name: 'Patin Beteta',
-      role: 'Front-End Developer',
-      image:
-        'https://images.unsplash.com/photo-1564636866914-cf34c1b21880?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      background:
-        'https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      headline: 'Security Engineer | Front-End Developer | Back-End Developer',
-      location: 'Depok, Indonesia'
-    },
-    {
-      id: 4,
-      name: 'Ham Drenner',
-      role: 'Web Developer',
-      image:
-        'https://images.unsplash.com/photo-1442458370899-ae20e367c5d8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      background:
-        'https://images.unsplash.com/photo-1561212044-bac5ef688a07?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      headline: 'Web Developer Enthusiast',
-      location: 'Bukit Tinggi, Malaysia'
-    },
-    {
-      id: 5,
-      name: 'Muhamad Alif Pahreza',
-      role: 'Software Engineer',
-      image: avatarProfile,
-      background: bgCardProfile,
-      headline: 'Software Engineer at Tokopedia, Google since 2018',
-      location: 'Banjarmasin, Indonesia'
-    }
-  ];
-
   const dummyPost = [
     {
       id: 1,
@@ -141,73 +94,71 @@ export default function ProfilePage() {
     }
   ];
 
+  useEffect(() => {
+    dispatch(myProfileAsync());
+    dispatch(skillsAsync());
+  }, [])
+
   return (
-    <section className="text-textPrimary">
-      <div className="sticky top-0 z-50">
-        <Navbar />
-      </div>
-      <div className="container sm:mt-5 lg:px-52">
-        {userProfiles
-          .filter((user) => user.name === decodeName)
-          .map((user) => (
-            <HeadProfile key={user.id} {...user} />
-          ))}
-        <AboutProfile />
-        <SkillsProfile />
-        <div className="flex flex-col px-3 mt-10 mb-40 sm:px-5 lg:px-10">
-          <div className="flex gap-10">
-            <button
-              type="button"
-              className="p-0 border-gray-500 rounded-s-xl"
-              onClick={() => setActiveSession('Portfolio')}
-            >
-              <h1
-                className={`text-xl font-medium cursor-pointer ${
-                  activeSession === 'Portfolio' ? 'border-b-2 border-textSecondary' : ''
-                }`}
+    <>
+      <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} /><section className="text-textPrimary">
+        <div className="sticky top-0 z-50">
+          <Navbar myProfile={myProfile} logout={handleLogout} />
+        </div>
+        <div className="container sm:mt-5 lg:px-52">
+          <HeadProfile myProfile={myProfile} />
+          <AboutProfile myProfile={myProfile} />
+          <SkillsProfile myProfile={myProfile} skills={skills} />
+          <div className="flex flex-col px-3 mt-10 mb-40 sm:px-5 lg:px-10">
+            <div className="flex gap-10">
+              <button
+                type="button"
+                className="p-0 border-gray-500 rounded-s-xl"
+                onClick={() => setActiveSession('Portfolio')}
               >
-                Portfolio
-              </h1>
-            </button>
-            <button
-              type="button"
-              className="p-0 rounded-e-xl"
-              onClick={() => setActiveSession('Posts')}
-            >
-              <h1
-                className={`text-xl font-medium cursor-pointer ${
-                  activeSession === 'Posts' ? 'border-b-2 border-textSecondary' : ''
-                }`}
+                <h1
+                  className={`text-xl font-medium cursor-pointer ${activeSession === 'Portfolio' ? 'border-b-2 border-textSecondary' : ''}`}
+                >
+                  Portfolio
+                </h1>
+              </button>
+              <button
+                type="button"
+                className="p-0 rounded-e-xl"
+                onClick={() => setActiveSession('Posts')}
               >
-                Posts
-              </h1>
-            </button>
-          </div>
-          <div className="my-5">
-            {activeSession === 'Posts' ? (
-              <div className="grid w-full gap-5 sm:grid-cols-2">
-                {dummyPost.map((post) => (
-                  <Post
-                    key={post.id}
-                    {...post}
-                    id={post.id}
-                    handleClick={handlePostClick}
-                    page={'/profile'}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                {portfolios.map((portfolio) => (
-                  <Portfolio key={portfolio.id} {...portfolio} />
-                ))}
-              </div>
-            )}
+                <h1
+                  className={`text-xl font-medium cursor-pointer ${activeSession === 'Posts' ? 'border-b-2 border-textSecondary' : ''}`}
+                >
+                  Posts
+                </h1>
+              </button>
+            </div>
+            <div className="my-5">
+              {activeSession === 'Posts' ? (
+                <div className="grid w-full gap-5 sm:grid-cols-2">
+                  {dummyPost.map((post) => (
+                    <Post
+                      key={post.id}
+                      {...post}
+                      id={post.id}
+                      handleClick={handlePostClick}
+                      page={'/profile'} />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {portfolios.map((portfolio) => (
+                    <Portfolio key={portfolio.id} {...portfolio} />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      {isModalPostDetailOpen &&
-        dummyPost.map((post) => <PostDetailModal key={post.id} {...post} />)}
-    </section>
+        {isModalPostDetailOpen &&
+          dummyPost.map((post) => <PostDetailModal key={post.id} {...post} />)}
+      </section>
+    </>
   );
 }
