@@ -79,7 +79,7 @@ export default function HomePage() {
   ];
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    dispatch(logoutUser({navigate}));
   };
 
   const onCloseStudyModal = () => {
