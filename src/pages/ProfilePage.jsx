@@ -159,6 +159,7 @@ export default function ProfilePage() {
                       key={post.id}
                       {...post}
                       id={post.id}
+                      myProfile={myProfile}
                       handleClick={handlePostClick}
                       page={"/profile"}
                     />

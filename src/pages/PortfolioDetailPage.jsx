@@ -1,5 +1,4 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar/Index';
 import React, { useEffect } from 'react';
 import { CgArrowLeft } from 'react-icons/cg';
 import { FaExternalLinkAlt } from 'react-icons/fa';
@@ -10,7 +9,6 @@ import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 
 export default function PortfolioDetailPage() {
   const { portfolios } = useSelector((state) => state.portfolios);
-  const { myProfile } = useSelector((state) => state.myProfile);
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,7 +63,7 @@ export default function PortfolioDetailPage() {
               </div>
               <div className="flex flex-col w-full h-full gap-3 text-textPrimary">
                 <h1 className="text-2xl font-semibold">{portfolio.title}</h1>
-                <p className="text-base leading-relaxed text-chineseWhite whitespace-pre-wrap">
+                <p className="text-base leading-relaxed whitespace-pre-wrap text-chineseWhite">
                   {portfolio.description}
                 </p>
               </div>
