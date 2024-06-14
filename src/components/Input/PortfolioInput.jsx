@@ -85,8 +85,8 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
       setFileNotification('Only JPG, JPEG, and PNG files are allowed!');
     } else {
       await dispatch(createPortfolioAsync({ title, description: content, image: file, link }));
-      await dispatch(portfoliosAsync());
-      await dispatch(myProfileAsync())
+      dispatch(portfoliosAsync());
+      dispatch(myProfileAsync())
       closeModal();
     }
   };

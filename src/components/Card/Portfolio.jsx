@@ -2,9 +2,10 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useExpand } from '../../hooks/useExpand';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export default function Portfolio({ id, title, image, description, url }) {
-  const { isExpanded, isTruncated, textRef } = useExpand();
+export default function Portfolio({ id, title, image, description, link }) {
+  const { isExpanded, textRef } = useExpand();
   const navigate = useNavigate();
 
   const handleToggleExpanded = () => {
@@ -13,14 +14,13 @@ export default function Portfolio({ id, title, image, description, url }) {
 
   return (
     <section className="relative block h-60 group sm:h-80 lg:h-72">
-      <Link to={url}>
+      <Link to={link} target="_blank">
         <img
           alt="images/portfolio"
           src={image}
-          className="absolute inset-0 object-cover w-full h-full transition-all duration-500 rounded-md group-hover:opacity-50"
+          className="absolute inset-0 object-cover w-full h-full transition-all duration-500 rounded-md opacity-70 group-hover:opacity-50"
         />
-
-        <div className="relative p-4 sm:p-6 lg:p-8">
+        <div className="relative p-4 sm:p-6 ">
           <p className="text-lg font-bold text-textPrimary sm:text-xl">{title}</p>
         </div>
       </Link>
@@ -30,18 +30,14 @@ export default function Portfolio({ id, title, image, description, url }) {
             ref={textRef}
             className={`text-sm text-[#eaeaea] leading-5 px-2 sm:px-0 ${
               isExpanded ? '' : 'line-clamp-2'
-            }`}
-          >
+            }`}>
             {description}
           </p>
-          {isTruncated && (
-            <button
-              onClick={handleToggleExpanded}
-              className="text-[#A9A9A9] text-sm px-2 sm:px-0 font-normal"
-            >
-              {isExpanded ? 'See less' : '...See more'}
-            </button>
-          )}
+          <button
+            onClick={handleToggleExpanded}
+            className="text-[#A9A9A9] text-sm px-2 sm:px-0 font-normal">
+            ...See detail
+          </button>
         </div>
       </div>
     </section>
@@ -53,5 +49,5 @@ Portfolio.propTypes = {
   title: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
+  link: PropTypes.string.isRequired
 };

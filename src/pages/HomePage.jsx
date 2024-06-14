@@ -78,16 +78,6 @@ export default function HomePage() {
     }
   ];
 
-  const profiles = [
-    {
-      id: 1,
-      name: 'Muhamad Alif Pahreza',
-      role: 'Software Engineer',
-      image: avatarProfile,
-      background: bgCardProfile
-    }
-  ];
-
   const handleLogout = () => {
     dispatch(logoutUser());
   };
@@ -120,18 +110,8 @@ export default function HomePage() {
   }, [openStudyModal, openPortfolioModal]);
 
   useEffect(() => {
-    if (sessionStorage.getItem('openModalStudy') === 'true') {
-      setOpenStudyModal(true);
-      sessionStorage.removeItem('openModalStudy');
-    } else if (sessionStorage.getItem('openModalPortfolio') === 'true') {
-      setOpenPortfolioModal(true);
-      sessionStorage.removeItem('openModalPortfolio');
-    }
-  });
-
-  useEffect(() => {
     dispatch(myProfileAsync());
-  }, [])
+  }, []);
 
   if (status === 'failed') {
     return <div>Error: {error}</div>;
@@ -154,7 +134,11 @@ export default function HomePage() {
         <div className="py-0 mb-20 sm:px-5 lg:container sm:py-5 lg:px-10 2xl:px-20">
           <div className="flex flex-col sm:flex-row">
             <div className="h-full sm:w-72 xl:w-70 sm:sticky top-28">
-              <Profile myProfile={myProfile} postCount={postCount} portfolioCount={portfolioCount} loading={loading}>
+              <Profile
+                myProfile={myProfile}
+                postCount={postCount}
+                portfolioCount={portfolioCount}
+                loading={loading}>
                 My Profile
               </Profile>
             </div>
@@ -176,12 +160,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {openStudyModal &&
+        {openStudyModal && (
           <WriteProgressInputModal closeModal={onCloseStudyModal} myProfile={myProfile} />
-        }
-        {openPortfolioModal &&
-            <PortfolioInputModal myProfile={myProfile} closeModal={onClosePortfolioModal} />
-          }
+        )}
+        {openPortfolioModal && (
+          <PortfolioInputModal myProfile={myProfile} closeModal={onClosePortfolioModal} />
+        )}
         {isModalPostDetailOpen &&
           dummyPost.map((post) => <PostDetailModal key={post.id} {...postDetail} />)}
       </div>

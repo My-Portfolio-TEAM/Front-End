@@ -15,13 +15,13 @@ export default function Index({
   isOpenModalStudyInput,
   isOpenModalPortfolioInput,
   logout,
-  myProfile,
+  myProfile
 }) {
   const location = useLocation();
-  const {status} = useSelector((state) => state.auth);
+  const { status } = useSelector((state) => state.auth);
 
   if (status === 'loading') {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -42,33 +42,33 @@ export default function Index({
               <FiHome title="Home" className="text-3xl lg:text-xl" />
               <p className="hidden lg:block">Home</p>
             </Link>
-            <Link
+            <button
               className={`flex gap-3 text-base font-semibold transition-all duration-200 ease-out hover:opacity-80 ${
                 isOpenModalStudyInput ? 'active' : ''
               }`}
               onClick={() => {
-                sessionStorage.setItem('openModalStudy', 'true');
                 openModalStudy(true);
-              }}
-              to="/">
+              }}>
               <TfiPencilAlt title="Write Progress" className="text-2xl lg:text-xl" />
               <p className="hidden lg:block">Write Progress</p>
-            </Link>
-            <Link
+            </button>
+            <button
               className={`flex gap-2 font-semibold transition-all duration-200 ease-out hover:opacity-80 ${
                 isOpenModalPortfolioInput ? 'active' : ''
               }`}
               onClick={() => {
-                sessionStorage.setItem('openModalPortfolio', 'true');
                 openModalPortfolio(true);
-              }}
-              to="/">
+              }}>
               <MdOutlinePostAdd title="Post Portfolio" className="text-4xl lg:text-2xl" />
               <p className="hidden mt-[2px] lg:block">Post Portfolio</p>
-            </Link>
+            </button>
             <button onClick={() => logout()} className="flex items-center gap-2 cursor-pointer">
               <img
-                src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile}
+                src={
+                  myProfile === null || myProfile.photo_profile === null
+                    ? placeholderPhotoProfile
+                    : myProfile.photo_profile.photo_profile
+                }
                 alt="avatar"
                 className="object-cover w-10 h-10 transition-all duration-200 ease-out rounded-full lg:w-7 lg:h-7 hover:opacity-80"
               />
@@ -89,32 +89,37 @@ export default function Index({
             to="/">
             <FiHome title="Home" className="text-2xl" />
           </Link>
-          <Link
+          <button
             className={`flex gap-3 text-base font-semibold transition-all duration-200 ease-out hover:opacity-80 ${
               isOpenModalStudyInput ? 'active' : ''
             }`}
             onClick={() => {
-              sessionStorage.setItem('openModalStudy', 'true');
               openModalStudy(true);
-            }}
-            to="/">
+            }}>
             <TfiPencilAlt title="Write Progress" className="text-2xl lg:text-xl" />
-          </Link>
-          <Link
+          </button>
+          <button
             className={`transition-all duration-200 ease-out hover:opacity-80 ${
               isOpenModalPortfolioInput ? 'active' : ''
             }`}
             onClick={() => {
-              sessionStorage.setItem('openModalPortfolio', 'true');
               openModalPortfolio(true);
             }}
-            to="/">
+            >
             <MdOutlinePostAdd title="Post Portfolio" className="text-3xl" />
-          </Link>
+          </button>
           <button
             onClick={logout}
             className="flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80">
-            <img src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile} alt="avatar" className="object-cover rounded-full w-7 h-7" />
+            <img
+              src={
+                myProfile === null || myProfile.photo_profile === null
+                  ? placeholderPhotoProfile
+                  : myProfile.photo_profile.photo_profile
+              }
+              alt="avatar"
+              className="object-cover rounded-full w-7 h-7"
+            />
           </button>
         </div>
       </footer>
@@ -128,5 +133,5 @@ Index.propTypes = {
   isOpenModalStudyInput: PropTypes.bool,
   isOpenModalPortfolioInput: PropTypes.bool,
   logout: PropTypes.func,
-  myProfile: PropTypes.instanceOf(Object),
+  myProfile: PropTypes.instanceOf(Object)
 };

@@ -15,12 +15,18 @@ import { logoutUser } from '../states/authUser/authUserThunk';
 import { ToastContainer } from 'react-toastify';
 import { skillsAsync } from '../states/skills/skillsThunk';
 import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
+import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
+import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
 
 export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
   const { skills } = useSelector((state) => state.skills);
   const { portfolios } = useSelector((state) => state.portfolios);
   const [activeSession, setActiveSession] = useState('Portfolio');
+
+  const [openStudyModal, setOpenStudyModal] = useState(false);
+  const [openPortfolioModal, setOpenPortfolioModal] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -30,9 +36,18 @@ export default function ProfilePage() {
   const handlePostClick = (postId) => {
     navigate(`/profile/api/post/${postId}`);
   };
+
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate('/');
+  };
+
+  const onCloseStudyModal = () => {
+    setOpenStudyModal(!openStudyModal);
+  };
+
+  const onClosePortfolioModal = () => {
+    setOpenPortfolioModal(!openPortfolioModal);
   };
 
   const dummyPost = [
@@ -61,17 +76,36 @@ export default function ProfilePage() {
   ];
 
   useEffect(() => {
+    if (openStudyModal || openPortfolioModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [openStudyModal, openPortfolioModal]);
+
+  useEffect(() => {
     dispatch(myProfileAsync());
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} />
       <section className="text-textPrimary">
         <div className="sticky top-0 z-50">
-          <Navbar myProfile={myProfile} logout={handleLogout} />
+          <Navbar
+            myProfile={myProfile}
+            openModalStudy={onCloseStudyModal}
+            isOpenModalStudyInput={openStudyModal}
+            openModalPortfolio={onClosePortfolioModal}
+            isOpenModalPortfolioInput={openPortfolioModal}
+            logout={handleLogout}
+          />
         </div>
         <div className="container sm:mt-5 lg:px-52">
           <HeadProfile myProfile={myProfile} />
@@ -121,6 +155,12 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+        {openStudyModal && (
+          <WriteProgressInputModal closeModal={onCloseStudyModal} myProfile={myProfile} />
+        )}
+        {openPortfolioModal && (
+          <PortfolioInputModal myProfile={myProfile} closeModal={onClosePortfolioModal} />
+        )}
         {isModalPostDetailOpen &&
           dummyPost.map((post) => <PostDetailModal key={post.id} {...post} />)}
       </section>
