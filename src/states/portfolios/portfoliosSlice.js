@@ -17,6 +17,7 @@ const portfolioSlice = createSlice({
       .addCase(portfoliosAsync.pending, (state) => {
         state.status = 'loading';
         state.loading = true;
+        state.portfolios = [];
       })
       .addCase(portfoliosAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';

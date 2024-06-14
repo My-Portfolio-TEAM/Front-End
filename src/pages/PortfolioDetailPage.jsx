@@ -65,7 +65,7 @@ export default function PortfolioDetailPage() {
               </div>
               <div className="flex flex-col w-full h-full gap-3 text-textPrimary">
                 <h1 className="text-2xl font-semibold">{portfolio.title}</h1>
-                <p className="text-base leading-relaxed text-chineseWhite">
+                <p className="text-base leading-relaxed text-chineseWhite whitespace-pre-wrap">
                   {portfolio.description}
                 </p>
               </div>
