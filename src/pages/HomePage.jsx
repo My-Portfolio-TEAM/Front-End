@@ -33,7 +33,7 @@ export default function HomePage() {
   const { id } = useParams();
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    dispatch(logoutUser({navigate}));
   };
 
   const onCloseStudyModal = () => {
