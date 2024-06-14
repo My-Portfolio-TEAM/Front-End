@@ -40,8 +40,7 @@ export default function ProfilePage() {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/");
+    dispatch(logoutUser({navigate}));
   };
 
   const onCloseStudyModal = () => {
