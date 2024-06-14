@@ -3,6 +3,11 @@ import { Button, FileInput } from 'flowbite-react';
 import { IoAlertCircleSharp, IoClose } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
+import { useDispatch } from 'react-redux';
+import { createPortfolioAsync, portfoliosAsync } from '../../states/portfolios/portfoliosThunk';
+import { useNavigate } from 'react-router-dom';
+import { isPreloadAsync } from '../../states/isPreload/isPreloadThunk';
+import { myProfileAsync } from '../../states/myProfile/myProfileThunk';
 
 export default function PortfolioInput({ closeModal: closeParentModal, myProfile }) {
   const [title, setTitle] = useState('');
@@ -15,6 +20,8 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
   const [fileNotification, setFileNotification] = useState('');
   const [modalStatus, setModalStatus] = useState('open');
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const titleRef = useRef(null);
 
   const closeModal = () => {
@@ -24,7 +31,7 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
   const onTitleChangeHandler = (e) => {
     const newTitle = e.target.innerText;
     setTitle(newTitle);
-    
+
     if (newTitle.trim() !== '') {
       setTitleNotification('');
     } else {
@@ -65,7 +72,7 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
     }
   };
 
-  const onShareClickHandler = () => {
+  const onShareClickHandler = async () => {
     const fileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
     if (title.trim() === '' && content.trim() === '' && link.trim() === '') {
@@ -77,7 +84,10 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
     } else if (!fileTypes.includes(file.type)) {
       setFileNotification('Only JPG, JPEG, and PNG files are allowed!');
     } else {
-      setModalStatus('closing');
+      await dispatch(createPortfolioAsync({ title, description: content, image: file, link }));
+      await dispatch(portfoliosAsync());
+      await dispatch(myProfileAsync())
+      closeModal();
     }
   };
 
@@ -141,7 +151,7 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
               className="h-12 p-3 px-5 overflow-auto border-none rounded-lg outline-none bg-searchInput"
               contentEditable
               onInput={onTitleChangeHandler}
-              data-placeholder="title..."
+              data-placeholder="Title..."
             />
             {titleNotification && (
               <div className="flex gap-1 mt-1">
@@ -155,7 +165,7 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
               className="h-12 p-3 px-5 overflow-auto border-none rounded-lg outline-none bg-searchInput"
               contentEditable
               onInput={onLinkChangeHandler}
-              data-placeholder="link or url..."
+              data-placeholder="Link or URL..."
             />
             {linkNotification && (
               <div className="flex gap-1 mt-1">
@@ -169,7 +179,7 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
               className="p-5 overflow-auto border-none rounded-lg outline-none h-52 bg-searchInput"
               contentEditable
               onInput={onContentChangeHandler}
-              data-placeholder="description..."
+              data-placeholder="Description..."
             />
             {contentNotification && (
               <div className="flex gap-1 mt-1">
@@ -197,13 +207,12 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
           </div>
         </div>
         <Button
-          type="button"
+          type="submit"
           fullSized
           color=""
-          onClick={onShareClickHandler}
+          onClick={() => onShareClickHandler()}
           className={`font-semibold bg-fernGreen active:outline-none active:ring-none hover:bg-opacity-80 ${!title && !link && !content && !file ? 'bg-opacity-100 hover:bg-opacity-100' : ''}`}
-          disabled={!title || !link || !content || !file}
-          >
+          disabled={!title || !link || !content || !file}>
           Post
         </Button>
       </div>
