@@ -14,10 +14,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../states/authUser/authUserThunk';
 import { ToastContainer } from 'react-toastify';
 import { skillsAsync } from '../states/skills/skillsThunk';
+import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 
 export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
   const { skills } = useSelector((state) => state.skills);
+  const { portfolios } = useSelector((state) => state.portfolios);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,42 +34,6 @@ export default function ProfilePage() {
     dispatch(logoutUser());
     navigate('/');
   };
-
-  const portfolios = [
-    {
-      id: 1,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1476357471311-43c0db9fb2b4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-1',
-      description:
-        'Selamat datang di portfolio saya! Nama saya John Doe, dan saya adalah seorang Desainer Grafis berpengalaman dalam desain digital dan cetak. Di sini, Anda akan menemukan berbagai proyek yang telah saya kerjakan, mencerminkan kemampuan dan dedikasi saya terhadap kualitas serta inovasi. Salah satu proyek terbaru yang saya kerjakan adalah Rebranding Acme Corp. Proyek ini melibatkan pembaruan identitas merek perusahaan, termasuk logo, palet warna, dan desain materi pemasaran. Dalam proyek ini, saya berperan sebagai Desainer Utama di mana saya menggunakan keterampilan desain grafis dan komunikasi visual untuk memberikan kontribusi yang signifikan. Hasil akhirnya sangat memuaskan dengan peningkatan visibilitas merek dan respons positif dari klien.'
-    },
-    {
-      id: 2,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1455849318743-b2233052fcff?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-2',
-      description: 'This is my second portfolio'
-    },
-    {
-      id: 3,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-3',
-      description: 'This is my third portfolio'
-    },
-    {
-      id: 4,
-      url: 'https://unsplash.com/s/photos/portfolio',
-      image:
-        'https://images.unsplash.com/photo-1501959181532-7d2a3c064642?q=80&w=1793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      title: 'My portfolio-4',
-      description: 'This is my fourth portfolio'
-    }
-  ];
 
   const dummyPost = [
     {
@@ -96,12 +62,14 @@ export default function ProfilePage() {
 
   useEffect(() => {
     dispatch(myProfileAsync());
+    dispatch(portfoliosAsync());
     dispatch(skillsAsync());
-  }, [])
+  }, []);
 
   return (
     <>
-      <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} /><section className="text-textPrimary">
+      <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} />
+      <section className="text-textPrimary">
         <div className="sticky top-0 z-50">
           <Navbar myProfile={myProfile} logout={handleLogout} />
         </div>
@@ -114,22 +82,18 @@ export default function ProfilePage() {
               <button
                 type="button"
                 className="p-0 border-gray-500 rounded-s-xl"
-                onClick={() => setActiveSession('Portfolio')}
-              >
+                onClick={() => setActiveSession('Portfolio')}>
                 <h1
-                  className={`text-xl font-medium cursor-pointer ${activeSession === 'Portfolio' ? 'border-b-2 border-textSecondary' : ''}`}
-                >
+                  className={`text-xl font-medium cursor-pointer ${activeSession === 'Portfolio' ? 'border-b-2 border-textSecondary' : ''}`}>
                   Portfolio
                 </h1>
               </button>
               <button
                 type="button"
                 className="p-0 rounded-e-xl"
-                onClick={() => setActiveSession('Posts')}
-              >
+                onClick={() => setActiveSession('Posts')}>
                 <h1
-                  className={`text-xl font-medium cursor-pointer ${activeSession === 'Posts' ? 'border-b-2 border-textSecondary' : ''}`}
-                >
+                  className={`text-xl font-medium cursor-pointer ${activeSession === 'Posts' ? 'border-b-2 border-textSecondary' : ''}`}>
                   Posts
                 </h1>
               </button>
@@ -143,7 +107,8 @@ export default function ProfilePage() {
                       {...post}
                       id={post.id}
                       handleClick={handlePostClick}
-                      page={'/profile'} />
+                      page={'/profile'}
+                    />
                   ))}
                 </div>
               ) : (
