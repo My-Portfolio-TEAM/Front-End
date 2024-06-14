@@ -42,12 +42,13 @@ const checkAuthStatus = createAsyncThunk('auth/checkStatus', async (_, { rejectW
   }
 });
 
-const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { dispatch, rejectWithValue }) => {
+const logoutUser = createAsyncThunk('auth/logoutUser', async ({navigate}, { dispatch, rejectWithValue }) => {
   dispatch(showLoading());
   try {
     await axiosInstance.post('/api/logout');
     localStorage.removeItem('access_token');
     toast.success('Logout successful');
+    navigate('/');
     return { token: null };
   } catch (error) {
     toast.error(error.message);
