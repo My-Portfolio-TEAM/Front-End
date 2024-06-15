@@ -5,8 +5,6 @@ import AboutProfile from "../components/Card/AboutProfile";
 import SkillsProfile from "../components/Card/SkillsProfile";
 import Post from "../components/Card/Post";
 import Portfolio from "../components/Card/Portfolio";
-import avatarProfile from "../assets/images/profile-pic (4).png";
-import bgCardProfile from "../assets/images/bgCardProfile.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostDetailModal from "../components/Modal/PostDetailModal";
 import { myProfileAsync } from "../states/myProfile/myProfileThunk";
