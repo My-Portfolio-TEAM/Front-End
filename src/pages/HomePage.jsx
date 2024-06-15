@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
-import { postsAsync } from '../states/posts/postThunk';
+import { getDetailPostAsync, postsAsync } from '../states/posts/postThunk';
 
 export default function HomePage() {
   const [, setSelectedPost] = useState('All Posts');
@@ -33,7 +33,7 @@ export default function HomePage() {
   const { id } = useParams();
 
   const handleLogout = () => {
-    dispatch(logoutUser({navigate}));
+    dispatch(logoutUser({ navigate }));
   };
 
   const onCloseStudyModal = () => {
@@ -97,15 +97,16 @@ export default function HomePage() {
             <div className="flex flex-col gap-2 mx-0 sm:flex-1 sm:gap-2 sm:mx-4 lg:mx-5 2xl:mx-10">
               <Search />
               <SeePost postType={setSelectedPost} />
-              {posts.map((post) => (
-                <Post
-                  key={post.id}
-                  page={'/'}
-                  {...post}
-                  myProfile={myProfile}
-                  handleClick={() => handlePostClick(post.id)}
-                />
-              ))}
+              {posts.length > 0
+                ? posts.map((post) => (
+                    <Post
+                      key={post.id}
+                      page={'/'}
+                      {...post}
+                      handleClick={() => handlePostClick(post.id)}
+                    />
+                  ))
+                : ''}
             </div>
             <div className="flex-col hidden gap-5 xl:flex">
               <SuggestedDeveloper />
@@ -119,11 +120,10 @@ export default function HomePage() {
         {openPortfolioModal && (
           <PortfolioInputModal myProfile={myProfile} closeModal={onClosePortfolioModal} />
         )}
-        {isModalPostDetailOpen && posts > 0
-          ? posts
-              .filter((post) => post.id === +id)
-              .map((post) => <PostDetailModal key={post.id} {...post} />)
-          : ''}
+        {isModalPostDetailOpen &&
+          posts
+            .filter((post) => post.id === +id)
+            .map((post) => <PostDetailModal key={post.id} {...post} />)}
       </div>
     </>
   );

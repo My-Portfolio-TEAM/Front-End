@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useExpand } from '../../hooks/useExpand';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 export default function Portfolio({ id, title, image, description, link }) {
   const { isExpanded, textRef } = useExpand();

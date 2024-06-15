@@ -86,6 +86,14 @@ export default function HeadProfile({ myProfile }) {
             >
               <MdModeEdit className=" text-slate-300 " />
             </label>
+          <div className="relative rounded-full h-36 w-52 -top-20 sm:-top-14">
+          <img
+            src={myProfile === null || myProfile.photo_profile === null ? placeholderPhotoProfile : myProfile.photo_profile.photo_profile}
+            alt="avatar profile"
+            className="relative object-cover border-4 rounded-full h-36 w-36 border-eerieBlack"
+          />
+         <label htmlFor='image' className="hover:cursor-pointer"> <MdModeEdit className="absolute text-3xl font-bold right-5 bottom-3 text-slate-200 " /></label>
+         <input type="file" hidden accept='image/*' id="image" onChange={myProfile === null || myProfile.photo_profile === null || myProfile.photo_profile.photo_profile === null ? onSubmitPhotoProfileChange : onEditPhotoProfileChange } />
           </div>
           <div className="flex flex-col w-full gap-2 -mt-20 sm:mt-2">
             <div className="flex flex-col">

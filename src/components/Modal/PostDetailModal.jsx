@@ -4,14 +4,24 @@ import { IoClose } from 'react-icons/io5';
 import PostDetail from '../Card/PostDetail';
 import PropTypes from 'prop-types';
 
-export default function PostDetailModal({ id, image, avatar, name, role, description }) {
+export default function PostDetailModal({
+  id,
+  name,
+  image,
+  content,
+  user,
+  created_at,
+  updated_at,
+  comments,
+  post_up_votes
+}) {
   const [previousUrl, setPreviousUrl] = useState('/');
   const navigate = useNavigate();
   const location = useLocation();
 
   const closeModal = () => {
     if (previousUrl.includes('/profile')) {
-      navigate(`/profile/${name}`);
+      navigate(`/profile/myProfile`);
     } else {
       navigate('/');
     }
@@ -33,10 +43,12 @@ export default function PostDetailModal({ id, image, avatar, name, role, descrip
       <PostDetail
         id={id}
         image={image}
-        avatar={avatar}
-        name={name}
-        role={role}
-        description={description}
+        content={content}
+        user={user}
+        created_at={created_at}
+        updated_at={updated_at}
+        comments={comments}
+        post_up_votes={post_up_votes}
       />
       <button className="absolute right-5 top-5" onClick={closeModal}>
         <IoClose className="text-3xl text-textSecondary" />
@@ -47,9 +59,12 @@ export default function PostDetailModal({ id, image, avatar, name, role, descrip
 
 PostDetailModal.propTypes = {
   id: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  image: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+  created_at: PropTypes.string.isRequired,
+  updated_at: PropTypes.string.isRequired,
+  comments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired
 };
