@@ -4,6 +4,9 @@ import { IoClose, IoAlertCircleSharp } from 'react-icons/io5';
 import { FileInput, Button } from 'flowbite-react';
 import PropTypes from 'prop-types';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
+import { useDispatch } from 'react-redux';
+import { createPostAsync, postsAsync } from '../../states/posts/postThunk';
+import { myProfileAsync } from '../../states/myProfile/myProfileThunk';
 
 export default function WriteProgressInput({ closeModal: closeParentModal, myProfile }) {
   const [content, setContent] = useState('');
@@ -11,6 +14,8 @@ export default function WriteProgressInput({ closeModal: closeParentModal, myPro
   const [fileNotification, setFileNotification] = useState('');
   const [modalStatus, setModalStatus] = useState('open');
   const [file, setFile] = useState(null);
+
+  const dispatch = useDispatch();
   const inputRef = useRef(null);
 
   const closeModal = () => {
@@ -35,7 +40,7 @@ export default function WriteProgressInput({ closeModal: closeParentModal, myPro
     }
   };
 
-  const onShareClickHandler = () => {
+  const onShareClickHandler = async () => {
     const fileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
     if (content.trim() === '') {
@@ -45,7 +50,10 @@ export default function WriteProgressInput({ closeModal: closeParentModal, myPro
     } else if (!fileTypes.includes(file.type)) {
       setFileNotification('Only JPG, JPEG, and PNG files are allowed');
     } else {
-      setModalStatus('closing');
+      await dispatch(createPostAsync({ content, image: file }));
+      dispatch(postsAsync());
+      dispatch(myProfileAsync());
+      closeModal();
     }
   };
 

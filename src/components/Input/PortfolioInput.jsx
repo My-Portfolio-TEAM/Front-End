@@ -21,7 +21,6 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
   const [modalStatus, setModalStatus] = useState('open');
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const titleRef = useRef(null);
 
   const closeModal = () => {

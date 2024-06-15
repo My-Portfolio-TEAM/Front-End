@@ -1,5 +1,5 @@
 import React from 'react';
-import iconLoveFilled from '../../assets/icons/iconLove-filled.png';
+import iconLove from '../../assets/icons/iconLove-outlined.png';
 import iconComment from '../../assets/icons/messages.png';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +32,7 @@ export default function Post({
   };
 
   return (
-    <section className="w-auto py-3 rounded-md sm:p-4 bg-eerieBlack sm:rounded-xl">
+    <section className="w-auto py-3 rounded-md h-fit sm:p-4 bg-eerieBlack sm:rounded-xl">
       <div className="flex items-center gap-3 px-2 sm:px-0">
         <img
           src={
@@ -79,7 +79,7 @@ export default function Post({
       <div className="flex gap-5 px-2 my-2 sm:px-0 text-textPrimary">
         <div className="flex items-center gap-1">
           <button>
-            <img src={iconLoveFilled} alt="" className="w-7" />
+            <img src={iconLove} alt="" className="w-7" />
           </button>
           <p>{post_up_votes.length}</p>
         </div>
@@ -94,13 +94,10 @@ export default function Post({
 
 Post.propTypes = {
   id: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  photo_profile: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  image: PropTypes.string,
   content: PropTypes.string.isRequired,
   page: PropTypes.string.isRequired,
-  post_up_votes: PropTypes.number.isRequired,
+  post_up_votes: PropTypes.instanceOf(Array).isRequired,
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
