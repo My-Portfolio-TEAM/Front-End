@@ -3,8 +3,9 @@ import placeholderPhotoProfile from "../../assets/images/placeholderPhotoProfile
 
 export default function SuggestedDeveloperLoading() {
   return Array.from({ length: 5 }, (_, index) => {
-    return (<>
-      <div className="flex flex-col gap-2" key={index}>
+    return (
+    <div key={index}>
+      <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
@@ -21,6 +22,7 @@ export default function SuggestedDeveloperLoading() {
         </div>
         <div className="w-full h-[2px] bg-[#262626]" />
       </div>
-    </>)
+    </div>
+    )
   });
 }

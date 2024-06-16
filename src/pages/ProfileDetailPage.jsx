@@ -17,6 +17,7 @@ import HeadUserProfile from '../components/Card/HeadUserProfile';
 import AboutUserProfile from '../components/Card/AboutUserProfile';
 import SkillsUserProfile from '../components/Card/SkillsUserProfile';
 import PortfolioUser from '../components/Card/PortfolioUser';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function ProfileDetailPage() {
   const { myProfile } = useSelector((state) => state.myProfile);
@@ -67,7 +68,9 @@ export default function ProfileDetailPage() {
     dispatch(getUserIdAsync({id}));
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
+    dispatch(setPageToOne());
     dispatch(getMyPostAsync());
+    dispatch(searchPost(''));
   }, [dispatch]);
   return (
     <>

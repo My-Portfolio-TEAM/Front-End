@@ -6,9 +6,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerAsync } from '../states/register/registerThunk';
 import { ToastContainer } from 'react-toastify';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
+  
   const navigate = useNavigate();
   const { loading, status } = useSelector((state) => state.register);
 
@@ -22,6 +24,11 @@ export default function RegisterPage() {
       navigate('/');
     }
   }, [status, navigate]);
+
+  useEffect(() => {
+    dispatch(setPageToOne());
+    dispatch(searchPost(''));
+  }, [])
 
   return (
     <>

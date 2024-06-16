@@ -3,8 +3,16 @@ import Animation404 from '../utils/NotFound.json';
 import Lottie from 'lottie-react';
 import { Button } from 'flowbite-react';
 import { Link } from 'react-router-dom';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
+import { useDispatch } from 'react-redux';
 
 export default function NotFound() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(searchPost(''));
+    dispatch(setPageToOne());
+
+  }, [])
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-2">
       <Lottie animationData={Animation404} className="w-96 sm:w-[40rem]" />

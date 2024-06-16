@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dropdown } from 'flowbite-react';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { searchPost, setPageToOne, setSelectedPost } from '../../states/posts/postsSlice';
 
-export default function SeePost({ postType }) {
-  const [selectedPost, setSelectedPost] = useState('All Posts');
-
-  const selectPost = (post) => {
-    setSelectedPost(post);
-    postType(post);
-  };
+export default function SeePost() {
+  const {selectedPost} = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
 
   return (
     <Dropdown
@@ -24,7 +21,11 @@ export default function SeePost({ postType }) {
     >
       <Dropdown.Item
         style={{ backgroundColor: '#1A1C20' }}
-        onClick={() => selectPost('All Posts')}
+        onClick={() => {
+          dispatch(setSelectedPost('All Posts'))
+          dispatch(setPageToOne());
+          dispatch(searchPost(''));
+        }}
         className={`text-textPrimary ${
           selectedPost === 'All Posts' ? 'border-s border-ufoGreen' : ''
         }`}
@@ -33,7 +34,13 @@ export default function SeePost({ postType }) {
       </Dropdown.Item>
       <Dropdown.Item
         style={{ backgroundColor: '#1A1C20' }}
-        onClick={() => selectPost('My Posts')}
+        onClick={() => {
+          dispatch(setSelectedPost('My Posts'))
+          dispatch(setPageToOne());
+          dispatch(searchPost(''));
+
+
+        }}
         className={`text-textPrimary ${
           selectedPost === 'My Posts' ? 'border-s border-ufoGreen' : ''
         }`}
@@ -43,7 +50,3 @@ export default function SeePost({ postType }) {
     </Dropdown>
   );
 }
-
-SeePost.propTypes = {
-  postType: PropTypes.func.isRequired
-};

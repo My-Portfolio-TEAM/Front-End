@@ -16,6 +16,7 @@ import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
 import { getMyPostAsync } from '../states/posts/postThunk';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
@@ -66,7 +67,9 @@ export default function ProfilePage() {
     dispatch(myProfileAsync());
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
+    dispatch(setPageToOne());
     dispatch(getMyPostAsync());
+    dispatch(searchPost(''));
   }, [dispatch]);
 
   return (

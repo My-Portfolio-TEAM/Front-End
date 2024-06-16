@@ -54,7 +54,7 @@ export default function Profile({
 }
 
 Profile.propTypes = {
-  myProfile: PropTypes.instanceOf(Object).isRequired,
+  myProfile: PropTypes.instanceOf(Object),
   children: PropTypes.string.isRequired,
   loading: PropTypes.bool,
 };
