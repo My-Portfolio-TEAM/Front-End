@@ -5,6 +5,7 @@ import { HiArrowNarrowRight } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import SuggestedDeveloperLoading from '../Loading/SuggestedDeveloperLoading';
+import PropTypes from 'prop-types';
 
 export default function SuggestedDeveloper() {
   const userProfiles = [
@@ -56,7 +57,7 @@ export default function SuggestedDeveloper() {
                   <p className="text-xs font-medium text-textSecondary">{userProfile.biodata === null || userProfile.biodata.role === null ? '' : userProfile.biodata.role}</p>
                 </div>
               </div>
-              <Link to={`/profile/${userProfile.id === myProfile.id ? 'myProfile' : userProfile.name}`}>
+              <Link to={`/profile/${userProfile.id === myProfile.id ? 'myProfile' : userProfile.id}`}>
                 <Button
                   color=""
                   size="xs"
@@ -80,3 +81,8 @@ export default function SuggestedDeveloper() {
     </section>
   );
 }
+
+
+SuggestedDeveloper.propTypes = {
+  user: PropTypes.instanceOf(Object),
+};

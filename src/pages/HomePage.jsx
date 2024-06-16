@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
-import { getDetailPostAsync, postsAsync } from '../states/posts/postThunk';
+import { getDetailPostAsync, mostLikedPostsAsync, postsAsync } from '../states/posts/postThunk';
 import { getAllUsersAsync, getMostActiveUsers, getUserIdAsync } from '../states/user/userThunk';
 
 export default function HomePage() {
@@ -67,6 +67,7 @@ export default function HomePage() {
     window.scrollTo(0, 0);
     dispatch(myProfileAsync());
     dispatch(postsAsync());
+    dispatch(mostLikedPostsAsync());
     dispatch(getMostActiveUsers());
   }, []);
 

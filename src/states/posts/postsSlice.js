@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createPostAsync, getDetailPostAsync, getMyPostAsync, postsAsync } from './postThunk';
+import { createPostAsync, getDetailPostAsync, getMyPostAsync, mostLikedPostsAsync, postsAsync } from './postThunk';
 
 const initialState = {
   posts: [],
+  mostLikedPosts: [],
   status: 'idle',
   error: null,
   loading: false
@@ -26,6 +27,22 @@ const postsSlice = createSlice({
         state.posts = action.payload.data;
       })
       .addCase(postsAsync.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(mostLikedPostsAsync.pending, (state) => {
+        state.status = 'loading';
+        state.loading = true;
+        state.mostLikedPosts = [];
+      })
+      .addCase(mostLikedPostsAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.error = null;
+        state.mostLikedPosts = action.payload.data;
+      })
+      .addCase(mostLikedPostsAsync.rejected, (state, action) => {
         state.status = 'rejected';
         state.loading = false;
         state.error = action.payload;

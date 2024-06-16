@@ -19,6 +19,22 @@ export const postsAsync = createAsyncThunk(
   }
 );
 
+export const mostLikedPostsAsync = createAsyncThunk(
+  'auth/most-liked-posts',
+  async (_, { dispatch, rejectWithValue }) => {
+    dispatch(showLoading());
+    try {
+      const response = await axiosInstance.get('/api/most-liked-posts');
+      return response.data.data;
+    } catch (error) {
+      toast.error(error.response.data);
+      return rejectWithValue({ error: error.response.data });
+    } finally {
+      dispatch(hideLoading());
+    }
+  }
+);
+
 export const getMyPostAsync = createAsyncThunk(
   'auth/getMyPost',
   async (_, { dispatch, rejectWithValue }) => {
