@@ -62,6 +62,7 @@ export default function ProfilePage() {
   }, [openStudyModal, openPortfolioModal]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(myProfileAsync());
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());

@@ -14,6 +14,7 @@ export default function PortfolioDetailPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(myProfileAsync());
     dispatch(portfoliosAsync());
     dispatch(portfolioDetailAsync(id));
