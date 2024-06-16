@@ -25,7 +25,7 @@ export const getUserIdAsync = createAsyncThunk(
       const response = await axiosInstance.get(`/api/users/${id}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue({ error: error.message });
+      return rejectWithValue({ error: error.response.data });
     } finally {
       dispatch(hideLoading());
     }

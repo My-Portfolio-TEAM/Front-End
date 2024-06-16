@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllUsersAsync, getMostActiveUsers, getUserIdAsync } from './userThunk';
+import { logoutUser } from '../authUser/authUserThunk';
 
 const initialState = {
-  user: {},
+  user: null,
   users: [],
   mostActiveUsers: [],
   status: 'idle',
   error: null,
-  loading: false
+  loading: true
 };
 
 const userSlice = createSlice({
@@ -26,6 +27,8 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.users = action.payload.data;
+        state.user = null;
+        state.mostActiveUsers = [];
       })
       .addCase(getAllUsersAsync.rejected, (state, action) => {
         state.status = 'rejected';
@@ -35,13 +38,15 @@ const userSlice = createSlice({
       .addCase(getUserIdAsync.pending, (state) => {
         state.status = 'loading';
         state.loading = true;
-        state.user = {};
+        state.user = null;
       })
       .addCase(getUserIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
         state.error = null;
         state.user = action.payload.data;
+        state.users = [];
+        state.mostActiveUsers = [];
       })
       .addCase(getUserIdAsync.rejected, (state, action) => {
         state.status = 'rejected';
@@ -57,11 +62,21 @@ const userSlice = createSlice({
         state.status = 'succeeded';
         state.loading = false;
         state.mostActiveUsers = action.payload.data.data;
+        state.users = [];
+        state.user = null;
       })
       .addCase(getMostActiveUsers.rejected, (state, action) => {
         state.status = 'rejected';
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.loading = true;
+        state.status = 'idle';
+        state.error = null;
+        state.users = [];
+        state.user = null;
+        state.mostActiveUsers = [];
       })
       
       

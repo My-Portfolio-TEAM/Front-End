@@ -30,7 +30,7 @@ const dispatch = useDispatch();
                 userProfile={userProfile}
                 useBorder="border rounded-xl border-[#464646]"
               >
-                See Profile
+                {userProfile.id === myProfile.id ? 'My Profile' : 'See Profile'}
               </MostActiveUsersProfile>
             )) : ''
           

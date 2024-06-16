@@ -10,6 +10,7 @@ import PortfolioDetailPage from './pages/PortfolioDetailPage';
 import SuggestedDeveloperPage from './pages/SuggestedDeveloperPage';
 import { isPreloadAsync } from './states/isPreload/isPreloadThunk';
 import SuggestedDeveloperLoading from './components/Loading/SuggestedDeveloperLoading';
+import ProfileDetailPage from './pages/ProfileDetailPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/api/posts/:id" element={<HomePage />} />
           <Route path="/profile/myProfile" element={<ProfilePage />} />
-          <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/profile/:id" element={<ProfileDetailPage />} />
           <Route path="/profile/api/post/:id" element={<ProfilePage />} />
           <Route path="/portfolio-detail/:id" element={<PortfolioDetailPage />} />
           <Route path="/most-active-users/all" element={<SuggestedDeveloperPage />} />

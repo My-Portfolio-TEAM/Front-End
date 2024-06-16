@@ -40,7 +40,7 @@ export default function MostActiveUsersProfile({
             {userProfile.portfolios_count} <span className="text-[#A9A9A9]">Portfolio</span>
           </p>
         </div>
-        <Link to={`/profile/${userProfile.id === myProfile.id  ? 'myProfile' : userProfile.name}`}>
+        <Link to={`/profile/${userProfile.id === myProfile.id  ? 'myProfile' : userProfile.id}`}>
           <Button
             color=""
             size="sm"
