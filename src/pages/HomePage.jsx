@@ -26,7 +26,7 @@ export default function HomePage() {
 
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.auth);
-  const { myProfile, postCount, portfolioCount, loading } = useSelector((state) => state.myProfile);
+  const { myProfile, loading } = useSelector((state) => state.myProfile);
   const { posts } = useSelector((state) => state.posts);
 
   const navigate = useNavigate();
@@ -91,8 +91,6 @@ export default function HomePage() {
             <div className="h-full sm:w-72 xl:w-70 sm:sticky top-28">
               <Profile
                 myProfile={myProfile}
-                postCount={postCount}
-                portfolioCount={portfolioCount}
                 loading={loading}>
                 My Profile
               </Profile>
