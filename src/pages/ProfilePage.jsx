@@ -16,14 +16,12 @@ import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
 import { getMyPostAsync } from '../states/posts/postThunk';
-import { getUserIdAsync } from '../states/user/userThunk';
 
 export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
   const { skills } = useSelector((state) => state.skills);
   const { portfolios } = useSelector((state) => state.portfolios);
   const { posts } = useSelector((state) => state.posts);
-  const { user } = useSelector((state) => state.user);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);

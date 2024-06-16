@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createPortfolioAsync, portfolioDetailAsync, portfoliosAsync } from './portfoliosThunk';
+import { logoutUser } from '../authUser/authUserThunk';
 
 const initialState = {
   portfolios: [],
@@ -59,6 +60,9 @@ const portfolioSlice = createSlice({
         state.status = 'rejected';
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.portfolios = [];
       });
   }
 });

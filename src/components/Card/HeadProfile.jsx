@@ -1,112 +1,167 @@
-import React, { useState } from 'react';
-import { FaLocationDot } from 'react-icons/fa6';
-import { MdModeEdit } from 'react-icons/md';
-import PropTypes from 'prop-types';
-import EditHeadProfileModal from '../Modal/EditHeadProfileModal';
-import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
-import bgCardProfile from '../../assets/images/bgCardProfile.jpg';
+import React, { useState } from "react";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdModeEdit } from "react-icons/md";
+import PropTypes from "prop-types";
+import EditHeadProfileModal from "../Modal/EditHeadProfileModal";
+import placeholderPhotoProfile from "../../assets/images/placeholderPhotoProfile.png";
+import bgCardProfile from "../../assets/images/bgCardProfile.jpg";
 import {
+  createMyBackgroundProfileAsync,
   createMyPhotoProfileAsync,
-  updateMyPhotoProfileAsync
-} from '../../states/myProfile/myProfileThunk';
-import { useDispatch } from 'react-redux';
+  updateMyBackgroundPhotoProfileAsync,
+  updateMyPhotoProfileAsync,
+} from "../../states/myProfile/myProfileThunk";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function HeadProfile({ myProfile, userProfile }) {
+export default function HeadProfile({ myProfile }) {
   const dispatch = useDispatch();
+  const { loading, loadingPhotoProfile, loadingBackground } = useSelector(
+    (state) => state.myProfile
+  );
   const [showModal, setShowModal] = useState(false);
 
   const onSubmitPhotoProfileChange = async (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
 
-    const formData = new FormData();
-    formData.append('photo_profile', file);
+      const formData = new FormData();
+      formData.append("photo_profile", file);
 
-    dispatch(createMyPhotoProfileAsync(formData));
+      dispatch(createMyPhotoProfileAsync(formData));
+    }
+
+    return;
   };
 
   const onEditPhotoProfileChange = async (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
 
-    const formData = new FormData();
-    formData.append('photo_profile', file);
-    formData.append('_method', 'PUT');
+      const formData = new FormData();
+      formData.append("photo_profile", file);
+      formData.append("_method", "PUT");
 
-    dispatch(updateMyPhotoProfileAsync({ formData, id: myProfile.photo_profile.id }));
+      dispatch(
+        updateMyPhotoProfileAsync({ formData, id: myProfile.photo_profile.id })
+      );
+    }
+
+    return;
+  };
+
+
+  const onSubmitBackgroundProfileChange = async (e) => {
+    e.preventDefault();
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+
+      const formData = new FormData();
+      formData.append("background_photo", file);
+
+      dispatch(createMyBackgroundProfileAsync(formData));
+    }
+
+    return;
+  };
+
+  const onEditBackgroundProfileChange = async (e) => {
+    e.preventDefault();
+    if (e.target.files[0]) {
+      const file = e.target.files[0];
+
+      const formData = new FormData();
+      formData.append("background_photo", file);
+      formData.append("_method", "PUT");
+
+      dispatch(
+        updateMyBackgroundPhotoProfileAsync({ formData, id: myProfile.background_photo.id })
+      );
+    }
+
+    return;
   };
 
   return (
     <section>
-      <img
-        src={
-          myProfile === null ||
-          myProfile.background_photo === null ||
-          userProfile === null ||
-          userProfile.background_photo === null
-            ? bgCardProfile
-            : myProfile.background_photo.background_photo ||
-              userProfile.background_photo.background_photo
-        }
-        alt="bg card"
-        className="object-cover w-full h-40 sm:h-56 sm:rounded-t-xl"
-      />
+      {/* Background Photo Start */}
+      <div className="relative group">
+        <img
+          src={
+            loadingBackground || myProfile.background_photo === null
+              ? bgCardProfile
+              : myProfile.background_photo.background_photo
+          }
+          alt="bg card"
+          className={`${loadingBackground ? 'animate-pulse' : ''} object-cover w-full h-40 sm:h-56 sm:rounded-t-xl`}
+        />
+        <label
+          htmlFor="backgroundImage"
+          className=" absolute p-1 text-3xl font-bold right-3 top-2 bg-slate-900 rounded-full opacity-0 group-hover:opacity-100 text-slate-200 hover:cursor-pointer"
+        >
+          {" "}
+          <MdModeEdit />
+        </label>
+      </div>
+      {/* Background Photo End */}
       <div className="flex items-start justify-between px-3 pb-5 lg:px-10 bg-eerieBlack sm:rounded-b-xl">
         <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative rounded-full h-36 w-52 -top-20 sm:-top-14">
+        {/* Photo Profile Start */}
+          <div className="relative group rounded-full h-36 w-52 -top-20 sm:-top-14">
             <img
               src={
-                myProfile === null || myProfile.photo_profile === null
+                loadingPhotoProfile || myProfile.photo_profile === null
                   ? placeholderPhotoProfile
                   : myProfile.photo_profile.photo_profile
               }
               alt="avatar profile"
-              className="relative object-cover border-4 rounded-full h-36 w-36 border-eerieBlack"
+              className={`${
+                loadingPhotoProfile ? "animate-pulse" : ""
+              } relative object-cover border-4 rounded-full h-36 w-36 border-eerieBlack`}
             />
-            <label htmlFor="image" className="hover:cursor-pointer">
-              {' '}
-              <MdModeEdit className="absolute text-3xl font-bold right-5 bottom-3 text-slate-200 " />
+            <label htmlFor="image" className="hover:cursor-pointer bg-slate-900 rounded-full absolute text-2xl opacity-0 group-hover:opacity-100 font-bold right-10 p-[3px] bottom-4 text-slate-200">
+              {" "}
+              <MdModeEdit />
             </label>
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              id="image"
-              onChange={
-                myProfile === null ||
-                myProfile.photo_profile === null ||
-                myProfile.photo_profile.photo_profile === null
-                  ? onSubmitPhotoProfileChange
-                  : onEditPhotoProfileChange
-              }
-            />
           </div>
           <div className="flex flex-col w-full gap-2 -mt-20 sm:mt-2">
             <div className="flex flex-col">
               <p className="text-2xl font-medium w-fit">
-                {myProfile === null ? '' : myProfile.name}
+                {loading ? "" : myProfile.name}
               </p>
-              <p className="text-xs text-textSecondary w-fit">{`${myProfile === null || myProfile.biodata === null || myProfile.biodata.role === null ? '' : myProfile.biodata.role}`}</p>
+              <p className="text-xs text-textSecondary w-fit">{`${
+                loading ||
+                myProfile.biodata === null ||
+                myProfile.biodata.role === null
+                  ? ""
+                  : myProfile.biodata.role
+              }`}</p>
             </div>
             <p className="text-sm md:text-lg text-textPrimary">
-              {myProfile === null || myProfile.biodata === null ? '' : myProfile.biodata.headline}
+              {loading || myProfile.biodata === null
+                ? ""
+                : myProfile.biodata.headline}
             </p>
             <p className="flex items-center gap-1 mt-2 text-sm text-textSecondary">
-              {myProfile === null ||
+              {loading ||
               myProfile.biodata === null ||
               myProfile.biodata.location === null ? (
-                ''
+                ""
               ) : (
                 <>
-                  <FaLocationDot className="text-red-600" /> {myProfile.biodata.location}
+                  <FaLocationDot className="text-red-600" />{" "}
+                  {myProfile.biodata.location}
                 </>
               )}
             </p>
           </div>
         </div>
+        {/* Photo Profile End */}
         <button
           onClick={() => setShowModal(true)}
-          className="p-2 mt-3 text-2xl transition-all duration-200 ease-out rounded-full hover:bg-fernGreen">
+          className="p-2 mt-3 text-2xl transition-all duration-200 ease-out rounded-full hover:bg-fernGreen"
+        >
           <MdModeEdit />
         </button>
       </div>
@@ -117,11 +172,43 @@ export default function HeadProfile({ myProfile, userProfile }) {
           myProfile={myProfile}
         />
       )}
+
+      {/* Input Photo Profile */}
+      <input
+        type="file"
+        hidden
+        accept="image/*"
+        id="image"
+        onChange={
+          myProfile === null ||
+          myProfile.photo_profile === null ||
+          myProfile.photo_profile.photo_profile === null
+            ? onSubmitPhotoProfileChange
+            : onEditPhotoProfileChange
+        }
+      />
+      {/* Input Photo Profile End */}
+      {/* Input Photo Profile */}
+      <input
+      type="file"
+      hidden
+      accept="image/*"
+      id="backgroundImage"
+      onChange={
+        myProfile === null ||
+        myProfile.background_photo === null ||
+        myProfile.background_photo.background_photo === null
+          ? onSubmitBackgroundProfileChange
+          : onEditBackgroundProfileChange
+      }
+    />
+      {/* Input Photo Profile End */}
+
     </section>
   );
 }
 
 HeadProfile.propTypes = {
   myProfile: PropTypes.instanceOf(Object),
-  userProfile: PropTypes.instanceOf(Object)
+  userProfile: PropTypes.instanceOf(Object),
 };
