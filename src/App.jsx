@@ -35,6 +35,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/api/posts/:id" element={<HomePage />} />
           <Route path="/profile/myProfile" element={<ProfilePage />} />
+          <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/profile/api/post/:id" element={<ProfilePage />} />
           <Route path="/portfolio-detail/:id" element={<PortfolioDetailPage />} />
         </>

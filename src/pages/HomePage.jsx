@@ -17,6 +17,7 @@ import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 import { getDetailPostAsync, postsAsync } from '../states/posts/postThunk';
+import { getAllUsersAsync, getUserIdAsync } from '../states/user/userThunk';
 
 export default function HomePage() {
   const [, setSelectedPost] = useState('All Posts');
@@ -75,7 +76,7 @@ export default function HomePage() {
     <>
       {status === 'loading' && <Loading />}
       <div className="bg-chineseBlack">
-        <div className="sticky top-0 z-10">
+        <div className="sticky top-0 z-50">
           <Navbar
             openModalStudy={onCloseStudyModal}
             isOpenModalStudyInput={openStudyModal}
@@ -125,7 +126,7 @@ export default function HomePage() {
         {isModalPostDetailOpen &&
           posts
             .filter((post) => post.id === +id)
-            .map((post) => <PostDetailModal key={post.id} {...post} />)}
+            .map((post) => <PostDetailModal key={post.id} {...post} myProfile={myProfile} />)}
       </div>
     </>
   );

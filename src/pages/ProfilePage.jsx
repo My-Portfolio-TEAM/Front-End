@@ -5,8 +5,6 @@ import AboutProfile from '../components/Card/AboutProfile';
 import SkillsProfile from '../components/Card/SkillsProfile';
 import Post from '../components/Card/Post';
 import Portfolio from '../components/Card/Portfolio';
-import avatarProfile from '../assets/images/profile-pic (4).png';
-import bgCardProfile from '../assets/images/bgCardProfile.jpg';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PostDetailModal from '../components/Modal/PostDetailModal';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
@@ -18,13 +16,14 @@ import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
 import { getMyPostAsync } from '../states/posts/postThunk';
-import Loading from '../components/Loading';
+import { getUserIdAsync } from '../states/user/userThunk';
 
 export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
   const { skills } = useSelector((state) => state.skills);
   const { portfolios } = useSelector((state) => state.portfolios);
   const { posts } = useSelector((state) => state.posts);
+  const { user } = useSelector((state) => state.user);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);

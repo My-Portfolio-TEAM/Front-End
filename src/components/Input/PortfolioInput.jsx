@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import { useDispatch } from 'react-redux';
 import { createPortfolioAsync, portfoliosAsync } from '../../states/portfolios/portfoliosThunk';
-import { useNavigate } from 'react-router-dom';
-import { isPreloadAsync } from '../../states/isPreload/isPreloadThunk';
 import { myProfileAsync } from '../../states/myProfile/myProfileThunk';
 
 export default function PortfolioInput({ closeModal: closeParentModal, myProfile }) {

@@ -15,7 +15,8 @@ export default function PostDetail({
   created_at,
   updated_at,
   comments,
-  post_up_votes
+  post_up_votes,
+  myProfile
 }) {
   const [, setComment] = useState('');
   const commentInputRef = useRef(null);
@@ -31,9 +32,9 @@ export default function PostDetail({
 
   return (
     <section
-      className={`container flex h-[40rem] w-96  ${image ? 'sm:w-[70rem]' : ''} rounded-md text-textPrimary bg-eerieBlack`}>
+      className={`container flex h-[40rem] ${comments > 0 ? 'h-[40rem]' : 'h-fit'} w-96  ${image ? 'sm:w-[70rem]' : ''} rounded-md text-textPrimary bg-eerieBlack`}>
       <div className="flex min-w-full">
-        <div className={`items-center hidden w-full h-full  ${image ? 'md:flex' : 'hidden'}`}>
+        <div className={`items-baseline hidden w-full h-full  ${image ? 'md:flex' : 'hidden'}`}>
           <img src={image} alt="post" className="object-contain w-full h-full " />
         </div>
         <div className="relative flex flex-col w-full md:max-w-[25rem]">
@@ -48,50 +49,55 @@ export default function PostDetail({
               <p className="text-[10px] font-medium text-textSecondary">{user?.biodata?.role}</p>
             </div>
           </div>
-          <div className="px-4 py-2 overflow-auto border-y border-[#262626] h-full mt-12">
-            <div dangerouslySetInnerHTML={desc} className="text-[13px] text-textPrimary" />
+          <div className="px-4 py-2 overflow-auto border-y border-[#262626] h-[25rem] mt-12">
+            <div dangerouslySetInnerHTML={desc} className="text-[15px] text-textPrimary" />
             <div className="flex gap-2 mt-2 text-[10px] font-medium">
               <p className="text-[#A9A9A9]">{formattedDate(created_at)}</p>
               <p className="text-[#7A7A7A]">•</p>
               <p className="text-[#A9A9A9]">{formattedTime(updated_at)}</p>
             </div>
-            <p className="my-5 text-xs font-medium text-textSecondary">
+            <p className="mt-5 text-xs font-medium text-textSecondary">
               {comments.length} comments
             </p>
+            <div className="h-[2px] mt-3 mb-5 bg-[#262626]" />
             <div className="flex flex-col gap-5">
-              <div className="flex gap-1">
-                <img
-                  src={comments?.user?.photo_profile?.photo_profile || placeholderPhotoProfile}
-                  alt="img post"
-                  className="object-cover w-8 h-8 rounded-full"
-                />
-                <div>
-                  <div className="w-full px-3 py-2 rounded-md bg-searchInput">
-                    <div className="flex flex-col mb-2">
-                      <div className="flex items-baseline gap-2">
-                        <p className="text-sm font-medium text-textPrimary">{comments?.name}</p>
-                        <p className="text-xs text-[#7A7A7A]">•</p>
-                        <p className="text-[10px] text-[#A9A9A9]">
-                          {formattedTime(comments?.updated_at)}
+              {comments.length > 0 ? (
+                <div className="flex gap-1">
+                  <img
+                    src={comments?.user?.photo_profile?.photo_profile || placeholderPhotoProfile}
+                    alt="img post"
+                    className="object-cover w-8 h-8 rounded-full"
+                  />
+                  <div>
+                    <div className="w-full px-3 py-2 rounded-md bg-searchInput">
+                      <div className="flex flex-col mb-2">
+                        <div className="flex items-baseline gap-2">
+                          <p className="text-sm font-medium text-textPrimary">{comments?.name}</p>
+                          <p className="text-xs text-[#7A7A7A]">•</p>
+                          <p className="text-[10px] text-[#A9A9A9]">
+                            {formattedTime(comments?.updated_at)}
+                          </p>
+                        </div>
+                        <p className="text-[9px] font-medium text-textSecondary">
+                          {comments?.user?.biodata?.role}
                         </p>
                       </div>
-                      <p className="text-[9px] font-medium text-textSecondary">
-                        {comments?.user?.biodata?.role}
-                      </p>
+                      <p className="text-xs">{comments?.content}</p>
                     </div>
-                    <p className="text-xs">{comments?.content}</p>
-                  </div>
-                  <div className="flex gap-1 my-2 text-xs text-textPrimary">
-                    <button>Like</button>
-                    <p className="text-xs text-[#7A7A7A]">•</p>
-                    <p>{comments?.post_up_votes?.length}</p>
-                    <p className="text-xs mx-2 text-[#eaeaea]">|</p>
-                    <button>Reply</button>
-                    <p className="text-xs text-[#7A7A7A]">•</p>
-                    <p>{comments?.comments?.length}</p>
+                    <div className="flex gap-1 my-2 text-xs text-textPrimary">
+                      <button>Like</button>
+                      <p className="text-xs text-[#7A7A7A]">•</p>
+                      <p>{comments?.post_up_votes?.length}</p>
+                      <p className="text-xs mx-2 text-[#eaeaea]">|</p>
+                      <button>Reply</button>
+                      <p className="text-xs text-[#7A7A7A]">•</p>
+                      <p>{comments?.comments?.length}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <p className='text-sm text-textSecondary'>There are no comments on this post.</p>
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-1 px-4 pb-2 text-xs">
@@ -111,14 +117,18 @@ export default function PostDetail({
             </div>
             <div className="flex items-center w-full gap-2">
               <img
-                src="https://images.unsplash.com/photo-1547037579-f0fc020ac3be?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src={
+                  myProfile === null || myProfile.photo_profile === null
+                    ? placeholderPhotoProfile
+                    : myProfile.photo_profile.photo_profile
+                }
                 alt="img post"
                 className="object-cover rounded-full w-7 h-7"
               />
               <div className="flex gap-2">
                 <div
                   ref={commentInputRef}
-                  className="py-2 px-3 w-[17rem] sm:w-[32rem] md:w-72 text-[10px] bg-searchInput border border-[#262626] rounded-md text-textPrimary overflow-auto h-10 cursor-text text-sm  placeholder:text-textPrimary focus:border-[#2d2d2d] focus:outline focus:ring-0"
+                  className={`py-2 px-3 w-[17rem] sm:w-[32rem] ${image ? 'md:w-72' : 'md:w-64'} text-[10px] bg-searchInput border border-[#262626] rounded-md text-textPrimary overflow-auto h-10 cursor-text text-sm  placeholder:text-textPrimary focus:border-[#2d2d2d] focus:outline focus:ring-0`}
                   contentEditable
                   onInput={onCommentChangeHandler}
                   data-placeholder="Add a comment"
@@ -143,5 +153,6 @@ PostDetail.propTypes = {
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired
+  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  myProfile: PropTypes.instanceOf(Object).isRequired,
 };

@@ -13,7 +13,8 @@ export default function PostDetailModal({
   created_at,
   updated_at,
   comments,
-  post_up_votes
+  post_up_votes,
+  myProfile
 }) {
   const [previousUrl, setPreviousUrl] = useState('/');
   const navigate = useNavigate();
@@ -21,7 +22,8 @@ export default function PostDetailModal({
 
   const closeModal = () => {
     if (previousUrl.includes('/profile')) {
-      navigate(`/profile/myProfile`);
+      navigate(`/profile/myProfile
+      `);
     } else {
       navigate('/');
     }
@@ -39,7 +41,7 @@ export default function PostDetailModal({
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50 text-textPrimary">
+    <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-70 text-textPrimary">
       <PostDetail
         id={id}
         image={image}
@@ -49,6 +51,7 @@ export default function PostDetailModal({
         updated_at={updated_at}
         comments={comments}
         post_up_votes={post_up_votes}
+        myProfile={myProfile}
       />
       <button className="absolute right-5 top-5" onClick={closeModal}>
         <IoClose className="text-3xl text-textSecondary" />
@@ -66,5 +69,6 @@ PostDetailModal.propTypes = {
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired
+  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  myProfile: PropTypes.instanceOf(Object).isRequired,
 };

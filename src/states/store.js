@@ -7,6 +7,7 @@ import myProfileReducer from './myProfile/myProfileSlice';
 import skillsReducer from './skills/skillsSlice';
 import portfolioReducer from './portfolios/portfoliosSlice';
 import postsReducer from './posts/postsSlice';
+import userReducer from './user/userSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     isPreload: isPreloadReducer,
     myProfile: myProfileReducer,
     portfolios: portfolioReducer,
+    user: userReducer,
     posts: postsReducer,
     skills: skillsReducer,
     loadingBar: loadingBarReducer

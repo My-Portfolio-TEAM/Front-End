@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import iconLove from '../../assets/icons/iconLove-outlined.png';
 import iconComment from '../../assets/icons/messages.png';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useExpand } from '../../hooks/useExpand';
 import { formattedDate, formattedTime } from '../../utils';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
+import { Popover } from 'flowbite-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserIdAsync } from '../../states/user/userThunk';
 
 export default function Post({
   id,
@@ -31,18 +34,64 @@ export default function Post({
     }
   };
 
+  const contentPopOver = (
+    <div className="w-64 p-3 bg-searchInput text-textPrimary">
+      <div className="flex items-center justify-between mb-2">
+        <img
+          className="w-10 h-10 rounded-full"
+          src={
+            user.photo_profile === null ? placeholderPhotoProfile : user.photo_profile.photo_profile
+          }
+          alt={user.name}
+        />
+        <Link to={`/profile/${user.id}`}>
+          <button
+            type="button"
+            className="px-4 py-1.5 text-xs font-medium transition-all border-none rounded-full bg-fernGreen hover:bg-opacity-85 text-textPrimary">
+            Profile
+          </button>
+        </Link>
+      </div>
+      <div className="flex flex-col gap-2 my-2">
+        <p id="profile-popover" className="text-base font-semibold leading-none text-textPrimary">
+          {user.name}
+        </p>
+        <p className="text-[10px] font-medium text-textSecondary">
+          ({user.biodata == null ? '' : user.biodata.role})
+        </p>
+      </div>
+      <ul className="flex text-sm">
+        <li className="flex gap-2 me-2">
+          <span className="font-semibold text-textPrimary">{user.id}</span>
+          <span>Post</span>
+        </li>
+        <div>|</div>
+        <li className="flex gap-2 ms-2">
+          <span className="font-semibold text-textPrimary">{}</span>
+          <span>Portfolio</span>
+        </li>
+      </ul>
+    </div>
+  );
+
   return (
     <section className="w-auto py-3 rounded-md h-fit sm:p-4 bg-eerieBlack sm:rounded-xl">
       <div className="flex items-center gap-3 px-2 sm:px-0">
-        <img
-          src={
-            user.photo_profile === null
-              ? placeholderPhotoProfile
-              : user.photo_profile.photo_profile
-          }
-          alt="img post"
-          className="object-cover w-10 h-10 rounded-full"
-        />
+        <Popover
+          className="border-4 border-[#262626] rounded-xl"
+          aria-labelledby="profile-popover"
+          content={contentPopOver}
+          trigger="click">
+          <img
+            src={
+              user.photo_profile === null
+                ? placeholderPhotoProfile
+                : user.photo_profile.photo_profile
+            }
+            alt="img post"
+            className="object-cover w-10 h-10 rounded-full cursor-pointer"
+          />
+        </Popover>
         <div>
           <p className="text-base font-medium text-textPrimary">{user.name}</p>
           <p className="text-[10px] font-medium text-textSecondary">
@@ -52,7 +101,11 @@ export default function Post({
       </div>
 
       <div className="my-3">
-        <img src={image} className="rounded-none lg:w-full lg:h-full sm:rounded-lg" alt="" />
+        {image ? (
+          <img src={image} className="rounded-none lg:w-full lg:h-full sm:rounded-lg" alt="" />
+        ) : (
+          ''
+        )}
         <div className="flex gap-2 px-2 my-3 sm:px-0">
           <p className="text-[12px] font-medium text-[#A9A9A9]">{formattedDate(created_at)}</p>
           <p className="text-[12px] font-medium text-[#7A7A7A]">•</p>
@@ -102,5 +155,6 @@ Post.propTypes = {
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
   user: PropTypes.instanceOf(Object).isRequired,
-  handleClick: PropTypes.func.isRequired
+  handleClick: PropTypes.func.isRequired,
+  user_id: PropTypes.number.isRequired
 };
