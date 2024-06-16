@@ -31,3 +31,17 @@ export const getUserIdAsync = createAsyncThunk(
     }
   }
 );
+export const getMostActiveUsers = createAsyncThunk(
+  'user/mostActiveUsers',
+  async (_, { dispatch, rejectWithValue }) => {
+    dispatch(showLoading());
+    try {
+      const response = await axiosInstance.get(`/api/most-active-users`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({ error: error.message });
+    } finally {
+      dispatch(hideLoading());
+    }
+  }
+);

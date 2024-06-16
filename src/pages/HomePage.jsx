@@ -17,7 +17,7 @@ import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 import { getDetailPostAsync, postsAsync } from '../states/posts/postThunk';
-import { getAllUsersAsync, getUserIdAsync } from '../states/user/userThunk';
+import { getAllUsersAsync, getMostActiveUsers, getUserIdAsync } from '../states/user/userThunk';
 
 export default function HomePage() {
   const [, setSelectedPost] = useState('All Posts');
@@ -64,8 +64,10 @@ export default function HomePage() {
   }, [openStudyModal, openPortfolioModal]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(myProfileAsync());
     dispatch(postsAsync());
+    dispatch(getMostActiveUsers());
   }, []);
 
   if (status === 'failed') {
