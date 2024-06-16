@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { portfolioDetailAsync, portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import { formattedDate, formattedTime } from '../utils';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function PortfolioDetailPage() {
   const { portfolio } = useSelector((state) => state.portfolios);
@@ -17,6 +18,8 @@ export default function PortfolioDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(myProfileAsync());
+    dispatch(searchPost(''));
+    dispatch(setPageToOne());
     dispatch(portfolioDetailAsync({ id }));
   }, [id]);
 

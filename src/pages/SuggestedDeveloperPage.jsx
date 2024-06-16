@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MostActiveUsersProfile from '../components/Card/MostActiveUsersProfile';
 import { getMostActiveUsers } from '../states/user/userThunk';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function SuggestedDeveloperPage() {
 const dispatch = useDispatch();
@@ -14,6 +15,8 @@ const dispatch = useDispatch();
  useEffect(() => {
   dispatch(getMostActiveUsers());
   dispatch(myProfileAsync());
+  dispatch(setPageToOne());
+  dispatch(searchPost(''));
   window.scrollTo(0, 0);
  }, []);
   return (

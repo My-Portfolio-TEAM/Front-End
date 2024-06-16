@@ -6,8 +6,6 @@ import Post from '../components/Card/Post';
 import Search from '../components/Input/SearchInput';
 import SuggestedDeveloper from '../components/Card/SuggestedDeveloper';
 import MostLikedPost from '../components/Card/MostLikedPost';
-import avatarProfile from '../assets/images/profile-pic (4).png';
-import bgCardProfile from '../assets/images/bgCardProfile.jpg';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PostDetailModal from '../components/Modal/PostDetailModal';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
@@ -16,18 +14,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
-import { getDetailPostAsync, mostLikedPostsAsync, postsAsync } from '../states/posts/postThunk';
-import { getAllUsersAsync, getMostActiveUsers, getUserIdAsync } from '../states/user/userThunk';
+import { getMyPostAsync, mostLikedPostsAsync, postsAsync } from '../states/posts/postThunk';
+import { getMostActiveUsers } from '../states/user/userThunk';
+import { ToastContainer } from 'react-toastify';
+import { searchPost, setPage, setPageToOne } from '../states/posts/postsSlice';
 
 export default function HomePage() {
-  const [, setSelectedPost] = useState('All Posts');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);
-
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.auth);
   const { myProfile, loading } = useSelector((state) => state.myProfile);
-  const { posts } = useSelector((state) => state.posts);
+  const { posts, last_page, current_page, searchInput, page, selectedPost } = useSelector((state) => state.posts);
+  const loadingPosts = useSelector((state) => state.posts.loading);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,6 +50,29 @@ export default function HomePage() {
     navigate(`/api/posts/${postId}`);
   };
 
+  const onSearchChange = (value) => {
+    dispatch(searchPost(value));
+
+  }
+
+  const onPaginateExtend = () => {
+    dispatch(setPage());
+
+
+  }
+
+  useEffect(() => {
+    dispatch(selectedPost === 'All Posts' ? postsAsync({searchInput, page}) : getMyPostAsync({searchInput, page}));
+  }, [dispatch, searchInput, page, selectedPost]);
+
+  useEffect(() => {
+    dispatch(myProfileAsync());
+    dispatch(setPageToOne());
+    dispatch(mostLikedPostsAsync());
+    dispatch(getMostActiveUsers());
+    
+  }, []);
+
   useEffect(() => {
     if (openStudyModal || openPortfolioModal) {
       document.body.style.overflow = 'hidden';
@@ -63,20 +85,13 @@ export default function HomePage() {
     };
   }, [openStudyModal, openPortfolioModal]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(myProfileAsync());
-    dispatch(postsAsync());
-    dispatch(mostLikedPostsAsync());
-    dispatch(getMostActiveUsers());
-  }, []);
-
   if (status === 'failed') {
     return <div>Error: {error}</div>;
   }
 
   return (
     <>
+      <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} pauseOnFocusLoss={false} />
       {status === 'loading' && <Loading />}
       <div className="bg-chineseBlack">
         <div className="sticky top-0 z-50">
@@ -99,9 +114,11 @@ export default function HomePage() {
               </Profile>
             </div>
             <div className="flex flex-col gap-2 mx-0 sm:flex-1 sm:gap-2 sm:mx-4 lg:mx-5 2xl:mx-10">
-              <Search />
-              <SeePost postType={setSelectedPost} />
-              {posts.length > 0
+              <Search searchInput={searchInput} onSearchChange={onSearchChange} />
+              <SeePost />
+              {
+              loadingPosts ? <p className="text-center text-white">Working on it...</p> : 
+              posts.length > 0
                 ? posts.map((post) => (
                     <Post
                       key={post.id}
@@ -110,7 +127,13 @@ export default function HomePage() {
                       handleClick={() => handlePostClick(post.id)}
                     />
                   ))
-                : ''}
+                : <p className="text-center text-white">Post Not Found</p>}
+
+               {
+                 (current_page === last_page || last_page === 1) || loadingPosts ? null : (
+                  <button className="bg-slate-800 text-white p-1 rounded-full" onClick={onPaginateExtend}>See More</button>
+                ) 
+               }
             </div>
             <div className="flex-col hidden gap-5 xl:flex">
               <SuggestedDeveloper />
