@@ -3,6 +3,7 @@ import { Dropdown } from 'flowbite-react';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchPost, setPageToOne, setSelectedPost } from '../../states/posts/postsSlice';
+import { getMyPostAsync } from '../../states/posts/postThunk';
 
 export default function SeePost() {
   const {selectedPost} = useSelector((state) => state.posts);
@@ -22,7 +23,7 @@ export default function SeePost() {
       <Dropdown.Item
         style={{ backgroundColor: '#1A1C20' }}
         onClick={() => {
-          dispatch(setSelectedPost('All Posts'))
+          dispatch(setSelectedPost('All Posts'));
           dispatch(setPageToOne());
           dispatch(searchPost(''));
         }}

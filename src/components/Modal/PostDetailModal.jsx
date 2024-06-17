@@ -15,7 +15,6 @@ export default function PostDetailModal() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
   const closeModal = () => {
     if (previousUrl.includes('/profile')) {
       navigate(`/profile/myProfile`);

@@ -11,13 +11,14 @@ import { skillsAsync } from '../states/skills/skillsThunk';
 import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
-import { getMyPostAsync } from '../states/posts/postThunk';
+import { getMyPostAsync, postsAsync } from '../states/posts/postThunk';
 import { getUserIdAsync } from '../states/user/userThunk';
 import HeadUserProfile from '../components/Card/HeadUserProfile';
 import AboutUserProfile from '../components/Card/AboutUserProfile';
 import SkillsUserProfile from '../components/Card/SkillsUserProfile';
 import PortfolioUser from '../components/Card/PortfolioUser';
 import { searchPost, setPageToOne } from '../states/posts/postsSlice';
+import { setPageUserToOne } from '../states/user/userSlice';
 
 export default function ProfileDetailPage() {
   const { myProfile } = useSelector((state) => state.myProfile);
@@ -26,16 +27,15 @@ export default function ProfileDetailPage() {
   const [activeSession, setActiveSession] = useState('Portfolio');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const isModalPostDetailOpen = location.pathname.startsWith('/profile/api/post');
+  const isModalPostDetailOpen = location.pathname.startsWith('/profileDetail/api/post');
 
   const handlePostClick = (postId) => {
-    navigate(`/profile/api/post/${postId}`);
+    navigate(`/profileDetail/api/post/${postId}`);
   };
 
   const handleLogout = () => {
@@ -65,13 +65,16 @@ export default function ProfileDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(myProfileAsync());
+    dispatch(getMyPostAsync({page: 1, searchInput: ''}))
+    dispatch(postsAsync({page: 1, searchInput: ''}))
     dispatch(getUserIdAsync({id}));
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
     dispatch(setPageToOne());
+    dispatch(setPageUserToOne());
     dispatch(getMyPostAsync());
     dispatch(searchPost(''));
-  }, [dispatch]);
+  }, []);
   return (
     <>
       <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} />

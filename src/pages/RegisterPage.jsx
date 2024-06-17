@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerAsync } from '../states/register/registerThunk';
 import { ToastContainer } from 'react-toastify';
 import { searchPost, setPageToOne } from '../states/posts/postsSlice';
+import { setPageUserToOne } from '../states/user/userSlice';
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     dispatch(setPageToOne());
+    dispatch(setPageUserToOne());
     dispatch(searchPost(''));
   }, [])
 

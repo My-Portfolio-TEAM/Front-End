@@ -33,11 +33,15 @@ export const getUserIdAsync = createAsyncThunk(
 );
 export const getMostActiveUsers = createAsyncThunk(
   'user/mostActiveUsers',
-  async (_, { dispatch, rejectWithValue }) => {
+  async ({page}, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
-      const response = await axiosInstance.get(`/api/most-active-users`);
-      return response.data;
+      const response = await axiosInstance.get(`/api/most-active-users?page=${page}`);
+      return {
+        users: response.data.data.data,
+        current_page: response.data.data.current_page,
+        last_page: response.data.data.last_page,
+      };
     } catch (error) {
       return rejectWithValue({ error: error.message });
     } finally {

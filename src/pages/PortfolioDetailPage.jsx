@@ -7,6 +7,7 @@ import { portfolioDetailAsync, portfoliosAsync } from '../states/portfolios/port
 import { formattedDate, formattedTime } from '../utils';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 import { searchPost, setPageToOne } from '../states/posts/postsSlice';
+import { setPageUserToOne } from '../states/user/userSlice';
 
 export default function PortfolioDetailPage() {
   const { portfolio } = useSelector((state) => state.portfolios);
@@ -20,6 +21,7 @@ export default function PortfolioDetailPage() {
     dispatch(myProfileAsync());
     dispatch(searchPost(''));
     dispatch(setPageToOne());
+    dispatch(setPageUserToOne());
     dispatch(portfolioDetailAsync({ id }));
   }, [id]);
 

@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import bgCardProfile from '../../assets/images/bgCardProfile.jpg';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import PropTypes from 'prop-types';
+import { getMyPostAsync } from '../../states/posts/postThunk';
+import { useDispatch } from 'react-redux';
 
 export default function Profile({
   myProfile,
   children,
   loading,
 }) {
-
+  const dispatch = useDispatch();
   return (
     <article className={`pb-5 w-full sm:rounded-xl bg-eerieBlack `}>
       <img
@@ -44,6 +46,7 @@ export default function Profile({
             color=""
             size="sm"
             className="w-full mt-5 transition-all duration-300 ease-out text-textPrimary hover:bg-opacity-80 bg-fernGreen"
+            onClick={() => dispatch(getMyPostAsync({page: 1, searchInput: ''}))}
           >
             {children}
           </Button>
