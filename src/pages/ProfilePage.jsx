@@ -15,18 +15,19 @@ import { skillsAsync } from '../states/skills/skillsThunk';
 import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
-import { getMyPostAsync } from '../states/posts/postThunk';
-import { searchPost, setPageToOne } from '../states/posts/postsSlice';
+import { getMyPostAsync, postsAsync } from '../states/posts/postThunk';
+import { searchPost, setPage, setPageToOne, setSelectedPost } from '../states/posts/postsSlice';
+import ButtonPaginate from '../components/Card/ButtonPaginate';
+import { setPageUserToOne } from '../states/user/userSlice';
 
 export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
   const { skills } = useSelector((state) => state.skills);
   const { portfolios } = useSelector((state) => state.portfolios);
-  const { posts } = useSelector((state) => state.posts);
+  const { posts, selectedPost, page, searchInput, loading, loadingPaginate, current_page, last_page } = useSelector((state) => state.posts);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -49,6 +50,14 @@ export default function ProfilePage() {
   const onClosePortfolioModal = () => {
     setOpenPortfolioModal(!openPortfolioModal);
   };
+  const onPaginateExtend = () => {
+    dispatch(setPage());
+  };
+  
+  useEffect(() => {
+    dispatch(getMyPostAsync({ searchInput, page }));
+  }, [dispatch, searchInput, page, selectedPost]);
+
 
   useEffect(() => {
     if (openStudyModal || openPortfolioModal) {
@@ -68,6 +77,7 @@ export default function ProfilePage() {
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
     dispatch(setPageToOne());
+    dispatch(setPageUserToOne());
     dispatch(getMyPostAsync());
     dispatch(searchPost(''));
   }, [dispatch]);
@@ -117,6 +127,7 @@ export default function ProfilePage() {
             </div>
             <div className="my-5">
               {activeSession === 'Posts' ? (
+                <>
                 <div className="grid w-full gap-5 sm:grid-cols-2">
                   {posts.length > 0
                     ? posts.map((post) => (
@@ -128,7 +139,19 @@ export default function ProfilePage() {
                         />
                       ))
                     : ''}
+
                 </div>
+                <div className="p-2 w-full flex justify-center">
+
+                <ButtonPaginate 
+                  onPaginateExtend={onPaginateExtend}
+                  loadingPaginate={loadingPaginate}
+                  current_page={current_page}
+                  last_page={last_page}
+                  loading={loading} 
+                />
+                </div>
+                </>
               ) : (
                 <div className="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">
                   {portfolios.length > 0

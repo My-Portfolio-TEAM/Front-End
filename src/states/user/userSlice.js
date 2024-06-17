@@ -7,14 +7,25 @@ const initialState = {
   users: [],
   mostActiveUsers: [],
   status: 'idle',
+  page: 1,
+  current_page: 1,
+  last_page: 1,
+  loadingPaginate: false,
   error: null,
-  loading: true
+  loading: false
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state) => {
+      state.page += 1; 
+    },
+    setPageUserToOne: (state) => {
+      state.page = 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllUsersAsync.pending, (state) => {
@@ -55,19 +66,29 @@ const userSlice = createSlice({
       })
       .addCase(getMostActiveUsers.pending, (state, action) => {
         state.status = 'loading';
-        state.loading = true;
+        state.loading = state.page === 1 ? true : false;
+        state.loadingPaginate = state.page === 1 ? false : true;
         state.error = action.payload;
       })
       .addCase(getMostActiveUsers.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.loading = false;
-        state.mostActiveUsers = action.payload.data.data;
         state.users = [];
         state.user = null;
+        state.status = 'succeeded';
+        state.loading = false;
+        state.loadingPaginate = false;
+        state.current_page = action.payload.current_page;
+        state.last_page = action.payload.last_page;
+
+         if(state.current_page === 1) {
+          state.mostActiveUsers = action.payload.users;
+          } else {
+            state.mostActiveUsers = [...state.mostActiveUsers, ...action.payload.users];
+        }
       })
       .addCase(getMostActiveUsers.rejected, (state, action) => {
         state.status = 'rejected';
         state.loading = false;
+        state.loadingPaginate = false;
         state.error = action.payload;
       })
       .addCase(logoutUser.fulfilled, (state) => {
@@ -84,4 +105,5 @@ const userSlice = createSlice({
   }
 });
 
+export const { setPage, setPageUserToOne } = userSlice.actions;
 export default userSlice.reducer;

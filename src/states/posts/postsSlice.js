@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createPostAsync, getDetailPostAsync, getMyPostAsync, mostLikedPostsAsync, postsAsync } from './postThunk';
-import { logoutUser } from '../authUser/authUserThunk';
 
 const initialState = {
   posts: [],
@@ -13,7 +12,9 @@ const initialState = {
   status: 'idle',
   error: null,
   loading: false,
-  loadingSearch: false,
+  loadingPaginate: false,
+  loadingLikedPosts: false,
+
 };
 
 const postsSlice = createSlice({
@@ -37,12 +38,13 @@ const postsSlice = createSlice({
     builder
       .addCase(postsAsync.pending, (state) => {
         state.status = 'loading';
-        state.loading = false;
+        state.loading = state.page === 1 ? true : false;
+        state.loadingPaginate = state.page === 1 ? false : true;
       })
       .addCase(postsAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.loadingSearch = false;
+        state.loadingPaginate = false;
         state.error = null;
         state.current_page = action.payload.current_page;
         state.last_page = action.payload.last_page;
@@ -56,35 +58,37 @@ const postsSlice = createSlice({
       .addCase(postsAsync.rejected, (state, action) => {
         state.status = 'rejected';
         state.loading = false;
-        state.loadingSearch = false;
+        state.loadingPaginate = false;
         state.error = action.payload;
         state.current_page = 1;
       })
       .addCase(mostLikedPostsAsync.pending, (state) => {
         state.status = 'loading';
-        state.loading = true;
+        state.loadingLikedPosts = true;
         state.mostLikedPosts = [];
       })
       .addCase(mostLikedPostsAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.loading = false;
+        state.loadingLikedPosts = false;
         state.error = null;
         state.mostLikedPosts = action.payload.data;
       })
       .addCase(mostLikedPostsAsync.rejected, (state, action) => {
         state.status = 'rejected';
-        state.loading = false;
+        state.loadingLikedPosts = false;
         state.error = action.payload;
       })
       .addCase(getMyPostAsync.pending, (state) => {
         state.status = 'loading';
-        state.loading = true;
+        state.loading = state.page === 1 ? true : false;
+        state.loadingPaginate = state.page === 1 ? false : true;
+        state.selectedPost = 'My Posts';
 
       })
       .addCase(getMyPostAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
-        state.loadingSearch = false;
+        state.loadingPaginate = false;
         state.error = null;
         state.current_page = action.payload.current_page;
         state.last_page = action.payload.last_page;

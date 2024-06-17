@@ -8,6 +8,7 @@ import { authUserAsync } from '../states/authUser/authUserThunk';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { searchPost, setPageToOne } from '../states/posts/postsSlice';
+import { setPageUserToOne } from '../states/user/userSlice';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     dispatch(searchPost(''));
+    dispatch(setPageUserToOne());
     dispatch(setPageToOne());
 
   }, [])

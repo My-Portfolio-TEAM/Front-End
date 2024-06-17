@@ -43,7 +43,10 @@ export default function SuggestedDeveloper() {
   const { myProfile } = useSelector((state) => state.myProfile);
   return (
     <section className="flex flex-col gap-3 p-5 w-96 h-fit bg-eerieBlack rounded-xl">
+      {
+        loading ? <div className='w-1/2 h-4 animate-pulse bg-slate-300 rounded-lg' /> :
       <h2 className="mb-2 text-lg font-semibold text-textPrimary">Most Active Users</h2>
+      }
       {
         loading ? <SuggestedDeveloperLoading /> :
         mostActiveUsers.length > 0 ?
@@ -72,12 +75,15 @@ export default function SuggestedDeveloper() {
         )) : ''  
       }
 
+     {
+      loading ? <div className='w-1/4 h-4 animate-pulse bg-slate-300 rounded-lg' /> :
       <Link
-        to="/most-active-users/all"
-        className="flex items-center gap-2 font-medium text-textPrimary hover:text-textSecondary w-fit"
-      >
-        See more <HiArrowNarrowRight />
-      </Link>
+      to="/most-active-users/all"
+      className="flex items-center gap-2 font-medium text-textPrimary hover:text-textSecondary w-fit"
+    >
+      See more <HiArrowNarrowRight />
+    </Link>
+     }
     </section>
   );
 }
