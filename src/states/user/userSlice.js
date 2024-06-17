@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getAllUsersAsync, getUserIdAsync } from './userThunk';
 
 const initialState = {
-  user: {},
+  users: [],
   status: 'idle',
   error: null,
   loading: false
@@ -11,19 +11,19 @@ const initialState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: [],
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllUsersAsync.pending, (state) => {
         state.status = 'loading';
         state.loading = true;
-        state.user = {};
+        state.users = [];
       })
       .addCase(getAllUsersAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
         state.error = null;
-        state.user = action.payload.data;
+        state.users = action.payload.data;
       })
       .addCase(getAllUsersAsync.rejected, (state, action) => {
         state.status = 'rejected';
@@ -33,13 +33,13 @@ const userSlice = createSlice({
       .addCase(getUserIdAsync.pending, (state) => {
         state.status = 'loading';
         state.loading = true;
-        state.user = {};
+        state.users = [];
       })
       .addCase(getUserIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
         state.error = null;
-        state.user = action.payload.data;
+        state.users = action.payload.data;
       })
       .addCase(getUserIdAsync.rejected, (state, action) => {
         state.status = 'rejected';

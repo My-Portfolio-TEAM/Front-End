@@ -5,13 +5,14 @@ const initialState = {
   posts: [],
   status: 'idle',
   error: null,
-  loading: false
+  loading: false,
+  currentPost: null
 };
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: [],
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(postsAsync.pending, (state) => {
@@ -49,18 +50,19 @@ const postsSlice = createSlice({
       .addCase(getDetailPostAsync.pending, (state) => {
         state.status = 'loading';
         state.loading = true;
-        state.posts = [];
+        state.currentPost = null;
       })
       .addCase(getDetailPostAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.loading = false;
         state.error = null;
-        state.posts = action.payload.data;
+        state.currentPost = action.payload;
       })
       .addCase(getDetailPostAsync.rejected, (state, action) => {
         state.status = 'rejected';
         state.loading = false;
         state.error = action.payload;
+        state.currentPost = null;
       })
       .addCase(createPostAsync.pending, (state) => {
         state.status = 'loading';

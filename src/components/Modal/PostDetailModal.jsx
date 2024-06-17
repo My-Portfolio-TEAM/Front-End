@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDetailPostAsync } from '../../states/posts/postThunk';
 import PostDetail from '../Card/PostDetail';
-import PropTypes from 'prop-types';
+import Loading from '../Loading';
 
-export default function PostDetailModal({
-  id,
-  name,
-  image,
-  content,
-  user,
-  created_at,
-  updated_at,
-  comments,
-  post_up_votes,
-  myProfile
-}) {
+export default function PostDetailModal() {
   const [previousUrl, setPreviousUrl] = useState('/');
+  const { currentPost, loading } = useSelector((state) => state.posts);
+  const { myProfile } = useSelector((state) => state.myProfile);
+  const { id } = useParams();
+
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const closeModal = () => {
     if (previousUrl.includes('/profile')) {
-      navigate(`/profile/myProfile
-      `);
+      navigate(`/profile/myProfile`);
     } else {
       navigate('/');
     }
   };
 
   useEffect(() => {
-    setPreviousUrl(location.pathname);
-  }, [location]);
+    if (!previousUrl) {
+      setPreviousUrl(location.pathname);
+    }
+  }, [location.pathname, previousUrl]);
+
+  useEffect(() => {
+    dispatch(getDetailPostAsync({ id }));
+  }, [dispatch, id]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -40,35 +41,16 @@ export default function PostDetailModal({
     };
   }, []);
 
+  if (loading === true) {
+    return <Loading />;
+  }
+
   return (
     <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-70 text-textPrimary">
-      <PostDetail
-        id={id}
-        image={image}
-        content={content}
-        user={user}
-        created_at={created_at}
-        updated_at={updated_at}
-        comments={comments}
-        post_up_votes={post_up_votes}
-        myProfile={myProfile}
-      />
+      {currentPost && <PostDetail key={currentPost.id} {...currentPost} myProfile={myProfile} />}
       <button className="absolute right-5 top-5" onClick={closeModal}>
         <IoClose className="text-3xl text-textSecondary" />
       </button>
     </div>
   );
 }
-
-PostDetailModal.propTypes = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  user: PropTypes.object.isRequired,
-  created_at: PropTypes.string.isRequired,
-  updated_at: PropTypes.string.isRequired,
-  comments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  myProfile: PropTypes.instanceOf(Object).isRequired,
-};

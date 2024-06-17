@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../api/axiosConfig';
 
 export const postsAsync = createAsyncThunk(
-  'auth/posts',
+  'posts/fetchPosts',
   async (_, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
@@ -20,7 +20,7 @@ export const postsAsync = createAsyncThunk(
 );
 
 export const getMyPostAsync = createAsyncThunk(
-  'auth/getMyPost',
+  'posts/getMyPost',
   async (_, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
@@ -36,7 +36,7 @@ export const getMyPostAsync = createAsyncThunk(
 );
 
 export const getDetailPostAsync = createAsyncThunk(
-  'auth/getDetailPost',
+  'posts/getDetailPost',
   async ({ id }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
@@ -52,7 +52,7 @@ export const getDetailPostAsync = createAsyncThunk(
 );
 
 export const createPostAsync = createAsyncThunk(
-  'auth/createPost',
+  'posts/createPost',
   async ({ content, image }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
 

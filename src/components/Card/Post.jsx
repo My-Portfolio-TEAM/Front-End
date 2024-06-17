@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import iconLove from '../../assets/icons/iconLove-outlined.png';
 import iconComment from '../../assets/icons/messages.png';
 import PropTypes from 'prop-types';
@@ -7,8 +7,6 @@ import { useExpand } from '../../hooks/useExpand';
 import { formattedDate, formattedTime } from '../../utils';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import { Popover } from 'flowbite-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserIdAsync } from '../../states/user/userThunk';
 
 export default function Post({
   id,
@@ -62,12 +60,12 @@ export default function Post({
       </div>
       <ul className="flex text-sm">
         <li className="flex gap-2 me-2">
-          <span className="font-semibold text-textPrimary">{user.id}</span>
+          <span className="font-semibold text-textPrimary">{user.posts_count}</span>
           <span>Post</span>
         </li>
         <div>|</div>
         <li className="flex gap-2 ms-2">
-          <span className="font-semibold text-textPrimary">{}</span>
+          <span className="font-semibold text-textPrimary">{user.portfolios_count}</span>
           <span>Portfolio</span>
         </li>
       </ul>
@@ -81,7 +79,7 @@ export default function Post({
           className="border-4 border-[#262626] rounded-xl"
           aria-labelledby="profile-popover"
           content={contentPopOver}
-          trigger="click">
+          trigger="hover">
           <img
             src={
               user.photo_profile === null
@@ -155,6 +153,5 @@ Post.propTypes = {
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
   user: PropTypes.instanceOf(Object).isRequired,
-  handleClick: PropTypes.func.isRequired,
-  user_id: PropTypes.number.isRequired
+  handleClick: PropTypes.func.isRequired
 };

@@ -6,9 +6,7 @@ import Post from '../components/Card/Post';
 import Search from '../components/Input/SearchInput';
 import SuggestedDeveloper from '../components/Card/SuggestedDeveloper';
 import MostLikedPost from '../components/Card/MostLikedPost';
-import avatarProfile from '../assets/images/profile-pic (4).png';
-import bgCardProfile from '../assets/images/bgCardProfile.jpg';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PostDetailModal from '../components/Modal/PostDetailModal';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
@@ -16,8 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
-import { getDetailPostAsync, postsAsync } from '../states/posts/postThunk';
-import { getAllUsersAsync, getUserIdAsync } from '../states/user/userThunk';
+import { postsAsync } from '../states/posts/postThunk';
 
 export default function HomePage() {
   const [, setSelectedPost] = useState('All Posts');
@@ -31,7 +28,6 @@ export default function HomePage() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams();
 
   const handleLogout = () => {
     dispatch(logoutUser({ navigate }));
@@ -66,7 +62,7 @@ export default function HomePage() {
   useEffect(() => {
     dispatch(myProfileAsync());
     dispatch(postsAsync());
-  }, []);
+  }, [dispatch]);
 
   if (status === 'failed') {
     return <div>Error: {error}</div>;
@@ -100,16 +96,18 @@ export default function HomePage() {
             <div className="flex flex-col gap-2 mx-0 sm:flex-1 sm:gap-2 sm:mx-4 lg:mx-5 2xl:mx-10">
               <Search />
               <SeePost postType={setSelectedPost} />
-              {posts.length > 0
-                ? posts.map((post) => (
-                    <Post
-                      key={post.id}
-                      page={'/'}
-                      {...post}
-                      handleClick={() => handlePostClick(post.id)}
-                    />
-                  ))
-                : ''}
+              {posts.length > 0 ? (
+                posts.map((post) => (
+                  <Post
+                    key={post.id}
+                    page={'/'}
+                    {...post}
+                    handleClick={() => handlePostClick(post.id)}
+                  />
+                ))
+              ) : (
+                <p>No posts available.</p>
+              )}
             </div>
             <div className="flex-col hidden gap-5 xl:flex">
               <SuggestedDeveloper />
@@ -123,10 +121,7 @@ export default function HomePage() {
         {openPortfolioModal && (
           <PortfolioInputModal myProfile={myProfile} closeModal={onClosePortfolioModal} />
         )}
-        {isModalPostDetailOpen &&
-          posts
-            .filter((post) => post.id === +id)
-            .map((post) => <PostDetailModal key={post.id} {...post} myProfile={myProfile} />)}
+        {isModalPostDetailOpen && <PostDetailModal />}
       </div>
     </>
   );
