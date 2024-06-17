@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import LoginInput from '../components/Input/LoginInput';
 import logoNoIcon from '../assets/icons/logoNoIcon.png';
 import tagline from '../assets/images/tagline.png';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authUserAsync } from '../states/authUser/authUserThunk';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -16,6 +17,12 @@ export default function LoginPage() {
     e.preventDefault();
     dispatch(authUserAsync({ email, password }));
   };
+
+  useEffect(() => {
+    dispatch(searchPost(''));
+    dispatch(setPageToOne());
+
+  }, [])
 
   return (
     <>

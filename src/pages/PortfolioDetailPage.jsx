@@ -6,27 +6,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { portfolioDetailAsync, portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import { formattedDate, formattedTime } from '../utils';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
+import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
 export default function PortfolioDetailPage() {
-  const { portfolios } = useSelector((state) => state.portfolios);
+  const { portfolio } = useSelector((state) => state.portfolios);
   const { id } = useParams();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(myProfileAsync());
-    dispatch(portfoliosAsync());
-    dispatch(portfolioDetailAsync(id));
+    dispatch(searchPost(''));
+    dispatch(setPageToOne());
+    dispatch(portfolioDetailAsync({ id }));
   }, [id]);
 
   return (
     <section>
       <div className="container flex justify-center pt-3 pb-10">
-        {portfolios
-          .filter((portfolio) => portfolio.id === +id)
-          .map((portfolio) => (
+        {portfolio === null ? "" :
             <div
-              key={portfolio.id}
               className="flex flex-col items-center gap-5 p-5 mx-52 rounded-xl">
               <div className="w-full">
                 <button
@@ -68,7 +69,7 @@ export default function PortfolioDetailPage() {
                 </p>
               </div>
             </div>
-          ))}
+          }
       </div>
     </section>
   );

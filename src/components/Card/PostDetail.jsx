@@ -8,6 +8,7 @@ import { formattedDate, formattedTime } from '../../utils';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import { useDispatch } from 'react-redux';
 import { createCommentAsync } from '../../states/comments/commentsThunk';
+import { getDetailPostAsync } from '../../states/posts/postThunk';
 
 export default function PostDetail({
   id,
@@ -34,9 +35,9 @@ export default function PostDetail({
     commentInputRef.current.focus();
   };
 
-  const onClickCommentHandler = () => {
-    dispatch(createCommentAsync({ content: comment, post_id: id }));
-    setComment('');
+  const onClickCommentHandler = async () => {
+    await dispatch(createCommentAsync({ content: comment, post_id: id }));
+    dispatch(getDetailPostAsync({ id }));
   };
 
   return (

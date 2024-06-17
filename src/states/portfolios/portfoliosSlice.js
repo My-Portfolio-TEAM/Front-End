@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createPortfolioAsync, portfolioDetailAsync, portfoliosAsync } from './portfoliosThunk';
+import { logoutUser } from '../authUser/authUserThunk';
 
 const initialState = {
   portfolios: [],
+  portfolio: null,
   status: 'idle',
   error: null,
   loading: false
@@ -24,6 +26,7 @@ const portfolioSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.portfolios = action.payload.data;
+        state.portfolio = null;
       })
       .addCase(portfoliosAsync.rejected, (state, action) => {
         state.status = 'rejected';
@@ -38,7 +41,8 @@ const portfolioSlice = createSlice({
         state.status = 'succeeded';
         state.loading = false;
         state.error = null;
-        state.portfolios = Array.isArray(action.payload.data) ? action.payload.data : [];
+        state.portfolio = action.payload.data;
+        state.portfolios = [];
       })
       .addCase(portfolioDetailAsync.rejected, (state, action) => {
         state.status = 'rejected';
@@ -59,6 +63,9 @@ const portfolioSlice = createSlice({
         state.status = 'rejected';
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.portfolios = [];
       });
   }
 });

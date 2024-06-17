@@ -35,10 +35,11 @@ export const getCommentByIdAsync = createAsyncThunk(
 
 export const createCommentAsync = createAsyncThunk(
   'comments/createComment',
-  async ({ content, post_id }, { dispatch, rejectedWithValue }) => {
+  async (commentData, { dispatch, rejectedWithValue }) => {
     dispatch(showLoading());
     try {
-      const response = await axiosInstance.post('/api/comments', { content, post_id });
+      const response = await axiosInstance.post('/api/comments', commentData);
+      dispatch(getAllCommentsAsync());
       toast.success(response.data.message);
       return response.data;
     } catch (error) {

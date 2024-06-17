@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Index';
-import HeadProfile from '../components/Card/HeadProfile';
-import AboutProfile from '../components/Card/AboutProfile';
-import SkillsProfile from '../components/Card/SkillsProfile';
 import Post from '../components/Card/Post';
-import Portfolio from '../components/Card/Portfolio';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PostDetailModal from '../components/Modal/PostDetailModal';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
@@ -16,12 +12,16 @@ import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
 import { getMyPostAsync } from '../states/posts/postThunk';
+import { getUserIdAsync } from '../states/user/userThunk';
+import HeadUserProfile from '../components/Card/HeadUserProfile';
+import AboutUserProfile from '../components/Card/AboutUserProfile';
+import SkillsUserProfile from '../components/Card/SkillsUserProfile';
+import PortfolioUser from '../components/Card/PortfolioUser';
 import { searchPost, setPageToOne } from '../states/posts/postsSlice';
 
-export default function ProfilePage() {
+export default function ProfileDetailPage() {
   const { myProfile } = useSelector((state) => state.myProfile);
-  const { skills } = useSelector((state) => state.skills);
-  const { portfolios } = useSelector((state) => state.portfolios);
+  const { user } = useSelector((state) => state.users);
   const { posts } = useSelector((state) => state.posts);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const [openStudyModal, setOpenStudyModal] = useState(false);
@@ -65,13 +65,13 @@ export default function ProfilePage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(myProfileAsync());
+    dispatch(getUserIdAsync({id}));
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
     dispatch(setPageToOne());
     dispatch(getMyPostAsync());
     dispatch(searchPost(''));
   }, [dispatch]);
-
   return (
     <>
       <ToastContainer position="top-center" theme="dark" pauseOnHover={false} autoClose={3000} />
@@ -87,9 +87,9 @@ export default function ProfilePage() {
           />
         </div>
         <div className="container sm:mt-5 lg:px-52">
-          <HeadProfile myProfile={myProfile} />
-          <AboutProfile myProfile={myProfile} />
-          <SkillsProfile myProfile={myProfile} skills={skills} />
+          <HeadUserProfile user={user} />
+          <AboutUserProfile user={user} />
+          <SkillsUserProfile user={user} />
           <div className="flex flex-col px-3 mt-10 mb-40 sm:px-5 lg:px-10">
             <div className="flex gap-10">
               <button
@@ -118,12 +118,13 @@ export default function ProfilePage() {
             <div className="my-5">
               {activeSession === 'Posts' ? (
                 <div className="grid w-full gap-5 sm:grid-cols-2">
-                  {posts.length > 0
-                    ? posts.map((post) => (
+                  {user === null ? '' : user.posts.length > 0
+                    ? user.posts.map((post) => (
                         <Post
                           key={post.id}
                           page={'/profile'}
                           {...post}
+                          user={user}
                           handleClick={() => handlePostClick(post.id)}
                         />
                       ))
@@ -131,8 +132,8 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                  {portfolios.length > 0
-                    ? portfolios.map((portfolio) => <Portfolio key={portfolio.id} {...portfolio} />)
+                  {user === null ? '' : user.portfolios.length > 0
+                    ? user.portfolios.map((portfolio) => <PortfolioUser key={portfolio.id} {...portfolio} />)
                     : ''}
                 </div>
               )}

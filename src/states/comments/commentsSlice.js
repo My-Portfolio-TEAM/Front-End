@@ -11,7 +11,11 @@ const initialState = {
 const commentSlice = createSlice({
   name: 'comments',
   initialState,
-  reducers: [],
+  reducers: {
+    addComment: (state, action) => {
+      state.comments.push(action.payload);
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllCommentsAsync.pending, (state) => {
@@ -59,4 +63,5 @@ const commentSlice = createSlice({
   }
 });
 
+export const { addComment } = commentSlice.actions;
 export default commentSlice.reducer;

@@ -33,7 +33,7 @@ const createMyBiodataAsync = createAsyncThunk('auth/createMyBiodata', async({abo
         setOpenModal(false);
     } catch(error) {
         toast.error(error.response.data);
-        console.log(error.response.data);
+        rejectWithValue({error: error.response.data});
     }
 });
 
@@ -47,7 +47,22 @@ const createMyPhotoProfileAsync = createAsyncThunk('auth/createMyPhotoProfile', 
         toast.success('Success Edit Your Photo Profile')
     } catch(error) {
         toast.error(error.response.data);
-        console.log(error.response.data);
+        rejectWithValue({error: error.response.data});
+
+    }
+});
+//create my background Profile
+const createMyBackgroundProfileAsync = createAsyncThunk('auth/createMyBackgroundProfile', async (formData, {dispatch, rejectWithValue}) => {
+    try {
+        await axiosInstance.post('/api/backgrounds', formData, {headers: {
+            "Content-Type": "multipart/form-data"
+        }} );
+        dispatch(myProfileAsync());
+        toast.success('Success Edit Your Background Photo Profile')
+    } catch(error) {
+        toast.error(error.response.data);
+        rejectWithValue({error: error.response.data});
+
     }
 });
 
@@ -70,20 +85,41 @@ const updateMyBiodataAsync = createAsyncThunk('auth/updateMyBiodataAsync', async
         setOpenModal(false);
     } catch(error) {
         toast.error(error.response.data);
-        console.log(error.response.data);
+        rejectWithValue({error: error.response.data});
+
     }
 });
 
 //update My photo profile
-const updateMyPhotoProfileAsync = createAsyncThunk('auth/createMyPhotoProfile', async ({formData, id}, {dispatch, rejectWithValue}) => {
+const updateMyPhotoProfileAsync = createAsyncThunk('auth/updateMyPhotoProfile', async ({formData, id}, {dispatch, rejectWithValue}) => {
     try {
         await axiosInstance.post(`/api/photos/${id}`, formData);
         dispatch(myProfileAsync());
         toast.success('Success Edit Your Photo Profile')
     } catch(error) {
         toast.error(error.response.data);
-        console.log(error.response.data);
+        rejectWithValue({error: error.response.data});
+
+    }
+});
+//update My photo profile
+const updateMyBackgroundPhotoProfileAsync = createAsyncThunk('auth/updateMyBackgroundPhotoProfile', async ({formData, id}, {dispatch, rejectWithValue}) => {
+    try {
+        await axiosInstance.post(`/api/backgrounds/${id}`, formData);
+        dispatch(myProfileAsync());
+        toast.success('Success Edit Your Background Photo Profile')
+    } catch(error) {
+        toast.error(error.response.data);
+        rejectWithValue({error: error.response.data});
+
     }
 });
 
-export {createMyBiodataAsync, createMyPhotoProfileAsync, updateMyBiodataAsync, updateMyPhotoProfileAsync};
+export {
+    createMyBiodataAsync,
+    createMyPhotoProfileAsync,
+    updateMyBiodataAsync,
+    updateMyPhotoProfileAsync,
+    createMyBackgroundProfileAsync,
+    updateMyBackgroundPhotoProfileAsync,
+};

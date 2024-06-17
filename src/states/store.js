@@ -17,7 +17,7 @@ export const store = configureStore({
     isPreload: isPreloadReducer,
     myProfile: myProfileReducer,
     portfolios: portfolioReducer,
-    user: userReducer,
+    users: userReducer,
     posts: postsReducer,
     skills: skillsReducer,
     comments: commentsReducer,
