@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDetailPostAsync } from '../../states/posts/postThunk';
+import { getDetailPostAsync, postsAsync, upVotesPostAsync } from '../../states/posts/postThunk';
 import PostDetail from '../Card/PostDetail';
 import Loading from '../Loading';
+import SearchInput from '../Input/SearchInput';
 
 export default function PostDetailModal() {
   const [previousUrl, setPreviousUrl] = useState('/');
@@ -15,12 +16,19 @@ export default function PostDetailModal() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+
   const closeModal = () => {
     if (previousUrl.includes('/profile')) {
       navigate(`/profile/myProfile`);
     } else {
       navigate('/');
     }
+  };
+
+  const onVotesClickHandler = (postId) => {
+    dispatch(upVotesPostAsync({ id: postId }));
+    dispatch(getDetailPostAsync({ id: postId }));
+    dispatch(postsAsync({ searchInput: '', page: currentPost }));
   };
 
   useEffect(() => {
@@ -46,7 +54,14 @@ export default function PostDetailModal() {
 
   return (
     <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-70 text-textPrimary">
-      {currentPost && <PostDetail key={currentPost.id} {...currentPost} myProfile={myProfile} />}
+      {currentPost && (
+        <PostDetail
+          key={currentPost.id}
+          {...currentPost}
+          handleVotesClick={() => onVotesClickHandler(id)}
+          myProfile={myProfile}
+        />
+      )}
       <button className="absolute right-5 top-5" onClick={closeModal}>
         <IoClose className="text-3xl text-textSecondary" />
       </button>

@@ -5,14 +5,14 @@ import axiosInstance from '../../api/axiosConfig';
 
 export const postsAsync = createAsyncThunk(
   'auth/posts',
-  async ({searchInput, page}, { dispatch, rejectWithValue }) => {
+  async ({ searchInput, page }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
       const response = await axiosInstance.get(`/api/posts?search=${searchInput}&page=${page}`);
       return {
         posts: response.data.data.data,
         current_page: response.data.data.current_page,
-        last_page: response.data.data.last_page,
+        last_page: response.data.data.last_page
       };
     } catch (error) {
       toast.error(error.response.data);
@@ -41,14 +41,14 @@ export const mostLikedPostsAsync = createAsyncThunk(
 
 export const getMyPostAsync = createAsyncThunk(
   'auth/getMyPost',
-  async ({searchInput, page}, { dispatch, rejectWithValue }) => {
+  async ({ searchInput, page }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
       const response = await axiosInstance.get(`/api/my-posts?search=${searchInput}&page=${page}`);
       return {
         posts: response.data.data.data,
         current_page: response.data.data.current_page,
-        last_page: response.data.data.last_page,
+        last_page: response.data.data.last_page
       };
     } catch (error) {
       toast.error(error.response.data.data);
@@ -77,7 +77,7 @@ export const getDetailPostAsync = createAsyncThunk(
 
 export const createPostAsync = createAsyncThunk(
   'auth/createPost',
-  async ({ content, image, }, { dispatch, rejectWithValue }) => {
+  async ({ content, image }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
 
     try {
@@ -95,10 +95,41 @@ export const createPostAsync = createAsyncThunk(
       const newPosts = await axiosInstance.get(`/api/posts`);
       toast.success(response.data);
       return newPosts.data.data.data;
-
     } catch (error) {
       toast.error(error.response.data);
       return rejectWithValue({ error: error.response.data });
+    }
+  }
+);
+
+export const upVotesPostAsync = createAsyncThunk(
+  'post/upVotesPost',
+  async ({ id }, { dispatch, rejectWithValue }) => {
+    dispatch(showLoading());
+    try {
+      const response = await axiosInstance.post(`/api/posts/${id}/up-vote`);
+      return response.data;
+    } catch (error) {
+      toast.error(error.response.data);
+      return rejectWithValue({ error: error.response.data });
+    } finally {
+      dispatch(hideLoading());
+    }
+  }
+);
+
+export const downVotesPostAsync = createAsyncThunk(
+  'post/downVotesPost',
+  async ({ id }, { dispatch, rejectWithValue }) => {
+    dispatch(showLoading());
+    try {
+      const response = await axiosInstance.delete(`/api/posts/${id}/down-vote`);
+      return response.data;
+    } catch (error) {
+      toast.error(error.response.data);
+      return rejectWithValue({ error: error.response.data });
+    } finally {
+      dispatch(hideLoading());
     }
   }
 );

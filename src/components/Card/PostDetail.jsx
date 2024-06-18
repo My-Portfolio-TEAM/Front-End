@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import iconLove from '../../assets/icons/iconLove-outlined.png';
+import iconLoveFilled from '../../assets/icons/iconLove-filled.png';
 import iconComment from '../../assets/icons/messages.png';
 import { IoIosSend } from 'react-icons/io';
 import PropTypes from 'prop-types';
@@ -17,9 +18,9 @@ export default function PostDetail({
   user,
   created_at,
   updated_at,
+  post_up_votes,
   comments,
-  post_up_votes_count,
-  comments_count,
+  handleVotesClick,
   myProfile
 }) {
   const [comment, setComment] = useState('');
@@ -92,12 +93,12 @@ export default function PostDetail({
                             </p>
                           </div>
                           <p className="text-[9px] font-medium text-textSecondary">
-                            {comment.user.biodata === null || comment.user.biodata.role === null ? '' : comment.user.biodata.role}
+                            {comment.user.biodata?.role}
                           </p>
                         </div>
                         <p className="text-xs">{comment.content}</p>
                       </div>
-                      <div className="flex gap-1 my-2 text-xs text-textPrimary">
+                      {/*<div className="flex gap-1 my-2 text-xs text-textPrimary">
                         <button>Like</button>
                         <p className="text-xs text-[#7A7A7A]">•</p>
                         <p>{comment.comments_up_votes.length}</p>
@@ -105,7 +106,7 @@ export default function PostDetail({
                         <button>Reply</button>
                         <p className="text-xs text-[#7A7A7A]">•</p>
                         <p>{comment.reply_comments.length}</p>
-                      </div>
+                      </div>*/}
                     </div>
                   </div>
                 ))
@@ -117,16 +118,24 @@ export default function PostDetail({
           <div className="flex flex-col gap-1 px-4 pb-2 text-xs">
             <div className="flex gap-5 my-3 sm:px-0 text-textPrimary">
               <div className="flex items-center gap-1">
-                <button>
-                  <img src={iconLove} alt="" className="w-7" />
+                <button type="button" onClick={() => handleVotesClick(id)}>
+                  <img
+                    src={
+                      post_up_votes.find((vote) => myProfile && vote.user_id === myProfile.id)
+                        ? iconLoveFilled
+                        : iconLove
+                    }
+                    alt=""
+                    className="w-7"
+                  />
                 </button>
-                <p>{post_up_votes_count} Likes</p>
+                <p>{post_up_votes?.length} Likes</p>
               </div>
               <div className="flex items-center gap-2 ">
-                <button onClick={onFocusCommentInput}>
+                <button type="button" onClick={onFocusCommentInput}>
                   <img src={iconComment} alt="" className="w-6" />
                 </button>
-                <p>{comments_count}</p>
+                <p>{comments?.length}</p>
               </div>
             </div>
             <div className="flex items-center w-full gap-2">
@@ -169,8 +178,8 @@ PostDetail.propTypes = {
   user: PropTypes.object.isRequired,
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
-  comments_count: PropTypes.number,
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  post_up_votes_count: PropTypes.number,
+  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleVotesClick: PropTypes.func.isRequired,
   myProfile: PropTypes.instanceOf(Object).isRequired
 };
