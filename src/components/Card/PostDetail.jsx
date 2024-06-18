@@ -92,10 +92,7 @@ export default function PostDetail({
                             </p>
                           </div>
                           <p className="text-[9px] font-medium text-textSecondary">
-<<<<<<<<< Temporary merge branch 1
-=========
                             {comment.user.biodata?.role}
->>>>>>>>> Temporary merge branch 2
                           </p>
                         </div>
                         <p className="text-xs">{comment.content}</p>
