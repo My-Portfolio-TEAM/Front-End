@@ -1,5 +1,6 @@
 import React from 'react';
 import iconLove from '../../assets/icons/iconLove-outlined.png';
+import iconLoveFilled from '../../assets/icons/iconLove-filled.png';
 import iconComment from '../../assets/icons/messages.png';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { useExpand } from '../../hooks/useExpand';
 import { formattedDate, formattedTime } from '../../utils';
 import placeholderPhotoProfile from '../../assets/images/placeholderPhotoProfile.png';
 import { Popover } from 'flowbite-react';
+import { useSelector } from 'react-redux';
 
 export default function Post({
   id,
@@ -18,11 +20,13 @@ export default function Post({
   created_at,
   updated_at,
   handleClick,
+  handleVotesClick,
   page
 }) {
   const { isExpanded, isTruncated, textRef, toggleExpanded } = useExpand();
   const navigate = useNavigate();
   const desc = { __html: content };
+  const { myProfile } = useSelector((state) => state.myProfile);
 
   const handleToggleExpanded = () => {
     if (page === '/') {
@@ -42,7 +46,7 @@ export default function Post({
           }
           alt={user.name}
         />
-        <Link to={`/profile/${user.id}`}>
+        <Link to={`/profile/${user?.id}`}>
           <button
             type="button"
             className="px-4 py-1.5 text-xs font-medium transition-all border-none rounded-full bg-fernGreen hover:bg-opacity-85 text-textPrimary">
@@ -129,8 +133,16 @@ export default function Post({
 
       <div className="flex gap-5 px-2 my-2 sm:px-0 text-textPrimary">
         <div className="flex items-center gap-1">
-          <button>
-            <img src={iconLove} alt="" className="w-7" />
+          <button type="button" onClick={() => handleVotesClick(id)}>
+            <img
+              src={
+                post_up_votes.find((vote) => myProfile && vote.user_id === myProfile.id)
+                  ? iconLoveFilled
+                  : iconLove
+              }
+              alt=""
+              className="w-7"
+            />
           </button>
           <p>{post_up_votes.length}</p>
         </div>
@@ -153,5 +165,6 @@ Post.propTypes = {
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
   user: PropTypes.instanceOf(Object).isRequired,
-  handleClick: PropTypes.func.isRequired
+  handleClick: PropTypes.func.isRequired,
+  handleVotesClick: PropTypes.func.isRequired
 };
