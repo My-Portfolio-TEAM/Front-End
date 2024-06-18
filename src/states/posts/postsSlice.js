@@ -1,8 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createPostAsync, getDetailPostAsync, getMyPostAsync, mostLikedPostsAsync, postsAsync } from './postThunk';
+import {
+  createPostAsync,
+  downVotesPostAsync,
+  getDetailPostAsync,
+  getMyPostAsync,
+  mostLikedPostsAsync,
+  postsAsync,
+  upVotesPostAsync
+} from './postThunk';
 
 const initialState = {
   posts: [],
+  votes: [],
   mostLikedPosts: [],
   searchInput: '',
   selectedPost: 'All Posts',
@@ -13,8 +22,7 @@ const initialState = {
   error: null,
   loading: false,
   loadingPaginate: false,
-  loadingLikedPosts: false,
-
+  loadingLikedPosts: false
 };
 
 const postsSlice = createSlice({
@@ -25,13 +33,13 @@ const postsSlice = createSlice({
       state.searchInput = action.payload;
     },
     setPage: (state) => {
-      state.page += 1; 
+      state.page += 1;
     },
     setPageToOne: (state) => {
       state.page = 1;
     },
     setSelectedPost: (state, action) => {
-      state.selectedPost = action.payload
+      state.selectedPost = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -49,10 +57,10 @@ const postsSlice = createSlice({
         state.current_page = action.payload.current_page;
         state.last_page = action.payload.last_page;
 
-        if(state.current_page === 1) {
+        if (state.current_page === 1) {
           state.posts = action.payload.posts;
-          } else {
-            state.posts = [...state.posts, ...action.payload.posts];
+        } else {
+          state.posts = [...state.posts, ...action.payload.posts];
         }
       })
       .addCase(postsAsync.rejected, (state, action) => {
@@ -83,7 +91,6 @@ const postsSlice = createSlice({
         state.loading = state.page === 1 ? true : false;
         state.loadingPaginate = state.page === 1 ? false : true;
         state.selectedPost = 'My Posts';
-
       })
       .addCase(getMyPostAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
@@ -93,10 +100,10 @@ const postsSlice = createSlice({
         state.current_page = action.payload.current_page;
         state.last_page = action.payload.last_page;
 
-        if(state.current_page === 1) {
+        if (state.current_page === 1) {
           state.posts = action.payload.posts;
-          } else {
-            state.posts = [...state.posts, ...action.payload.posts];
+        } else {
+          state.posts = [...state.posts, ...action.payload.posts];
         }
       })
       .addCase(getMyPostAsync.rejected, (state, action) => {
@@ -128,7 +135,6 @@ const postsSlice = createSlice({
         state.loading = true;
         state.searchInput = '';
         state.selectedPost = 'All Posts';
-
       })
       .addCase(createPostAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
@@ -141,7 +147,38 @@ const postsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      ;
+      .addCase(upVotesPostAsync.pending, (state) => {
+        state.status = 'pending';
+        state.loading = true;
+        state.votes = null;
+      })
+      .addCase(upVotesPostAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.error = null;
+        state.votes = action.payload.data;
+      })
+      .addCase(upVotesPostAsync.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(downVotesPostAsync.pending, (state) => {
+        state.status = 'pending';
+        state.loading = true;
+        state.votes = null;
+      })
+      .addCase(downVotesPostAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.loading = false;
+        state.error = null;
+        state.votes = action.payload;
+      })
+      .addCase(downVotesPostAsync.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.loading = false;
+        state.error = action.payload;
+      });
   }
 });
 export const { searchPost, setPage, setSelectedPost, setPageToOne } = postsSlice.actions;

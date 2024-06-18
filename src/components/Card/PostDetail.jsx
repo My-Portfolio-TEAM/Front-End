@@ -56,7 +56,7 @@ export default function PostDetail({
             />
             <div className="flex flex-col">
               <p className="text-sm font-medium text-textPrimary">{user?.name}</p>
-              <p className="text-[10px] font-medium text-textSecondary">{user.biodata === null || user.biodata.role === null ? '' : user.biodata.role}</p>
+              <p className="text-[10px] font-medium text-textSecondary">{user?.biodata?.role}</p>
             </div>
           </div>
           <div className="px-4 py-2 overflow-auto border-y border-[#262626] h-[25rem] mt-12">
@@ -92,7 +92,7 @@ export default function PostDetail({
                             </p>
                           </div>
                           <p className="text-[9px] font-medium text-textSecondary">
-                            {comment.user.biodata === null || comment.user.biodata.role === null ? '' : comment.user.biodata.role}
+                            {comment.user.biodata.role}
                           </p>
                         </div>
                         <p className="text-xs">{comment.content}</p>
