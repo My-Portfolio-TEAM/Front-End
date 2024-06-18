@@ -33,6 +33,8 @@ export default function Post({
       toggleExpanded(!isExpanded);
     } else if (page === `/profile`) {
       navigate(`/profile/api/post/${id}`);
+    } else if (page === `/profileDetail`) {
+      navigate(`/profileDetail/api/post/${id}`);
     }
   };
 
