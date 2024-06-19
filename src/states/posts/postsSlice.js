@@ -89,7 +89,7 @@ const postsSlice = createSlice({
       })
       .addCase(mostLikedPostsAsync.pending, (state) => {
         state.status = 'loading';
-        state.loadingLikedPosts = true;
+        state.loadingLikedPosts = state.votes !== null ? false : true;
         state.mostLikedPosts = [];
       })
       .addCase(mostLikedPostsAsync.fulfilled, (state, action) => {

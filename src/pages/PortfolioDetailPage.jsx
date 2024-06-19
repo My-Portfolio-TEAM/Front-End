@@ -4,6 +4,7 @@ import { CgArrowLeft } from 'react-icons/cg';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { portfolioDetailAsync, portfoliosAsync } from '../states/portfolios/portfoliosThunk';
+import { MdDelete } from "react-icons/md";
 import { formattedDate, formattedTime } from '../utils';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 import { searchPost, setPageToOne } from '../states/posts/postsSlice';
@@ -31,13 +32,20 @@ export default function PortfolioDetailPage() {
         {portfolio === null ? "" :
             <div
               className="flex flex-col items-center gap-5 p-5 mx-52 rounded-xl">
-              <div className="w-full">
+              <div className="w-full flex justify-between">
                 <button
                   onClick={() => navigate(-1)}
                   className="flex items-center gap-3 transition-opacity w-fit hover:opacity-80">
                   <CgArrowLeft className="text-2xl text-textPrimary" />
                   <h1 className="font-medium text-textPrimary">Go back to profile</h1>
                 </button>
+                <Link
+                    to={portfolio.link}
+                    target="_blank"
+                    className="flex gap-2 font-semibold text-ufoGreen hover:text-opacity-80">
+                    View Portfolio
+                    <FaExternalLinkAlt className="text-xs text-[#A9A9A9] " />
+                  </Link>
               </div>
               <img
                 src={portfolio.image}
@@ -55,13 +63,13 @@ export default function PortfolioDetailPage() {
                   </p>
                 </div>
                 <div className="flex justify-end w-full ">
-                  <Link
-                    to={portfolio.link}
-                    target="_blank"
-                    className="flex gap-2 font-semibold text-ufoGreen hover:text-opacity-80">
-                    View Portfolio
-                    <FaExternalLinkAlt className="text-xs text-[#A9A9A9] " />
-                  </Link>
+                  <div className='flex gap-2'>
+                    <button className='flex text-red-500 items-center'>
+                    <MdDelete className='text-red-500'/>
+                    Delete
+                    </button>
+
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col w-full h-full gap-3 text-textPrimary">

@@ -50,7 +50,7 @@ export default function Post({
           }
           alt={user.name}
         />
-        <Link to={`/profile/${user?.id}`}>
+        <Link to={`/profile/${user?.id === myProfile?.id ? 'myProfile' : user?.id}`}>
           <button
             type="button"
             className="px-4 py-1.5 text-xs font-medium transition-all border-none rounded-full bg-fernGreen hover:bg-opacity-85 text-textPrimary"
