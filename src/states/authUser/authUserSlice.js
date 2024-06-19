@@ -6,7 +6,7 @@ const initialState = {
   token: null,
   status: 'idle',
   error: null,
-  loading: false,
+  loading: false
 };
 
 const authUserSlice = createSlice({
@@ -36,8 +36,8 @@ const authUserSlice = createSlice({
         }
       })
       .addCase(logoutUser.pending, (state) => {
-        state.status = 'loading'
-        state.loading = true
+        state.status = 'loading';
+        state.loading = true;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;

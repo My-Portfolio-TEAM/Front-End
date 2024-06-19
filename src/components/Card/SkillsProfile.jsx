@@ -18,33 +18,32 @@ export default function SkillsProfile({ myProfile, skills }) {
         </button>
       </div>
       <div className="flex flex-wrap gap-2 py-5 cursor-default">
-       {
-        myProfile ===  null || myProfile.biodata === null || myProfile.biodata.skills.length < 1 ? 'You don\'t have any skills, please add your skills' :
-        myProfile.biodata.skills.map((skill, key) => {
-          return (
-            <span
-            key={key}
-            className="sm:px-5 sm:py-2 px-3 py-1 text-sm font-medium lowercase rounded-full bg-[#424242] text-textSecondary"
-          >
-            {skill}
-          </span>
-          )
-        })
-       }
+        {myProfile === null || myProfile.biodata === null || myProfile.biodata.skills.length < 1
+          ? "You don't have any skills, please add your skills"
+          : myProfile.biodata.skills.map((skill, key) => {
+              return (
+                <span
+                  key={key}
+                  className="sm:px-5 sm:py-2 px-3 py-1 text-sm font-medium lowercase rounded-full bg-[#424242] text-textSecondary"
+                >
+                  {skill}
+                </span>
+              );
+            })}
       </div>
-      {showModal &&
+      {showModal && (
         <EditSkillsProfileModal
           openModal={showModal}
           setOpenModal={setShowModal}
           skills={skills}
           myProfile={myProfile}
         />
-      }
+      )}
     </section>
   );
 }
 
 SkillsProfile.propTypes = {
   myProfile: PropTypes.instanceOf(Object),
-  skills: PropTypes.instanceOf(Array),
+  skills: PropTypes.instanceOf(Array)
 };

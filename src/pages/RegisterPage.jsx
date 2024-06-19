@@ -11,7 +11,7 @@ import { setPageUserToOne } from '../states/user/userSlice';
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
-  
+
   const navigate = useNavigate();
   const { loading, status } = useSelector((state) => state.register);
 
@@ -30,7 +30,7 @@ export default function RegisterPage() {
     dispatch(setPageToOne());
     dispatch(setPageUserToOne());
     dispatch(searchPost(''));
-  }, [])
+  }, []);
 
   return (
     <>

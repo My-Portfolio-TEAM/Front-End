@@ -11,8 +11,7 @@ export default function NotFound() {
   useEffect(() => {
     dispatch(searchPost(''));
     dispatch(setPageToOne());
-
-  }, [])
+  }, []);
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-2">
       <Lottie animationData={Animation404} className="w-96 sm:w-[40rem]" />

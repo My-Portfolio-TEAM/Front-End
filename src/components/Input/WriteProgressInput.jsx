@@ -78,7 +78,8 @@ export default function WriteProgressInput({ closeModal: closeParentModal, myPro
         modalStatus === 'open'
           ? 'animate__fadeInDown animate__faster'
           : 'animate__fadeOutUp animate__faster'
-      }`}>
+      }`}
+    >
       <div className="p-5">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
@@ -106,7 +107,8 @@ export default function WriteProgressInput({ closeModal: closeParentModal, myPro
             onClick={closeModal}
             onKeyDown={() => {}}
             tabIndex={0}
-            aria-label="Close">
+            aria-label="Close"
+          >
             <IoClose className="text-xl text-textSecondary" />
           </button>
         </div>
@@ -148,7 +150,8 @@ export default function WriteProgressInput({ closeModal: closeParentModal, myPro
           color=""
           onClick={onShareClickHandler}
           className={`font-semibold bg-fernGreen active:outline-none active:ring-none hover:bg-opacity-80 ${!content || !file ? 'bg-opacity-100 hover:bg-opacity-100' : ''}`}
-          disabled={!content || !file}>
+          disabled={!content || !file}
+        >
           Share
         </Button>
       </div>

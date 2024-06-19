@@ -19,7 +19,7 @@ export const getAllUsersAsync = createAsyncThunk(
 
 export const getUserIdAsync = createAsyncThunk(
   'user/getUserId',
-  async ({id}, { dispatch, rejectWithValue }) => {
+  async ({ id }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
       const response = await axiosInstance.get(`/api/users/${id}`);
@@ -33,14 +33,14 @@ export const getUserIdAsync = createAsyncThunk(
 );
 export const getMostActiveUsers = createAsyncThunk(
   'user/mostActiveUsers',
-  async ({page}, { dispatch, rejectWithValue }) => {
+  async ({ page }, { dispatch, rejectWithValue }) => {
     dispatch(showLoading());
     try {
       const response = await axiosInstance.get(`/api/most-active-users?page=${page}`);
       return {
         users: response.data.data.data,
         current_page: response.data.data.current_page,
-        last_page: response.data.data.last_page,
+        last_page: response.data.data.last_page
       };
     } catch (error) {
       return rejectWithValue({ error: error.message });

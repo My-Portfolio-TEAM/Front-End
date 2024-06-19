@@ -83,7 +83,7 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
     } else {
       await dispatch(createPortfolioAsync({ title, description: content, image: file, link }));
       dispatch(portfoliosAsync());
-      dispatch(myProfileAsync())
+      dispatch(myProfileAsync());
       closeModal();
     }
   };
@@ -109,7 +109,8 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
         modalStatus === 'open'
           ? 'animate__fadeInDown animate__faster'
           : 'animate__fadeOutUp animate__faster'
-      }`}>
+      }`}
+    >
       <div className="p-5">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
@@ -137,7 +138,8 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
             onClick={closeModal}
             onKeyDown={() => {}}
             tabIndex={0}
-            aria-label="Close">
+            aria-label="Close"
+          >
             <IoClose className="text-xl text-textSecondary" />
           </button>
         </div>
@@ -209,7 +211,8 @@ export default function PortfolioInput({ closeModal: closeParentModal, myProfile
           color=""
           onClick={() => onShareClickHandler()}
           className={`font-semibold bg-fernGreen active:outline-none active:ring-none hover:bg-opacity-80 ${!title && !link && !content && !file ? 'bg-opacity-100 hover:bg-opacity-100' : ''}`}
-          disabled={!title || !link || !content || !file}>
+          disabled={!title || !link || !content || !file}
+        >
           Post
         </Button>
       </div>

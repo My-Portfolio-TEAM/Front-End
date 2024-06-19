@@ -15,8 +15,8 @@ import { skillsAsync } from '../states/skills/skillsThunk';
 import { portfoliosAsync } from '../states/portfolios/portfoliosThunk';
 import WriteProgressInputModal from '../components/Modal/WriteProgressInputModal';
 import PortfolioInputModal from '../components/Modal/PortfolioInputModal';
-import { getMyPostAsync, postsAsync } from '../states/posts/postThunk';
-import { searchPost, setPage, setPageToOne, setSelectedPost } from '../states/posts/postsSlice';
+import { getMyPostAsync } from '../states/posts/postThunk';
+import { searchPost, setPage, setPageToOne } from '../states/posts/postsSlice';
 import ButtonPaginate from '../components/Card/ButtonPaginate';
 import { setPageUserToOne } from '../states/user/userSlice';
 
@@ -24,7 +24,16 @@ export default function ProfilePage() {
   const { myProfile } = useSelector((state) => state.myProfile);
   const { skills } = useSelector((state) => state.skills);
   const { portfolios } = useSelector((state) => state.portfolios);
-  const { posts, selectedPost, page, searchInput, loading, loadingPaginate, current_page, last_page } = useSelector((state) => state.posts);
+  const {
+    posts,
+    selectedPost,
+    page,
+    searchInput,
+    loading,
+    loadingPaginate,
+    current_page,
+    last_page
+  } = useSelector((state) => state.posts);
   const [activeSession, setActiveSession] = useState('Portfolio');
   const [openStudyModal, setOpenStudyModal] = useState(false);
   const [openPortfolioModal, setOpenPortfolioModal] = useState(false);
@@ -53,11 +62,10 @@ export default function ProfilePage() {
   const onPaginateExtend = () => {
     dispatch(setPage());
   };
-  
+
   useEffect(() => {
     dispatch(getMyPostAsync({ searchInput, page }));
   }, [dispatch, searchInput, page, selectedPost]);
-
 
   useEffect(() => {
     if (openStudyModal || openPortfolioModal) {
@@ -105,22 +113,26 @@ export default function ProfilePage() {
               <button
                 type="button"
                 className="p-0 border-gray-500 rounded-s-xl"
-                onClick={() => setActiveSession('Portfolio')}>
+                onClick={() => setActiveSession('Portfolio')}
+              >
                 <h1
                   className={`text-xl font-medium cursor-pointer ${
                     activeSession === 'Portfolio' ? 'border-b-2 border-textSecondary' : ''
-                  }`}>
+                  }`}
+                >
                   Portfolio
                 </h1>
               </button>
               <button
                 type="button"
                 className="p-0 rounded-e-xl"
-                onClick={() => setActiveSession('Posts')}>
+                onClick={() => setActiveSession('Posts')}
+              >
                 <h1
                   className={`text-xl font-medium cursor-pointer ${
                     activeSession === 'Posts' ? 'border-b-2 border-textSecondary' : ''
-                  }`}>
+                  }`}
+                >
                   Posts
                 </h1>
               </button>
@@ -128,29 +140,27 @@ export default function ProfilePage() {
             <div className="my-5">
               {activeSession === 'Posts' ? (
                 <>
-                <div className="grid w-full gap-5 sm:grid-cols-2">
-                  {posts.length > 0
-                    ? posts.map((post) => (
-                        <Post
-                          key={post.id}
-                          page={'/profile'}
-                          {...post}
-                          handleClick={() => handlePostClick(post.id)}
-                        />
-                      ))
-                    : ''}
-
-                </div>
-                <div className="p-2 w-full flex justify-center">
-
-                <ButtonPaginate 
-                  onPaginateExtend={onPaginateExtend}
-                  loadingPaginate={loadingPaginate}
-                  current_page={current_page}
-                  last_page={last_page}
-                  loading={loading} 
-                />
-                </div>
+                  <div className="grid w-full gap-5 sm:grid-cols-2">
+                    {posts.length > 0
+                      ? posts.map((post) => (
+                          <Post
+                            key={post.id}
+                            page={'/profile'}
+                            {...post}
+                            handleClick={() => handlePostClick(post.id)}
+                          />
+                        ))
+                      : ''}
+                  </div>
+                  <div className="flex justify-center w-full p-2">
+                    <ButtonPaginate
+                      onPaginateExtend={onPaginateExtend}
+                      loadingPaginate={loadingPaginate}
+                      current_page={current_page}
+                      last_page={last_page}
+                      loading={loading}
+                    />
+                  </div>
                 </>
               ) : (
                 <div className="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">

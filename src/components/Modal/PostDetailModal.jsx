@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDetailPostAsync, postsAsync, upVotesPostAsync } from '../../states/posts/postThunk';
 import PostDetail from '../Card/PostDetail';
 import Loading from '../Loading';
-import SearchInput from '../Input/SearchInput';
+import { upVotes } from '../../states/posts/postsSlice';
 
 export default function PostDetailModal() {
   const [previousUrl, setPreviousUrl] = useState('/');
@@ -58,7 +58,7 @@ export default function PostDetailModal() {
         <PostDetail
           key={currentPost.id}
           {...currentPost}
-          handleVotesClick={() => onVotesClickHandler(id)}
+          handleVotesClick={() => onVotesClickHandler(currentPost.id)}
           myProfile={myProfile}
         />
       )}

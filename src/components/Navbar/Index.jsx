@@ -38,7 +38,8 @@ export default function Index({
                   ? ''
                   : 'active'
               }`}
-              to="/">
+              to="/"
+            >
               <FiHome title="Home" className="text-3xl lg:text-xl" />
               <p className="hidden lg:block">Home</p>
             </Link>
@@ -48,7 +49,8 @@ export default function Index({
               }`}
               onClick={() => {
                 openModalStudy(true);
-              }}>
+              }}
+            >
               <TfiPencilAlt title="Write Progress" className="text-2xl lg:text-xl" />
               <p className="hidden lg:block">Write Progress</p>
             </button>
@@ -58,7 +60,8 @@ export default function Index({
               }`}
               onClick={() => {
                 openModalPortfolio(true);
-              }}>
+              }}
+            >
               <MdOutlinePostAdd title="Post Portfolio" className="text-4xl lg:text-2xl" />
               <p className="hidden mt-[2px] lg:block">Post Portfolio</p>
             </button>
@@ -86,7 +89,8 @@ export default function Index({
                 ? ''
                 : 'active'
             }`}
-            to="/">
+            to="/"
+          >
             <FiHome title="Home" className="text-2xl" />
           </Link>
           <button
@@ -95,7 +99,8 @@ export default function Index({
             }`}
             onClick={() => {
               openModalStudy(true);
-            }}>
+            }}
+          >
             <TfiPencilAlt title="Write Progress" className="text-2xl lg:text-xl" />
           </button>
           <button
@@ -105,12 +110,13 @@ export default function Index({
             onClick={() => {
               openModalPortfolio(true);
             }}
-            >
+          >
             <MdOutlinePostAdd title="Post Portfolio" className="text-3xl" />
           </button>
           <button
             onClick={logout}
-            className="flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80">
+            className="flex flex-col items-center transition-all duration-200 ease-out cursor-pointer hover:opacity-80"
+          >
             <img
               src={
                 myProfile === null || myProfile.photo_profile === null

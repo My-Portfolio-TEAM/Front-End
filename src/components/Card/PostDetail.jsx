@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import iconLove from '../../assets/icons/iconLove-outlined.png';
+import iconLoveFilled from '../../assets/icons/iconLove-filled.png';
 import iconComment from '../../assets/icons/messages.png';
 import { IoIosSend } from 'react-icons/io';
 import PropTypes from 'prop-types';
@@ -18,8 +19,7 @@ export default function PostDetail({
   created_at,
   updated_at,
   comments,
-  post_up_votes_count,
-  comments_count,
+  post_up_votes,
   myProfile
 }) {
   const [comment, setComment] = useState('');
@@ -35,14 +35,15 @@ export default function PostDetail({
     commentInputRef.current.focus();
   };
 
-  const onClickCommentHandler = async () => {
-    await dispatch(createCommentAsync({ content: comment, post_id: id }));
+  const onClickCommentHandler = () => {
+    dispatch(createCommentAsync({ content: comment, post_id: id }));
     dispatch(getDetailPostAsync({ id }));
   };
 
   return (
     <section
-      className={`container flex h-[40rem] ${comments > 0 ? 'h-[40rem]' : 'h-fit'} w-96  ${image ? 'sm:w-[70rem]' : ''} rounded-md text-textPrimary bg-eerieBlack`}>
+      className={`container flex h-[40rem] ${comments > 0 ? 'h-[40rem]' : 'h-fit'} w-96  ${image ? 'sm:w-[70rem]' : ''} rounded-md text-textPrimary bg-eerieBlack`}
+    >
       <div className="flex min-w-full">
         <div className={`items-baseline hidden w-full h-full  ${image ? 'md:flex' : 'hidden'}`}>
           <img src={image} alt="post" className="object-contain w-full h-full " />
@@ -117,16 +118,35 @@ export default function PostDetail({
           <div className="flex flex-col gap-1 px-4 pb-2 text-xs">
             <div className="flex gap-5 my-3 sm:px-0 text-textPrimary">
               <div className="flex items-center gap-1">
-                <button>
-                  <img src={iconLove} alt="" className="w-7" />
+                <button
+                  className={
+                    post_up_votes.find((vote) => myProfile && vote.user_id === myProfile.id)
+                      ? 'hover:cursor-not-allowed'
+                      : ''
+                  }
+                  disabled={
+                    post_up_votes.find((vote) => myProfile && vote.user_id === myProfile.id)
+                      ? true
+                      : false
+                  }
+                >
+                  <img
+                    src={
+                      post_up_votes.find((vote) => myProfile && vote.user_id === myProfile.id)
+                        ? iconLoveFilled
+                        : iconLove
+                    }
+                    alt=""
+                    className="w-7"
+                  />
                 </button>
-                <p>{post_up_votes_count} Likes</p>
+                <p>{post_up_votes.length} Likes</p>
               </div>
               <div className="flex items-center gap-2 ">
                 <button onClick={onFocusCommentInput}>
                   <img src={iconComment} alt="" className="w-6" />
                 </button>
-                <p>{comments_count}</p>
+                <p>{comments.length}</p>
               </div>
             </div>
             <div className="flex items-center w-full gap-2">
@@ -150,7 +170,8 @@ export default function PostDetail({
                 <button
                   type="submit"
                   onClick={() => onClickCommentHandler()}
-                  className="bg-searchInput transition-all duration-300 hover:text-ufoGreen right-0 px-3 me-10 w-auto rounded-md py-2 h-10 text-lg font-medium hover:shadow text-[#A9A9A9] hover:bg-opacity-70">
+                  className="bg-searchInput transition-all duration-300 hover:text-ufoGreen right-0 px-3 me-10 w-auto rounded-md py-2 h-10 text-lg font-medium hover:shadow text-[#A9A9A9] hover:bg-opacity-70"
+                >
                   <IoIosSend title="Send" />
                 </button>
               </div>
@@ -169,8 +190,7 @@ PostDetail.propTypes = {
   user: PropTypes.object.isRequired,
   created_at: PropTypes.string.isRequired,
   updated_at: PropTypes.string.isRequired,
-  comments_count: PropTypes.number,
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  post_up_votes_count: PropTypes.number,
+  post_up_votes: PropTypes.arrayOf(PropTypes.object).isRequired,
   myProfile: PropTypes.instanceOf(Object).isRequired
 };

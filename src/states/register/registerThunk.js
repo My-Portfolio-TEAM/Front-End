@@ -23,7 +23,7 @@ export const registerAsync = createAsyncThunk(
         password_confirmation
       });
       toast.success(response.data.message);
-      return { success: true, message: response.data.message};
+      return { success: true, message: response.data.message };
     } catch (error) {
       if (error.message === 'Network Error') {
         toast.error('Network Error: Please check your connection');

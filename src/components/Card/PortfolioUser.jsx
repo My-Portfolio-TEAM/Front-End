@@ -29,12 +29,14 @@ export default function PortfolioUser({ id, title, image, description, link }) {
             ref={textRef}
             className={`text-sm text-[#eaeaea] leading-5 px-2 sm:px-0 ${
               isExpanded ? '' : 'line-clamp-2'
-            }`}>
+            }`}
+          >
             {description}
           </p>
           <button
             onClick={() => handleToggleExpanded(id)}
-            className="text-[#A9A9A9] text-sm px-2 sm:px-0 font-normal">
+            className="text-[#A9A9A9] text-sm px-2 sm:px-0 font-normal"
+          >
             ...See detail
           </button>
         </div>

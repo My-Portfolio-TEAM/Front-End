@@ -6,7 +6,7 @@ import { searchPost, setPageToOne, setSelectedPost } from '../../states/posts/po
 import { getMyPostAsync } from '../../states/posts/postThunk';
 
 export default function SeePost() {
-  const {selectedPost} = useSelector((state) => state.posts);
+  const { selectedPost } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
   return (
@@ -36,11 +36,9 @@ export default function SeePost() {
       <Dropdown.Item
         style={{ backgroundColor: '#1A1C20' }}
         onClick={() => {
-          dispatch(setSelectedPost('My Posts'))
+          dispatch(setSelectedPost('My Posts'));
           dispatch(setPageToOne());
           dispatch(searchPost(''));
-
-
         }}
         className={`text-textPrimary ${
           selectedPost === 'My Posts' ? 'border-s border-ufoGreen' : ''

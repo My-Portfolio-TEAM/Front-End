@@ -1,9 +1,12 @@
-import React from "react";
+import React from 'react';
 
 export default function PostLoading() {
   return Array.from({ length: 5 }, (_, index) => {
     return (
-      <section className="w-auto py-3 rounded-md h-fit sm:p-4 bg-eerieBlack sm:rounded-xl" key={index}>
+      <section
+        className="w-auto py-3 rounded-md h-fit sm:p-4 bg-eerieBlack sm:rounded-xl"
+        key={index}
+      >
         <div className="flex items-center gap-3 px-2 sm:px-0">
           <div>
             <div className=" h-5 rounded-full bg-slate-300 animate-pulse w-[200px]" />

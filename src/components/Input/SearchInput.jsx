@@ -21,5 +21,5 @@ export default function SearchInput({ searchInput, onSearchChange }) {
 
 SearchInput.propTypes = {
   onSearchChange: PropTypes.func.isRequired,
-  searchInput: PropTypes.string, 
+  searchInput: PropTypes.string
 };

@@ -15,7 +15,6 @@ import { logoutUser } from '../states/authUser/authUserThunk';
 import Loading from '../components/Loading';
 import { myProfileAsync } from '../states/myProfile/myProfileThunk';
 import {
-  downVotesPostAsync,
   getMyPostAsync,
   mostLikedPostsAsync,
   postsAsync,
@@ -23,7 +22,7 @@ import {
 } from '../states/posts/postThunk';
 import { getMostActiveUsers } from '../states/user/userThunk';
 import { ToastContainer } from 'react-toastify';
-import { searchPost, setPage, setPageToOne, setSelectedPost, upVotes } from '../states/posts/postsSlice';
+import { searchPost, setPage, setPageToOne, upVotes } from '../states/posts/postsSlice';
 import ButtonPaginate from '../components/Card/ButtonPaginate';
 import PostLoading from '../components/Loading/PostLoading';
 import ProfileHomePageLoading from '../components/Loading/ProfileHomePageLoading';
@@ -35,7 +34,7 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.auth);
   const { myProfile, loading } = useSelector((state) => state.myProfile);
-  const { posts, searchInput, page, selectedPost, loadingPaginate, last_page, current_page, votes } =
+  const { posts, searchInput, page, selectedPost, loadingPaginate, last_page, current_page } =
     useSelector((state) => state.posts);
   const loadingPosts = useSelector((state) => state.posts.loading);
 
@@ -64,10 +63,12 @@ export default function HomePage() {
   const handleVotesClick = (postId) => {
     dispatch(upVotesPostAsync({ id: postId }));
     dispatch(mostLikedPostsAsync());
-    dispatch(upVotes({
-      user_id: myProfile.id,
-      post_id: postId,
-    }));
+    dispatch(
+      upVotes({
+        user_id: myProfile.id,
+        post_id: postId
+      })
+    );
   };
 
   const onSearchChange = (value) => {

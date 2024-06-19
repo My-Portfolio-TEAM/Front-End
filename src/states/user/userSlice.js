@@ -20,11 +20,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setPage: (state) => {
-      state.page += 1; 
+      state.page += 1;
     },
     setPageUserToOne: (state) => {
       state.page = 1;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -79,10 +79,10 @@ const userSlice = createSlice({
         state.current_page = action.payload.current_page;
         state.last_page = action.payload.last_page;
 
-         if(state.current_page === 1) {
+        if (state.current_page === 1) {
           state.mostActiveUsers = action.payload.users;
-          } else {
-            state.mostActiveUsers = [...state.mostActiveUsers, ...action.payload.users];
+        } else {
+          state.mostActiveUsers = [...state.mostActiveUsers, ...action.payload.users];
         }
       })
       .addCase(getMostActiveUsers.rejected, (state, action) => {
@@ -98,10 +98,7 @@ const userSlice = createSlice({
         state.users = [];
         state.user = null;
         state.mostActiveUsers = [];
-      })
-      
-      
-      ;
+      });
   }
 });
 

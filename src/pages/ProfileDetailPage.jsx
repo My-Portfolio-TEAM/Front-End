@@ -65,9 +65,9 @@ export default function ProfileDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(myProfileAsync());
-    dispatch(getMyPostAsync({page: 1, searchInput: ''}))
-    dispatch(postsAsync({page: 1, searchInput: ''}))
-    dispatch(getUserIdAsync({id}));
+    dispatch(getMyPostAsync({ page: 1, searchInput: '' }));
+    dispatch(postsAsync({ page: 1, searchInput: '' }));
+    dispatch(getUserIdAsync({ id }));
     dispatch(portfoliosAsync());
     dispatch(skillsAsync());
     dispatch(setPageToOne());
@@ -98,22 +98,26 @@ export default function ProfileDetailPage() {
               <button
                 type="button"
                 className="p-0 border-gray-500 rounded-s-xl"
-                onClick={() => setActiveSession('Portfolio')}>
+                onClick={() => setActiveSession('Portfolio')}
+              >
                 <h1
                   className={`text-xl font-medium cursor-pointer ${
                     activeSession === 'Portfolio' ? 'border-b-2 border-textSecondary' : ''
-                  }`}>
+                  }`}
+                >
                   Portfolio
                 </h1>
               </button>
               <button
                 type="button"
                 className="p-0 rounded-e-xl"
-                onClick={() => setActiveSession('Posts')}>
+                onClick={() => setActiveSession('Posts')}
+              >
                 <h1
                   className={`text-xl font-medium cursor-pointer ${
                     activeSession === 'Posts' ? 'border-b-2 border-textSecondary' : ''
-                  }`}>
+                  }`}
+                >
                   Posts
                 </h1>
               </button>
@@ -121,23 +125,29 @@ export default function ProfileDetailPage() {
             <div className="my-5">
               {activeSession === 'Posts' ? (
                 <div className="grid w-full gap-5 sm:grid-cols-2">
-                  {user === null ? '' : user.posts.length > 0
-                    ? user.posts.map((post) => (
-                        <Post
-                          key={post.id}
-                          page={'/profile'}
-                          {...post}
-                          user={user}
-                          handleClick={() => handlePostClick(post.id)}
-                        />
-                      ))
-                    : ''}
+                  {user === null
+                    ? ''
+                    : user.posts.length > 0
+                      ? user.posts.map((post) => (
+                          <Post
+                            key={post.id}
+                            page={'/profile'}
+                            {...post}
+                            user={user}
+                            handleClick={() => handlePostClick(post.id)}
+                          />
+                        ))
+                      : ''}
                 </div>
               ) : (
                 <div className="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                  {user === null ? '' : user.portfolios.length > 0
-                    ? user.portfolios.map((portfolio) => <PortfolioUser key={portfolio.id} {...portfolio} />)
-                    : ''}
+                  {user === null
+                    ? ''
+                    : user.portfolios.length > 0
+                      ? user.portfolios.map((portfolio) => (
+                          <PortfolioUser key={portfolio.id} {...portfolio} />
+                        ))
+                      : ''}
                 </div>
               )}
             </div>

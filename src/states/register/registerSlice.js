@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { registerAsync } from "./registerThunk";
+import { createSlice } from '@reduxjs/toolkit';
+import { registerAsync } from './registerThunk';
 
 const initialState = {
   user: null,
   status: 'idle',
   error: null,
-  loading: false,
-}
+  loading: false
+};
 
 const registerSlice = createSlice({
   name: 'register',
@@ -27,8 +27,8 @@ const registerSlice = createSlice({
         state.status = 'rejected';
         state.loading = false;
         state.error = action.payload;
-      })
+      });
   }
-})
+});
 
-export default registerSlice.reducer
+export default registerSlice.reducer;

@@ -29,7 +29,8 @@ export default function RegisterInput({ register, isLoading }) {
       <h1 className="text-3xl font-bold sm:text-4xl text-chineseWhite">Create an Account</h1>
       <form
         onSubmit={(e) => register(e, { name, email, password, password_confirmation })}
-        className="flex flex-col gap-6">
+        className="flex flex-col gap-6"
+      >
         <div>
           <div className="mb-2">
             <label htmlFor="name" className="text-lg text-chineseWhite">
@@ -88,7 +89,8 @@ export default function RegisterInput({ register, isLoading }) {
             <Button
               color=""
               onClick={toggleShowPassword}
-              className="absolute top-[2px] right-0 rounded-none ring-0 focus:ring-0">
+              className="absolute top-[2px] right-0 rounded-none ring-0 focus:ring-0"
+            >
               {showPassword ? (
                 <BsEye className="text-2xl text-chineseWhite" />
               ) : (
@@ -117,7 +119,8 @@ export default function RegisterInput({ register, isLoading }) {
             <Button
               color=""
               onClick={toggleShowConfirmPassword}
-              className="absolute top-[2px] right-0 rounded-none ring-0 focus:ring-0">
+              className="absolute top-[2px] right-0 rounded-none ring-0 focus:ring-0"
+            >
               {showConfirmPassword ? (
                 <BsEye className="text-2xl text-chineseWhite" />
               ) : (
@@ -131,7 +134,8 @@ export default function RegisterInput({ register, isLoading }) {
           type="submit"
           size="sm"
           className={`mt-5 rounded-full bg-fernGreen text-textPrimary hover:opacity-90 ${!name || !email || !password || !password_confirmation || isLoading ? 'opacity-70 hover:opacity-70' : ''}`}
-          disabled={!name || !email || !password || !password_confirmation || isLoading}>
+          disabled={!name || !email || !password || !password_confirmation || isLoading}
+        >
           <span className="text-lg font-semibold">
             {isLoading ? <ImSpinner2 className="w-6 h-6 text-white animate-spin" /> : 'Register'}
           </span>
@@ -143,5 +147,5 @@ export default function RegisterInput({ register, isLoading }) {
 
 RegisterInput.propTypes = {
   register: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
+  isLoading: PropTypes.bool
 };

@@ -44,7 +44,7 @@ const postsSlice = createSlice({
     },
     upVotes: (state, action) => {
       const { user_id, post_id } = action.payload;
-      const post = state.posts.find(post => post.id === post_id);
+      const post = state.posts.find((post) => post.id === post_id);
       if (post) {
         post.post_up_votes = post.post_up_votes || [];
         post.post_up_votes.push({ user_id, post_id });
@@ -52,7 +52,7 @@ const postsSlice = createSlice({
     },
     upVotesMostLikedPosts: (state, action) => {
       const { user_id, post_id } = action.payload;
-      const post = state.mostLikedPosts.find(post => post.id === post_id);
+      const post = state.mostLikedPosts.find((post) => post.id === post_id);
       if (post) {
         post.post_up_votes = post.post_up_votes || [];
         post.post_up_votes.push({ user_id, post_id });
@@ -197,5 +197,12 @@ const postsSlice = createSlice({
       });
   }
 });
-export const { searchPost, setPage, setSelectedPost, setPageToOne, upVotes, upVotesMostLikedPosts } = postsSlice.actions;
+export const {
+  searchPost,
+  setPage,
+  setSelectedPost,
+  setPageToOne,
+  upVotes,
+  upVotesMostLikedPosts
+} = postsSlice.actions;
 export default postsSlice.reducer;

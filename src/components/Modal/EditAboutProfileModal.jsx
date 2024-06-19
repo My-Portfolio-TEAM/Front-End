@@ -8,51 +8,82 @@ export default function EditAboutProfileModal({ myProfile, openModal, setOpenMod
   const dispatch = useDispatch();
   const [name, setName] = useState(myProfile.name);
 
-  const [role, setRole] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.role === null ? '' : myProfile.biodata.role);
+  const [role, setRole] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.role === null
+      ? ''
+      : myProfile.biodata.role
+  );
 
-  const [headline, setHeadline] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.headline === null ? '' : myProfile.biodata.headline);
+  const [headline, setHeadline] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.headline === null
+      ? ''
+      : myProfile.biodata.headline
+  );
 
-  const [location, setLocation] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.location === null ? '' : myProfile.biodata.location);
+  const [location, setLocation] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.location === null
+      ? ''
+      : myProfile.biodata.location
+  );
 
-  const [about, setAbout] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.about === null ? null : myProfile.biodata.about);
+  const [about, setAbout] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.about === null
+      ? null
+      : myProfile.biodata.about
+  );
 
-  const [linkedIn, setLinkedIn] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.linkedIn === null ? null : myProfile.biodata.linkedIn);
+  const [linkedIn, setLinkedIn] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.linkedIn === null
+      ? null
+      : myProfile.biodata.linkedIn
+  );
 
-  const [website, setWebsite] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.website === null ? null : myProfile.biodata.website);
+  const [website, setWebsite] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.website === null
+      ? null
+      : myProfile.biodata.website
+  );
 
-  const [skills, setSkills] = useState(myProfile === null || myProfile.biodata === null || myProfile.biodata.skills.length < 1 ? [] : myProfile.biodata.skills);
-  
+  const [skills, setSkills] = useState(
+    myProfile === null || myProfile.biodata === null || myProfile.biodata.skills.length < 1
+      ? []
+      : myProfile.biodata.skills
+  );
 
   const onSubmitBiodata = () => {
-    dispatch(createMyBiodataAsync({
-      name,
-      role,
-      headline,
-      location,
-      about,
-      linkedIn,
-      website,
-      skills,
-      email: myProfile.email,
-      setOpenModal
-    }));
-  }
+    dispatch(
+      createMyBiodataAsync({
+        name,
+        role,
+        headline,
+        location,
+        about,
+        linkedIn,
+        website,
+        skills,
+        email: myProfile.email,
+        setOpenModal
+      })
+    );
+  };
 
   const onEditBiodata = () => {
-    dispatch(updateMyBiodataAsync({
-      name,
-      role,
-      headline,
-      location,
-      about,
-      linkedIn,
-      website,
-      skills,
-      email: myProfile.email,
-      id: myProfile.biodata.id,
-      setOpenModal
-    }));
-  }
+    dispatch(
+      updateMyBiodataAsync({
+        name,
+        role,
+        headline,
+        location,
+        about,
+        linkedIn,
+        website,
+        skills,
+        email: myProfile.email,
+        id: myProfile.biodata.id,
+        setOpenModal
+      })
+    );
+  };
   return (
     <section>
       <Modal
@@ -124,5 +155,5 @@ export default function EditAboutProfileModal({ myProfile, openModal, setOpenMod
 EditAboutProfileModal.propTypes = {
   openModal: PropTypes.bool,
   setOpenModal: PropTypes.func,
-  myProfile: PropTypes.instanceOf(Object),
+  myProfile: PropTypes.instanceOf(Object)
 };
